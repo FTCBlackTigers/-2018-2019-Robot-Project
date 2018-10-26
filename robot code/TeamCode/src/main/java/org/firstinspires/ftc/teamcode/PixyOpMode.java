@@ -32,72 +32,63 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * Demonstrates empty OpMode
  */
-@TeleOp(name = "EnumExample", group = "Concept")
-//@Disabled
-public class EnumExample extends OpMode {
+@TeleOp(name = "Pixy simple test", group = "pixy")
+public class PixyOpMode extends OpMode {
 
   private ElapsedTime runtime = new ElapsedTime();
 
-  enum Color{
-      RED, BLUE, GREEN, BLACK;
-  }
+  I2cDeviceSynch pixy;
 
-  enum Height{
-     GROUND(0),
-     MED(50),
-     HIGH(100),
-      MED2(70);
-
-     private int TicksInCM = 20;
-     private int height;
-
-     private Height(int hieght)
-     {
-         this.height = hieght;
-     }
-
-      public int getHeight() {
-          return height * TicksInCM;
-      }
-  }
   @Override
   public void init() {
+    //setting up Pixy to the hardware map
+    pixy = hardwareMap.i2cDeviceSynch.get("pixy");
+
+    //setting Pixy's I2C Address
+    pixy.setI2cAddress(I2cAddr.create7bit(0x54));
+
+    //setting Pixy's read window. You'll want these exact parameters, and you can reference the
+    //SDK Documentation to learn more
+    I2cDeviceSynch.ReadWindow readWindow = new I2cDeviceSynch.ReadWindow (1, 26, I2cDeviceSynch.ReadMode.REPEAT);
+    pixy.setReadWindow(readWindow);
+
+    //required to "turn on" the device
+    pixy.engage();
     telemetry.addData("Status", "Initialized");
-    showHieght(Height.HIGH);
   }
 
-  public  void showHieght(Height height) {
-      telemetry.addLine(String.valueOf(height.getHeight()));
-  }
-  /*
-     * Code to run when the op mode is first enabled goes here
-     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-     */
-  @Override
-  public void init_loop() {
-  }
 
-  /*
-   * This method will be called ONCE when start is pressed
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
   @Override
   public void start() {
     runtime.reset();
   }
 
-  /*
-   * This method will be called repeatedly in a loop
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
+
   @Override
   public void loop() {
     telemetry.addData("Status", "Run Time: " + runtime.toString());
+
+    telemetry.addData("Byte 0", pixy.read8(0));
+    telemetry.addData("Byte 1", pixy.read8(1));
+    telemetry.addData("Byte 2", pixy.read8(2));
+    telemetry.addData("Byte 3", pixy.read8(3));
+    telemetry.addData("Byte 4", pixy.read8(4));
+    telemetry.addData("Byte 5", pixy.read8(5));
+    telemetry.addData("Byte 6", pixy.read8(6));
+    telemetry.addData("Byte 7", pixy.read8(7));
+    telemetry.addData("Byte 8", pixy.read8(8));
+    telemetry.addData("Byte 9", pixy.read8(9));
+    telemetry.addData("Byte 10", pixy.read8(10));
+    telemetry.addData("Byte 11", pixy.read8(11));
+    telemetry.addData("Byte 12", pixy.read8(12));
+    telemetry.addData("Byte 13", pixy.read8(13));
+    telemetry.update();
   }
 }

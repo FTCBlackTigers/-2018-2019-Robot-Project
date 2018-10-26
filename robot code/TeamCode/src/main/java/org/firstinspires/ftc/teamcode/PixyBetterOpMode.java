@@ -29,67 +29,49 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.os.Environment;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.PixyBlock;
+import org.firstinspires.ftc.teamcode.PixyBlockList;
+import org.firstinspires.ftc.teamcode.PixyCam;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 /**
  * Demonstrates empty OpMode
  */
-@TeleOp(name = "EnumExample", group = "Concept")
-//@Disabled
-public class EnumExample extends OpMode {
+@TeleOp(name = "PixyBetterOpMode", group = "pixy")
 
-  private ElapsedTime runtime = new ElapsedTime();
+public class PixyBetterOpMode extends OpMode {
 
-  enum Color{
-      RED, BLUE, GREEN, BLACK;
-  }
+  PixyCam pixyCam;
+  PixyBlockList blocks1;
+  ElapsedTime elapsedTime = new ElapsedTime();
+  ElapsedTime elapsedTime2 = new ElapsedTime();
 
-  enum Height{
-     GROUND(0),
-     MED(50),
-     HIGH(100),
-      MED2(70);
-
-     private int TicksInCM = 20;
-     private int height;
-
-     private Height(int hieght)
-     {
-         this.height = hieght;
-     }
-
-      public int getHeight() {
-          return height * TicksInCM;
-      }
-  }
-  @Override
-  public void init() {
-    telemetry.addData("Status", "Initialized");
-    showHieght(Height.HIGH);
-  }
-
-  public  void showHieght(Height height) {
-      telemetry.addLine(String.valueOf(height.getHeight()));
-  }
-  /*
-     * Code to run when the op mode is first enabled goes here
-     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-     */
-  @Override
-  public void init_loop() {
-  }
+  PrintWriter file;
 
   /*
-   * This method will be called ONCE when start is pressed
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
+   * Code to run when the op mode is first enabled goes here
+   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
    */
   @Override
-  public void start() {
-    runtime.reset();
+  public void init() {
+    pixyCam = hardwareMap.get(PixyCam.class, "pixycam");
+    try {
+      file = new PrintWriter("/sdcard/pixyResults.txt", "UTF-8");
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
   }
 
   /*
@@ -98,6 +80,25 @@ public class EnumExample extends OpMode {
    */
   @Override
   public void loop() {
-    telemetry.addData("Status", "Run Time: " + runtime.toString());
+    // Update every tenth of a second.
+    if (elapsedTime.milliseconds() > 100) {
+      elapsedTime.reset();
+      blocks1 = pixyCam.getBiggestBlocks(1);
+      telemetry.addData("Counts", "%d", blocks1.totalCount);
+      file.println("----------------------------");
+      file.format("Elapsed: %s Counts: %d\n", elapsedTime2.toString());
+      for (int i = 0; i < blocks1.size(); i++) {
+        PixyBlock block = blocks1.get(i);
+        if (!block.isEmpty()) {
+          telemetry.addData("Block 1[" + i + "]", block.toString());
+        }
+      }
+      telemetry.update();
+    }
+  }
+
+  @Override
+  public void stop() {
+    file.close();
   }
 }
