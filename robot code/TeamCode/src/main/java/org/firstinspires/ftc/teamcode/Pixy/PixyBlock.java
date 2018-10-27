@@ -58,3 +58,4 @@ public class PixyBlock {
         return String.format("x: %d, y: %d, w: %d, h: %d cnt: %d", this.x, this.y, this.width, this.height, this.blockCount);
     }
 }
+

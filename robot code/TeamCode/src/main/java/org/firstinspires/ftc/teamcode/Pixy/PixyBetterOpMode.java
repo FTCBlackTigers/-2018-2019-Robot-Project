@@ -29,51 +29,78 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.os.Environment;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.PixyBlock;
+import org.firstinspires.ftc.teamcode.PixyBlockList;
+import org.firstinspires.ftc.teamcode.PixyCam;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 /**
  * Demonstrates empty OpMode
  */
-@TeleOp(name = "Test Picture", group = "Concept")
-public class Test extends OpMode {
+@TeleOp(name = "PixyBetterOpMode", group = "pixy")
+@Disabled
+public class PixyBetterOpMode extends OpMode {
 
-  private ElapsedTime runtime = new ElapsedTime();
+    PixyCam pixyCam;
+    PixyBlockList blocks1;
+    ElapsedTime elapsedTime = new ElapsedTime();
+    ElapsedTime elapsedTime2 = new ElapsedTime();
 
-  @Override
-  public void init() {
-    BTVuforia.singalton.init(hardwareMap);
-    telemetry.addData("Status", "Initialized");
-  }
+    PrintWriter file;
 
-  /*
+    /*
      * Code to run when the op mode is first enabled goes here
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
      */
-  @Override
-  public void init_loop() {
-  }
+    @Override
+    public void init() {
+        pixyCam = (PixyCam)hardwareMap.get(I2cDeviceSynch.class, "pixy");
+        try {
+            file = new PrintWriter("/sdcard/pixyResults.txt", "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 
-  /*
-   * This method will be called ONCE when start is pressed
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
-  @Override
-  public void start() {
-    runtime.reset();
-  }
+    /*
+     * This method will be called repeatedly in a loop
+     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
+     */
+    @Override
+    public void loop() {
+        // Update every tenth of a second.
+        if (elapsedTime.milliseconds() > 100) {
+            elapsedTime.reset();
+            blocks1 = pixyCam.getBiggestBlocks(1);
+            telemetry.addData("Counts", "%d", blocks1.totalCount);
+            file.println("----------------------------");
+            file.format("Elapsed: %s Counts: %d\n", elapsedTime2.toString());
+            for (int i = 0; i < blocks1.size(); i++) {
+                PixyBlock block = blocks1.get(i);
+                if (!block.isEmpty()) {
+                    telemetry.addData("Block 1[" + i + "]", block.toString());
+                }
+            }
+            telemetry.update();
+        }
+    }
 
-  /*
-   * This method will be called repeatedly in a loop
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
-  @Override
-  public void loop() {
-    telemetry.addLine(BTVuforia.singalton.toString());
-
-    telemetry.addData("Status", "Run Time: " + runtime.toString());
-  }
+    @Override
+    public void stop() {
+        file.close();
+    }
 }
+

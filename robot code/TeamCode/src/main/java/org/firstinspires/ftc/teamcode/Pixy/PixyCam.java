@@ -6,9 +6,12 @@ import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynchDeviceWithParameters;
 import com.qualcomm.robotcore.hardware.configuration.I2cSensor;
+import com.qualcomm.robotcore.hardware.configuration.annotations.DeviceProperties;
+import com.qualcomm.robotcore.hardware.configuration.annotations.I2cDeviceType;
 import com.qualcomm.robotcore.util.TypeConversion;
 
-@I2cSensor(name = "PixyCam", description = "PixyCam", xmlTag = "PixyCam")
+@I2cDeviceType()
+@DeviceProperties(name = "PixyCam", description = "PixyCam", xmlTag = "PixyCam")
 public class PixyCam extends I2cDeviceSynchDeviceWithParameters<I2cDeviceSynch, PixyCam.PixyCamParams> {
 
     static final I2cAddr ADDRESS_I2C_DEFAULT = I2cAddr.create7bit(0x54);
