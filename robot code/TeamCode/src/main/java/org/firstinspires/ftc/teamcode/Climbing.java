@@ -39,7 +39,7 @@ public class Climbing {
     //TODO: update the values down
     private final double HANG_OPEN_POS = 0;
     private final double HANG_CLOSE_POS = 0;
-    private final double MOVING_SPEED = 0
+    private final double MOVING_SPEED = 0;
 
     private DcMotor liftMotor;
     private DcMotor angleMotor;
@@ -69,11 +69,47 @@ public class Climbing {
        lockServo();
 
     }
-    public void teleOpMotion(Gamepad gamepad) {
-        if(!liftMotor.isBusy()){
+    public void teleOpMotion(Gamepad operator) {
+        if (!liftMotor.isBusy()) {
             liftMotor.setPower(0);
+            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
+
+        if (!angleMotor.isBusy()) {
+            angleMotor.setPower(0);
+            angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+        if (operator.dpad_down) {
+            moveLift(Height.MIN);
+        }
+
+        if (operator.dpad_right) {
+            moveLift(Height.MEDIUM);
+        }
+
+        if (operator.dpad_up) {
+            moveLift(Height.MAX);
+        }
+
+        if(operator.right_bumper){
+           moveAngle(Angle.UP);
+        }
+
+        if(operator.left_bumper){
+            moveAngle(Angle.DOWN);
+        }
+
+        if(-operator.right_stick_y > 0.1 && -operator.right_stick_y  <  -0.1){
+            liftMoveManual(-operator.right_stick_y);
+        }
+
+        if(-operator.left_stick_y > 0.1 && -operator.left_stick_y  <  -0.1){
+            angleMoveManual(-operator.left_stick_y);
+        }
+
     }
+
 
     private void moveLift(Height height){
         liftMotor.setTargetPosition(height.getTicks());
@@ -91,5 +127,22 @@ public class Climbing {
         hangServo.setPosition(HANG_OPEN_POS);
     }
 
+    private void liftMoveManual(double motorPower){
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        liftMotor.setPower(motorPower);
+    }
 
+
+    private void moveAngle(Angle angle){
+        angleMotor.setTargetPosition(angle.getTicks());
+
+        angleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        angleMotor.setPower(Math.abs(MOVING_SPEED));
+    }
+
+    private void angleMoveManual(double motorPower){
+        angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        angleMotor.setPower(motorPower);
+    }
 }
