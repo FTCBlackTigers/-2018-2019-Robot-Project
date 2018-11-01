@@ -20,7 +20,6 @@ public class Climbing {
         Angle(float ang){
             this.pos = pos;
         }
-
     }
     enum Height { //TODO:set motor Encoder positions and check @ticksPerCm
         MIN(0),
@@ -39,7 +38,7 @@ public class Climbing {
     //TODO: update the values down
     private final double HANG_OPEN_POS = 0;
     private final double HANG_CLOSE_POS = 0;
-    private final double MOVING_SPEED = 0
+    private final double MOVING_SPEED = 0;
 
     private DcMotor liftMotor;
     private DcMotor angleMotor;
