@@ -13,12 +13,12 @@ public class Climbing {
         DOWN(0),
         UP(0);
         float pos;
-        final double ticksPerCm = 0;
+        final double ticksPerDegrees = 0;
         public int getTicks() {
-            return ((int) (ticksPerCm * pos));
+            return ((int) (ticksPerDegrees * pos));
         }
         Angle(float ang){
-            this.pos = pos;
+            this.pos = ang;
         }
 
     }
@@ -92,11 +92,11 @@ public class Climbing {
             moveLift(Height.MAX);
         }
 
-        if(operator.right_bumper){
+        if(operator.right_trigger > 0.7){
            moveAngle(Angle.UP);
         }
 
-        if(operator.left_bumper){
+        if(operator.left_trigger > 0.7){
             moveAngle(Angle.DOWN);
         }
 
@@ -108,7 +108,15 @@ public class Climbing {
             angleMoveManual(-operator.left_stick_y);
         }
 
+        if(operator.a){
+            openServo();
+        }
+
+        if(operator.x){
+            lockServo();
+        }
     }
+
 
 
     private void moveLift(Height height){
@@ -129,7 +137,10 @@ public class Climbing {
 
     private void liftMoveManual(double motorPower){
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotor.setPower(motorPower);
+
+        if((Height.MAX.getTicks() > liftMotor.getCurrentPosition() && motorPower < 0) || (Height.MIN.getTicks() < liftMotor.getCurrentPosition() && motorPower > 0)){
+            liftMotor.setPower(motorPower);
+        }
     }
 
 
@@ -143,6 +154,9 @@ public class Climbing {
 
     private void angleMoveManual(double motorPower){
         angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        angleMotor.setPower(motorPower);
+
+        if((Angle.UP.getTicks() > angleMotor.getCurrentPosition() && motorPower < 0) || (Angle.DOWN.getTicks() < angleMotor.getCurrentPosition() && motorPower > 0)){
+            angleMotor.setPower(motorPower);
+        }
     }
 }
