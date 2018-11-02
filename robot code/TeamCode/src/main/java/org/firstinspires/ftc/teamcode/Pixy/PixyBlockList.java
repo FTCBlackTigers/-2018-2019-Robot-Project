@@ -1,13 +1,13 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Pixy;
 
 import com.qualcomm.robotcore.util.TypeConversion;
 
 import java.util.Vector;
 
 public class PixyBlockList extends Vector<PixyBlock> {
-    public final int totalCount;
+    public int totalCount;
 
-    PixyBlockList(byte totalCount) {
+    public PixyBlockList(byte totalCount) {
         this.totalCount = TypeConversion.unsignedByteToInt(totalCount);
     }
 }

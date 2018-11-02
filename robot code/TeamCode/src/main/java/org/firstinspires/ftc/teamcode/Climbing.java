@@ -137,7 +137,7 @@ public class Climbing {
     private void liftMoveManual(double motorPower){
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if((Height.MAX.getTicks() > liftMotor.getCurrentPosition() && motorPower < 0) || (Height.MIN.getTicks() < liftMotor.getCurrentPosition() && motorPower > 0)){
+        if((Height.MAX.getTicks() > liftMotor.getCurrentPosition() && motorPower < 0) && (Height.MIN.getTicks() < liftMotor.getCurrentPosition() && motorPower > 0)){
             liftMotor.setPower(motorPower);
         }
     }
@@ -154,7 +154,7 @@ public class Climbing {
     private void angleMoveManual(double motorPower){
         angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if((Angle.UP.getTicks() > angleMotor.getCurrentPosition() && motorPower < 0) || (Angle.DOWN.getTicks() < angleMotor.getCurrentPosition() && motorPower > 0)){
+        if((Angle.UP.getTicks() > angleMotor.getCurrentPosition() && motorPower < 0) && (Angle.DOWN.getTicks() < angleMotor.getCurrentPosition() && motorPower > 0)){
             angleMotor.setPower(motorPower);
         }
     }

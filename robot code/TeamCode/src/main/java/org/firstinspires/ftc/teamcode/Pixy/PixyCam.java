@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Pixy;
 
 import android.support.annotation.NonNull;
 
@@ -10,16 +10,19 @@ import com.qualcomm.robotcore.hardware.configuration.annotations.DevicePropertie
 import com.qualcomm.robotcore.hardware.configuration.annotations.I2cDeviceType;
 import com.qualcomm.robotcore.util.TypeConversion;
 
+import org.firstinspires.ftc.teamcode.Pixy.PixyBlock;
+import org.firstinspires.ftc.teamcode.Pixy.PixyBlockList;
+
 @I2cDeviceType()
 @DeviceProperties(name = "PixyCam", description = "PixyCam", xmlTag = "PixyCam")
 public class PixyCam extends I2cDeviceSynchDeviceWithParameters<I2cDeviceSynch, PixyCam.PixyCamParams> {
 
     static final I2cAddr ADDRESS_I2C_DEFAULT = I2cAddr.create7bit(0x54);
 
-    private static final int LEGO_QUERY_BASE = 0x50;
-    private static final int LEGO_QUERY_CC = 0x58;
-    private static final int EXTENDED_QUERY_BASE = 0x70;
-    private static final int EXTENDED_QUERY_CC = 0x78;
+    private static final int LEGO_QUERY_BASE = 0x54;
+    private static final int LEGO_QUERY_CC = 0x54;
+    private static final int EXTENDED_QUERY_BASE = 0x54;
+    private static final int EXTENDED_QUERY_CC = 0x54;
     private static final int LEGO_QUERY_COUNT = 6;
     private static final int LEGO_QUERY_SIG_COUNT = 5;
     private static final int LEGO_QUERY_CC_COUNT = 6;
@@ -98,7 +101,7 @@ public class PixyCam extends I2cDeviceSynchDeviceWithParameters<I2cDeviceSynch, 
      * @return a Block object containing details about the location of the largest detected block
      */
     public PixyBlock getBiggestBlock() {
-        byte[] buffer = ReadEntireWindow(this.legoProtocolGeneralQueryReadWindow);
+        byte[] buffer = ReadEntireWindow(this.extendedGeneralQueryReadWindow);
 
         int signature = buffer[1] << 8 | buffer[0];
 
@@ -114,7 +117,7 @@ public class PixyCam extends I2cDeviceSynchDeviceWithParameters<I2cDeviceSynch, 
             throw new IllegalArgumentException("signature must be between 1 and 7");
         }
 
-        byte[] buffer = ReadEntireWindow(this.legoProtocolSignatureQueryReadWindows[signature - 1]);
+        byte[] buffer = ReadEntireWindow(this.extnededSignatureQueryReadWindows[signature - 1]);
 
         return new PixyBlock(signature, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
     }

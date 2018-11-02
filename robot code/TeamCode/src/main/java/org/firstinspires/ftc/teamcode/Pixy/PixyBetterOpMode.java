@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Pixy;
 
 import android.os.Environment;
 
@@ -36,10 +36,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.PixyBlock;
-import org.firstinspires.ftc.teamcode.PixyBlockList;
-import org.firstinspires.ftc.teamcode.PixyCam;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,7 +61,7 @@ public class PixyBetterOpMode extends OpMode {
      */
     @Override
     public void init() {
-        pixyCam = (PixyCam)hardwareMap.get(I2cDeviceSynch.class, "pixy");
+        pixyCam = hardwareMap.get(PixyCam.class, "pixy");
         try {
             file = new PrintWriter("/sdcard/pixyResults.txt", "UTF-8");
         } catch (FileNotFoundException e) {
@@ -84,10 +80,11 @@ public class PixyBetterOpMode extends OpMode {
         // Update every tenth of a second.
         if (elapsedTime.milliseconds() > 100) {
             elapsedTime.reset();
-            blocks1 = pixyCam.getBiggestBlocks(1);
+            blocks1 = pixyCam.getBiggestBlocks();
+            telemetry.addData("Elapsed: ", elapsedTime2.toString());
             telemetry.addData("Counts", "%d", blocks1.totalCount);
             file.println("----------------------------");
-            file.format("Elapsed: %s Counts: %d\n", elapsedTime2.toString());
+            file.format("Elapsed: %s Counts: %d\n", elapsedTime2.toString(), blocks1.totalCount);
             for (int i = 0; i < blocks1.size(); i++) {
                 PixyBlock block = blocks1.get(i);
                 if (!block.isEmpty()) {
