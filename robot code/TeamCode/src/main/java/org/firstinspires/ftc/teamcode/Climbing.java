@@ -13,12 +13,12 @@ public class Climbing {
         DOWN(0),
         UP(0);
         float pos;
-        final double ticksPerCm = 0;
+        final double ticksPerDegrees = 0;
         public int getTicks() {
-            return ((int) (ticksPerCm * pos));
+            return ((int) (ticksPerDegrees * pos));
         }
         Angle(float ang){
-            this.pos = pos;
+            this.pos = ang;
         }
     }
     enum Height { //TODO:set motor Encoder positions and check @ticksPerCm
@@ -68,11 +68,55 @@ public class Climbing {
        lockServo();
 
     }
-    public void teleOpMotion(Gamepad gamepad) {
-        if(!liftMotor.isBusy()){
+    public void teleOpMotion(Gamepad operator) {
+        if (!liftMotor.isBusy()) {
             liftMotor.setPower(0);
+            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+        if (!angleMotor.isBusy()) {
+            angleMotor.setPower(0);
+            angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+        if (operator.dpad_down) {
+            moveLift(Height.MIN);
+        }
+
+        if (operator.dpad_right) {
+            moveLift(Height.MEDIUM);
+        }
+
+        if (operator.dpad_up) {
+            moveLift(Height.MAX);
+        }
+
+        if(operator.right_trigger > 0.7){
+           moveAngle(Angle.UP);
+        }
+
+        if(operator.left_trigger > 0.7){
+            moveAngle(Angle.DOWN);
+        }
+
+        if(-operator.right_stick_y > 0.1 && -operator.right_stick_y  <  -0.1){
+            liftMoveManual(-operator.right_stick_y);
+        }
+
+        if(-operator.left_stick_y > 0.1 && -operator.left_stick_y  <  -0.1){
+            angleMoveManual(-operator.left_stick_y);
+        }
+
+        if(operator.a){
+            openServo();
+        }
+
+        if(operator.x){
+            lockServo();
         }
     }
+
+
 
     private void moveLift(Height height){
         liftMotor.setTargetPosition(height.getTicks());
@@ -90,5 +134,28 @@ public class Climbing {
         hangServo.setPosition(HANG_OPEN_POS);
     }
 
+    private void liftMoveManual(double motorPower){
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        if((Height.MAX.getTicks() > liftMotor.getCurrentPosition() && motorPower < 0) || (Height.MIN.getTicks() < liftMotor.getCurrentPosition() && motorPower > 0)){
+            liftMotor.setPower(motorPower);
+        }
+    }
+
+
+    private void moveAngle(Angle angle){
+        angleMotor.setTargetPosition(angle.getTicks());
+
+        angleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        angleMotor.setPower(Math.abs(MOVING_SPEED));
+    }
+
+    private void angleMoveManual(double motorPower){
+        angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        if((Angle.UP.getTicks() > angleMotor.getCurrentPosition() && motorPower < 0) || (Angle.DOWN.getTicks() < angleMotor.getCurrentPosition() && motorPower > 0)){
+            angleMotor.setPower(motorPower);
+        }
+    }
 }
