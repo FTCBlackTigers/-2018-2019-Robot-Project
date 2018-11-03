@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 public class Intake {
     enum Minerals{
@@ -38,7 +40,6 @@ public class Intake {
         collectMotor.setDirection(DcMotor.Direction.FORWARD);
         collectMotor.setPower(0);
         collectMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
 
         leftServo = hardwareMap.get(Servo.class, "leftServo");
         rightServo = hardwareMap.get(Servo.class, "rightServo");
@@ -108,12 +109,25 @@ public class Intake {
         this.rightOutput();
     }
 
-    //TODO:write a code to identity a mineral
     private Minerals getLeftMineral() {
+        NormalizedRGBA colors = leftColorSensor.getNormalizedColors();
+        if(colors.red > 0.080 && colors.red < 0.12 && colors.green > 0.080 && colors.green < 0.12 && colors.blue > 0.060 && colors.blue < 0.1 ){
+            return Minerals.SILVER;
+        }
+        if(colors.red > 0.03 && colors.red < 0.50 && colors.green > 0.02 && colors.green < 0.04 && colors.blue > 0.01 && colors.blue < 0.02 ){
+            return Minerals.GOLD;
+        }
         return Minerals.UNKNOWN;
     }
 
     private Minerals getRightMineral() {
+        NormalizedRGBA colors = rightColorSensor.getNormalizedColors();
+        if(colors.red > 0.080 && colors.red < 0.12 && colors.green > 0.080 && colors.green < 0.12 && colors.blue > 0.060 && colors.blue < 0.1 ){
+            return Minerals.SILVER;
+        }
+        if(colors.red > 0.03 && colors.red < 0.50 && colors.green > 0.02 && colors.green < 0.04 && colors.blue > 0.01 && colors.blue < 0.02 ){
+            return Minerals.GOLD;
+        }
         return Minerals.UNKNOWN;
     }
 
