@@ -75,5 +75,6 @@ public class TeleOp extends OpMode {
   public void loop() {
     robot.teleop(gamepad1, gamepad2);
     telemetry.addData("Status", "Run Time: " + runtime.toString());
+    telemetry.update();
   }
 }

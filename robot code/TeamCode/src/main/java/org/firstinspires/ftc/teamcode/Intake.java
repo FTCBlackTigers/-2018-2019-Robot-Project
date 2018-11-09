@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 public class Intake {
     enum Minerals{
@@ -18,24 +17,24 @@ public class Intake {
      * */
     private final double COLLECTION_SPEED = 0.5;
     private final double RELEASE_SPEED = 0.2;
-    private final double LEFT_SERVO_OPEN_POS = 0.5;
-    private final double RIGHT_SERVO_OPEN_POS = 0.5;
+    private final double LEFT_SERVO_OPEN_POS = 1;
+    private final double RIGHT_SERVO_OPEN_POS = 1;
     private final double LEFT_SERVO_CLOSE_POS = 0.5;
     private final double RIGHT_SERVO_CLOSE_POS = 0.5;
 
-    private OpMode OpMode;
+    private OpMode opMode;
 
     private DcMotor collectMotor;
     private Servo leftServo, rightServo;
     private NormalizedColorSensor leftColorSensor, rightColorSensor;
     private Minerals searchMineral;
 
-    private boolean buttonPressed;
-    private boolean releaseModeIsActive;
+    private boolean collectModeIsPrevActive;
+    private boolean releaseModeIsPrevActive;
 
 
     public void init(HardwareMap hardwareMap, OpMode opMode){
-        this.OpMode = opMode;
+        this.opMode = opMode;
         collectMotor = hardwareMap.get(DcMotor.class, "collectMotor");
         collectMotor.setDirection(DcMotor.Direction.FORWARD);
         collectMotor.setPower(0);
@@ -57,12 +56,12 @@ public class Intake {
             this.collect();
         }
 
-        if((buttonPressed && !driver.right_bumper) || (buttonPressed && !operator.right_bumper) ){
+        if((collectModeIsPrevActive && !driver.right_bumper) || (collectModeIsPrevActive && !operator.right_bumper) ){
             closeRightGate();
             closeLeftGate();
             this.stopMotor();
         }
-        if(!releaseModeIsActive && !(driver.right_bumper || operator.right_bumper)) {
+        if(releaseModeIsPrevActive && !(driver.right_bumper || operator.right_bumper)) {
             this.stopMotor();
             closeRightGate();
             closeLeftGate();
@@ -76,8 +75,18 @@ public class Intake {
         if(operator.b) {
             setSearchMineral(Minerals.SILVER);
         }
-        releaseModeIsActive = driver.left_bumper || operator.left_bumper;
-        buttonPressed = driver.right_bumper || operator.right_bumper;
+
+        opMode.telemetry.addLine("intake: \n" )
+                .addData("collectMotorPower: ", collectMotor.getPower()+"\n")
+                .addData("rightServoPos: ", rightServo.getPosition())
+                .addData("leftServoPos: ", leftServo.getPosition()+"\n")
+                .addData("search mineral: ", searchMineral+"\n")
+                .addData("releaseModeIsPrevActive: ", releaseModeIsPrevActive)
+                .addData("collectModeIsPrevActive: ", collectModeIsPrevActive +"\n");
+
+        releaseModeIsPrevActive = driver.left_bumper || operator.left_bumper;
+        collectModeIsPrevActive = driver.right_bumper || operator.right_bumper;
+
 
     }
 
