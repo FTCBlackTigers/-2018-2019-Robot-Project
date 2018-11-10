@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -31,12 +32,14 @@ public class Intake {
 
     private boolean collectModeIsPrevActive;
     private boolean releaseModeIsPrevActive;
+    private boolean releaseModeIsActive;
+    private boolean collectModeIsActive;
 
 
     public void init(HardwareMap hardwareMap, OpMode opMode){
         this.opMode = opMode;
         collectMotor = hardwareMap.get(DcMotor.class, "collectMotor");
-        collectMotor.setDirection(DcMotor.Direction.FORWARD);
+        collectMotor.setDirection(DcMotor.Direction.REVERSE);
         collectMotor.setPower(0);
         collectMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -52,23 +55,28 @@ public class Intake {
     }
 
     public void teleOpMotion(Gamepad driver, Gamepad operator) {
-        if(driver.right_bumper || operator.right_bumper) {
+
+        releaseModeIsActive = driver.left_bumper || operator.left_bumper;
+        collectModeIsActive = driver.right_bumper || operator.right_bumper;
+
+        if(collectModeIsActive) {
             this.collect();
         }
-
-        if((collectModeIsPrevActive && !driver.right_bumper) || (collectModeIsPrevActive && !operator.right_bumper) ){
-            closeRightGate();
-            closeLeftGate();
-            this.stopMotor();
-        }
-        if(releaseModeIsPrevActive && !(driver.right_bumper || operator.right_bumper)) {
-            this.stopMotor();
-            closeRightGate();
-            closeLeftGate();
-        }
-        if(driver.left_bumper || operator.left_bumper){
+        else if (releaseModeIsActive) {
             this.release();
         }
+
+        if(collectModeIsPrevActive && !collectModeIsActive) {
+            closeRightGate();
+            closeLeftGate();
+            this.stopMotor();
+        }
+        if(releaseModeIsPrevActive && !releaseModeIsActive) {
+            this.stopMotor();
+            closeRightGate();
+            closeLeftGate();
+        }
+
         if(operator.y) {
             setSearchMineral(Minerals.GOLD);
         }
@@ -84,8 +92,8 @@ public class Intake {
                 .addData("releaseModeIsPrevActive: ", releaseModeIsPrevActive)
                 .addData("collectModeIsPrevActive: ", collectModeIsPrevActive +"\n");
 
-        releaseModeIsPrevActive = driver.left_bumper || operator.left_bumper;
-        collectModeIsPrevActive = driver.right_bumper || operator.right_bumper;
+        releaseModeIsPrevActive = releaseModeIsActive;
+        collectModeIsPrevActive = collectModeIsActive;
 
 
     }
@@ -120,6 +128,11 @@ public class Intake {
 
     private Minerals getLeftMineral() {
         NormalizedRGBA colors = leftColorSensor.getNormalizedColors();
+        opMode.telemetry.addLine("leftColorSensor: ").addData("red", colors.red)
+                .addData("green", colors.green)
+                .addData("blue", colors.blue);
+
+        //TODO: check the color values;
         if(colors.red > 0.080 && colors.red < 0.12 && colors.green > 0.080 && colors.green < 0.12 && colors.blue > 0.060 && colors.blue < 0.1 ){
             return Minerals.SILVER;
         }
@@ -131,6 +144,9 @@ public class Intake {
 
     private Minerals getRightMineral() {
         NormalizedRGBA colors = rightColorSensor.getNormalizedColors();
+        opMode.telemetry.addLine("rightColorSensor: ").addData("red", colors.red)
+                .addData("green", colors.green)
+                .addData("blue", colors.blue);
         if(colors.red > 0.080 && colors.red < 0.12 && colors.green > 0.080 && colors.green < 0.12 && colors.blue > 0.060 && colors.blue < 0.1 ){
             return Minerals.SILVER;
         }

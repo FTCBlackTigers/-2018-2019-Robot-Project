@@ -9,11 +9,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Climbing {
-    enum Angle{ //TODO:set motor Encoder positions and check @tucksPerCm
+    enum Angle{ //TODO:set motor Encoder positions and check @ticksPerCm
         DOWN(0),
-        UP(0);
+        UP(50);
         float pos;
-        final double ticksPerDegrees = 0;
+        final double ticksPerDegrees = 1;
         public int getTicks() {
             return ((int) (ticksPerDegrees * pos));
         }
@@ -23,10 +23,10 @@ public class Climbing {
     }
     enum Height { //TODO:set motor Encoder positions and check @ticksPerCm
         MIN(0),
-        MEDIUM(0),
-        MAX(0);
+        MEDIUM(50),
+        MAX(100);
         float pos;
-        final double ticksPerCm = 0;
+        final double ticksPerCm = 1;
         public int getTicks(){
             return ((int) (ticksPerCm * pos));
         }
@@ -37,13 +37,12 @@ public class Climbing {
 
     //TODO: update the values down
     private final double HANG_OPEN_POS = 0;
-    private final double HANG_CLOSE_POS = 0;
-    private final double MOVING_SPEED = 0;
+    private final double HANG_CLOSE_POS = 1;
+    private final double MOVING_SPEED = 0.5;
 
     private DcMotor liftMotor;
     private DcMotor angleMotor;
     private Servo hangServo;
-    private TouchSensor touchSensor;
     private OpMode opMode;
 
     public  void init(HardwareMap hardwareMap, OpMode opMode) {
@@ -51,7 +50,6 @@ public class Climbing {
         liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
         angleMotor = hardwareMap.get(DcMotor.class,"angleMotor");
         hangServo = hardwareMap.get(Servo.class,"hangServo");
-        touchSensor = hardwareMap.get(TouchSensor.class,"touchSensor");
 
         liftMotor.setPower(0);
         angleMotor.setPower(0);
@@ -99,11 +97,11 @@ public class Climbing {
             moveAngle(Angle.DOWN);
         }
 
-        if(-operator.right_stick_y > 0.1 && -operator.right_stick_y  <  -0.1){
+        if(-operator.right_stick_y > 0.1 || -operator.right_stick_y  <  -0.1){
             liftMoveManual(-operator.right_stick_y);
         }
 
-        if(-operator.left_stick_y > 0.1 && -operator.left_stick_y  <  -0.1){
+        if(-operator.left_stick_y > 0.1 || -operator.left_stick_y  <  -0.1){
             angleMoveManual(-operator.left_stick_y);
         }
 
