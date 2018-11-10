@@ -31,7 +31,7 @@ public class Drive {
         rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
 
         //TODO: check motors direction;
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         leftDrive.setPower(0);
@@ -44,7 +44,11 @@ public class Drive {
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     public void teleOpMotion(Gamepad gamepad) {
-        tankDrive(gamepad.left_stick_y, gamepad.right_stick_y );
+        tankDrive(-gamepad.left_stick_y, -gamepad.right_stick_y );
+        opMode.telemetry.addLine("Drive: ").
+                addData("left motor power: ", leftDrive.getPower()).
+                addData("right motor power: ", rightDrive.getPower());
+
     }
 
     private void tankDrive(double powerLeftDrive, double powerRightDrive){
