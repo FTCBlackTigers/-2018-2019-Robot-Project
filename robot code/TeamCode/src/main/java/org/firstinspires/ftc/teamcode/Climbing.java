@@ -9,8 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Climbing {
-    enum Angle{ //TODO:set motor Encoder positions and check @ticksPerCm
-        DOWN(0),
+    //TODO:set motor Encoder positions and check @ticksPerCm
+    enum Angle{
+        DOWN(-10),
         UP(50);
         float pos;
         final double ticksPerDegrees = 1;
@@ -21,8 +22,10 @@ public class Climbing {
             this.pos = ang;
         }
     }
-    enum Height { //TODO:set motor Encoder positions and check @ticksPerCm
-        MIN(0),
+
+    //TODO:set motor Encoder positions and check @ticksPerCm
+    enum Height {
+        MIN(-10),
         MEDIUM(50),
         MAX(100);
         float pos;
@@ -112,6 +115,15 @@ public class Climbing {
         if(operator.x){
             lockServo();
         }
+
+        opMode.telemetry.addLine("climbing: \n").addData("lift motor: ",liftMotor.getPower())
+                .addData(" Position: ",liftMotor.getCurrentPosition() + "\n")
+                .addData("Angle motor power: ",angleMotor.getPower())
+                .addData(" Position: ",angleMotor.getCurrentPosition() + "\n")
+                .addData("Servo position: ",hangServo.getPosition());
+
+
+
     }
 
 
@@ -135,7 +147,7 @@ public class Climbing {
     private void liftMoveManual(double motorPower){
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if((Height.MAX.getTicks() > liftMotor.getCurrentPosition() && motorPower < 0) && (Height.MIN.getTicks() < liftMotor.getCurrentPosition() && motorPower > 0)){
+        if(!(Height.MAX.getTicks() <= liftMotor.getCurrentPosition() && motorPower > 0) && !(Height.MIN.getTicks() >= liftMotor.getCurrentPosition() && motorPower < 0)){
             liftMotor.setPower(motorPower);
         }
     }
@@ -152,7 +164,7 @@ public class Climbing {
     private void angleMoveManual(double motorPower){
         angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if((Angle.UP.getTicks() > angleMotor.getCurrentPosition() && motorPower < 0) && (Angle.DOWN.getTicks() < angleMotor.getCurrentPosition() && motorPower > 0)){
+        if(!(Angle.UP.getTicks() <= angleMotor.getCurrentPosition() && motorPower > 0) && !(Angle.DOWN.getTicks() >= angleMotor.getCurrentPosition() && motorPower < 0)){
             angleMotor.setPower(motorPower);
         }
     }
