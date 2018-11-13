@@ -13,10 +13,10 @@ public class Drive {
         FORWARD, BACKWARD;
     }
 
-    static final double     COUNTS_PER_MOTOR_REV    = 28 ;
-    static final double     DRIVE_GEAR_REDUCTION    = 19.2 ;    //TODO: check the DRIVE_GEAR_REDUCTION
-    static final double     WHEEL_DIAMETER_CM   = 4.0 ;    //TODO: check the WHEEL_DIAMETER_CM
-    static final double     COUNTS_PER_CM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    static final double COUNTS_PER_MOTOR_REV = 28;
+    static final double DRIVE_GEAR_REDUCTION = 19.2;    //TODO: check the DRIVE_GEAR_REDUCTION
+    static final double WHEEL_DIAMETER_CM = 4.0;    //TODO: check the WHEEL_DIAMETER_CM
+    static final double COUNTS_PER_CM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.141592654);
 
     private OpMode opMode;
@@ -43,20 +43,42 @@ public class Drive {
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
     public void teleOpMotion(Gamepad gamepad) {
-        tankDrive(-gamepad.left_stick_y, -gamepad.right_stick_y );
+        tankDrive(-gamepad.left_stick_y, -gamepad.right_stick_y);
         opMode.telemetry.addLine("Drive: ").
                 addData("left motor power: ", leftDrive.getPower()).
                 addData("right motor power: ", rightDrive.getPower());
 
     }
 
-    private void tankDrive(double powerLeftDrive, double powerRightDrive){
+    private void tankDrive(double powerLeftDrive, double powerRightDrive) {
         leftDrive.setPower(powerLeftDrive);
         rightDrive.setPower(powerRightDrive);
     }
 
-    public void driveByEncoder(double distanceCm, double speed, Direction direction, double timeMs){
+    public void trxDrive(Gamepad driver) {
+        if (driver.right_trigger != 0)
+        {
+            leftDrive.setPower(driver.right_trigger);
+            rightDrive.setPower(driver.right_trigger);
+        }else if (driver.left_trigger != 0){
+            leftDrive.setPower(-driver.left_trigger);
+            rightDrive.setPower(-driver.left_trigger);
+        }else if (driver.a && driver.right_trigger != 0){
+            leftDrive.setPower(driver.right_trigger);
+            rightDrive.setPower(-driver.right_trigger);
+        }else if (driver.a && driver.left_trigger != 0){
+            leftDrive.setPower(-driver.left_trigger);
+            rightDrive.setPower(driver.left_trigger);
+        }else{
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+        }
+    }
+
+
+    public void driveByEncoder(double distanceCm, double speed, Direction direction, double timeMs) {
         if (opMode instanceof LinearOpMode) {
             int newLeftTarget = 0;
             int newRightTarget = 0;

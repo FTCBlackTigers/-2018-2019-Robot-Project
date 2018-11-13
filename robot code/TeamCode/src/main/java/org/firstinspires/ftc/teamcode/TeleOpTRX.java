@@ -29,17 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * Demonstrates empty OpMode
  */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "TeleOp")
-public class TeleOp extends OpMode {
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TRX", group = "TeleOp")
+public class TeleOpTRX extends OpMode {
 
   private ElapsedTime runtime = new ElapsedTime();
   private Robot robot = new Robot();
@@ -73,7 +70,7 @@ public class TeleOp extends OpMode {
    */
   @Override
   public void loop() {
-    robot.teleop(gamepad1, gamepad2, false);
+    robot.teleop(gamepad1, gamepad2, true);
     telemetry.addData("Status", "Run Time: " + runtime.toString());
     telemetry.update();
   }
