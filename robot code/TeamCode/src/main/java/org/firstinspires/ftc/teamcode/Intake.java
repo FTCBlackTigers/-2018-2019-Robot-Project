@@ -20,8 +20,8 @@ public class Intake {
     private final double RELEASE_SPEED = 0.2;
     private final double LEFT_SERVO_OPEN_POS = 1;
     private final double RIGHT_SERVO_OPEN_POS = 1;
-    private final double LEFT_SERVO_CLOSE_POS = 0.5;
-    private final double RIGHT_SERVO_CLOSE_POS = 0.5;
+    private final double LEFT_SERVO_CLOSE_POS = 0.6;
+    private final double RIGHT_SERVO_CLOSE_POS = 0;
 
     private OpMode opMode;
 
@@ -39,7 +39,7 @@ public class Intake {
     public void init(HardwareMap hardwareMap, OpMode opMode){
         this.opMode = opMode;
         collectMotor = hardwareMap.get(DcMotor.class, "collectMotor");
-        collectMotor.setDirection(DcMotor.Direction.REVERSE);
+        collectMotor.setDirection(DcMotor.Direction.FORWARD);
         collectMotor.setPower(0);
         collectMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -59,7 +59,7 @@ public class Intake {
         releaseModeIsActive = driver.left_bumper || operator.left_bumper;
         collectModeIsActive = driver.right_bumper || operator.right_bumper;
 
-        if(collectModeIsActive) {
+      /*  if(collectModeIsActive) {
             this.collect();
         }
         else if (releaseModeIsActive) {
@@ -82,6 +82,23 @@ public class Intake {
         }
         if(operator.b) {
             setSearchMineral(Minerals.SILVER);
+        }
+        */
+        //wrote by Ofir
+        if(driver.b && driver.dpad_up){
+            openRightGate();
+        }
+        if(driver.b && driver.dpad_down){
+            closeRightGate();
+        }
+        if(driver.x && driver.dpad_up){
+            openLeftGate();
+        }
+        if(driver.x && driver.dpad_down){
+            closeLeftGate();
+        }
+        if(driver.right_trigger != 0){
+            collectMotor.setPower(driver.right_trigger);
         }
 
         opMode.telemetry.addLine("intake: \n" )
