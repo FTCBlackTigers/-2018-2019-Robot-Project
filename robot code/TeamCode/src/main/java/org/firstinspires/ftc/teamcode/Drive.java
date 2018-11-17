@@ -58,19 +58,19 @@ public class Drive {
     }
 
     public void trxDrive(Gamepad driver) {
-        if (driver.right_trigger != 0)
+         if (driver.a && driver.right_trigger != 0){
+            leftDrive.setPower(driver.right_trigger);
+            rightDrive.setPower(-driver.right_trigger);
+        }else if (driver.a && driver.left_trigger != 0) {
+             leftDrive.setPower(-driver.left_trigger);
+             rightDrive.setPower(driver.left_trigger);
+         }else if (driver.right_trigger != 0)
         {
             leftDrive.setPower(driver.right_trigger);
             rightDrive.setPower(driver.right_trigger);
         }else if (driver.left_trigger != 0){
             leftDrive.setPower(-driver.left_trigger);
             rightDrive.setPower(-driver.left_trigger);
-        }else if (driver.a && driver.right_trigger != 0){
-            leftDrive.setPower(driver.right_trigger);
-            rightDrive.setPower(-driver.right_trigger);
-        }else if (driver.a && driver.left_trigger != 0){
-            leftDrive.setPower(-driver.left_trigger);
-            rightDrive.setPower(driver.left_trigger);
         }else{
             leftDrive.setPower(0);
             rightDrive.setPower(0);

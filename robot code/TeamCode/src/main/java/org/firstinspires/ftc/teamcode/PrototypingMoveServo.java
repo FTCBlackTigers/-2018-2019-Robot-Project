@@ -68,12 +68,12 @@ public class PrototypingMoveServo extends OpMode {
     telemetry.addData("Status", "Run Time: " + runtime.toString());
     if (gamepad1.a) {
       targetDownPos = servo.getPosition() - 0.05;
-      servo.setPosition(Math.max(0, Math.min(targetDownPos, 1)));
+      servo.setPosition(targetDownPos);
     }
 
     if (gamepad1.y) {
       targetUpPos = servo.getPosition() + 0.05;
-      servo.setPosition(Math.max(0, Math.min(targetUpPos, 1)));
+      servo.setPosition(targetUpPos);
     }
 
     telemetry.addData("servoPos: ", servo.getPosition());
