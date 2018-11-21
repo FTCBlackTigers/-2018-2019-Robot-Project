@@ -81,7 +81,7 @@ public class Intake {
         }
         if(operator.b) {
             setSearchMineral(Minerals.SILVER);
-        }
+       }
 
         opMode.telemetry.addLine("intake: \n" )
                 .addData("collectMotorPower: ", collectMotor.getPower()+"\n")
