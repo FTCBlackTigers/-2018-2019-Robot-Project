@@ -10,7 +10,7 @@ public class PixyBlock {
      * A number from 1 through 7 corresponding to the color trained into the PixyCam,
      * or a sequence of octal digits corresponding to the multiple colors of a color code.
      */
-    public int signature;
+    public final int signature;
 
     /**
      * The x, y location of the center of the detected block.
@@ -19,7 +19,7 @@ public class PixyBlock {
      * y is in the range (0, 199)
      * 0 is the top of the field of view and 199 is the bottom.
      */
-    public int x, y;
+    public final int x, y;
 
     /**
      * The size of the detected block.
@@ -27,13 +27,13 @@ public class PixyBlock {
      * maximum width is 255.
      * maximum height is 199.
      */
-    public int width, height;
+    public final int width, height;
 
     /**
      * The count of blocks detected for the given signature
      * Will be -1 if this is a block from the general query
      */
-    public int blockCount;
+    public final int blockCount;
 
     public PixyBlock(int signature, byte blockCount, byte x, byte y, byte width, byte height) {
         this(signature, TypeConversion.unsignedByteToInt(blockCount), x, y, width, height);
@@ -58,4 +58,3 @@ public class PixyBlock {
         return String.format("x: %d, y: %d, w: %d, h: %d cnt: %d", this.x, this.y, this.width, this.height, this.blockCount);
     }
 }
-
