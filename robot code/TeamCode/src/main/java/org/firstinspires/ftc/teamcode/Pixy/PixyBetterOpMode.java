@@ -45,7 +45,7 @@ import java.io.UnsupportedEncodingException;
  * Demonstrates empty OpMode
  */
 @TeleOp(name = "PixyBetterOpMode", group = "pixy")
-@Disabled
+
 public class PixyBetterOpMode extends OpMode {
 
     PixyCam pixyCam;
@@ -56,7 +56,7 @@ public class PixyBetterOpMode extends OpMode {
     PrintWriter file;
 
     /*
-     * Code to run when the op mode is first enabled goes here
+     * Code to run when the op mode is FIRST enabled goes here
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
      */
     @Override
@@ -80,7 +80,7 @@ public class PixyBetterOpMode extends OpMode {
         // Update every tenth of a second.
         if (elapsedTime.milliseconds() > 100) {
             elapsedTime.reset();
-            blocks1 = pixyCam.getBiggestBlocks();
+            blocks1 = pixyCam.getBiggestBlocks(1);
             telemetry.addData("Elapsed: ", elapsedTime2.toString());
             telemetry.addData("Counts", "%d", blocks1.totalCount);
             file.println("----------------------------");

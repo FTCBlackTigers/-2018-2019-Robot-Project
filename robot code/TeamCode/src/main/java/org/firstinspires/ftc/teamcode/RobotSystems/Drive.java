@@ -35,7 +35,6 @@ public class Drive {
         rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
         gyro.init(hardwareMap);
 
-        //TODO: check motors direction;
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
