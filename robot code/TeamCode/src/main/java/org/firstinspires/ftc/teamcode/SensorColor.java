@@ -61,17 +61,22 @@ public class SensorColor extends LinearOpMode {
       waitForStart();
       while (opModeIsActive()) {
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
-        if (colors.red > 0.080 && colors.red < 0.12 && colors.green > 0.080 && colors.green < 0.12 && colors.blue > 0.060 && colors.blue < 0.1) {
+        //todo: check the numbers;
+        if (colors.red > 0.008 && colors.red < 0.012 && colors.green > 0.008 && colors.green < 0.023 && colors.blue > 0.035 && colors.blue < 0.45) {
           telemetry.addLine("silver");
 
           telemetry.update();
         }
-        else  if (colors.red > 0.03 && colors.red < 0.50 && colors.green > 0.02 && colors.green < 0.04 && colors.blue > 0.01 && colors.blue < 0.02) {
+        else  if (colors.red > 0.0075 && colors.red < 0.0085 && colors.green > 0.0075 && colors.green < 0.0085 && colors.blue > 0.0040 && colors.blue < 0.0050) {
           telemetry.addLine("gold");
           telemetry.update();
         }
         else{
         telemetry.addLine("nothing");
+        telemetry.addData("Blue: ",colorSensor.getNormalizedColors().blue);
+          telemetry.addData("Red: ",colorSensor.getNormalizedColors().red);
+          telemetry.addData("Green: ",colorSensor.getNormalizedColors().green);
+
         telemetry.update();
       }}
     } finally {
