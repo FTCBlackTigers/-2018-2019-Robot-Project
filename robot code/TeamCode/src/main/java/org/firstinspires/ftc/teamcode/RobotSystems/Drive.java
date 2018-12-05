@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.BT_Gyro;
 
 public class Drive {
@@ -15,9 +14,10 @@ public class Drive {
         FORWARD, BACKWARD;
     }
 
-    static final double COUNTS_PER_MOTOR_REV = 28;
+
+    static final double COUNTS_PER_MOTOR_REV = 28;       // TODO: check the ticks with Shalev The God Of JAVA
     static final double DRIVE_GEAR_REDUCTION = 19.2;    //TODO: check the DRIVE_GEAR_REDUCTION
-    static final double WHEEL_DIAMETER_CM = 4.0;    //TODO: check the WHEEL_DIAMETER_CM
+    static final double WHEEL_DIAMETER_CM = 31.9024;
     static final double COUNTS_PER_CM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.141592654);
     static final double      AUTO_TURN_SPEED              = 0.3;
@@ -178,5 +178,37 @@ public class Drive {
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-}
+
+    //MY BLOCKS OF GOD
+
+    // BLOCK - CM TO ROTATION
+        public int cmToRotations(double cm){
+            return (int) (cm / WHEEL_DIAMETER_CM);
+        }
+
+     // BLOCK - MOVE FORWARD
+        public void moveForward(double cm, double power){
+            leftDrive.setTargetPosition(cmToRotations(cm));
+            leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            rightDrive.setTargetPosition(cmToRotations(cm));
+            rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            leftDrive.setPower(power);
+            rightDrive.setPower(power);
+    }
+
+    // BLOCK - ROTATE
+        public void rotate(double angle, double power){
+        double rotations = (40 * angle) / WHEEL_DIAMETER_CM;
+            leftDrive.setTargetPosition(cmToRotations(rotations));
+            rightDrive.setTargetPosition(cmToRotations(rotations));
+
+            leftDrive.setPower(-power);
+            rightDrive.setPower(power);
+        }
+        }
+
+
+
 
