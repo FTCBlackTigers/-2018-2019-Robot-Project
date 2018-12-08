@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.RobotSystems;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
@@ -10,14 +11,14 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.BT_Gyro;
 
 public class Drive {
-    enum Direction {
+    public enum Direction {
         FORWARD, BACKWARD;
     }
 
 
     static final double COUNTS_PER_MOTOR_REV = 28;       // TODO: check the ticks with Shalev The God Of JAVA
-    static final double DRIVE_GEAR_REDUCTION = 19.2;    //TODO: check the DRIVE_GEAR_REDUCTION
-    static final double WHEEL_DIAMETER_CM = 31.9024;
+    static final double DRIVE_GEAR_REDUCTION = 40;    //TODO: check the DRIVE_GEAR_REDUCTION
+    static final double WHEEL_DIAMETER_CM = 10.16;
     static final double COUNTS_PER_CM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.141592654);
     static final double      AUTO_TURN_SPEED              = 0.3;
@@ -36,7 +37,7 @@ public class Drive {
         gyro.init(hardwareMap);
 
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         leftDrive.setPower(0);
         rightDrive.setPower(0);
@@ -52,7 +53,9 @@ public class Drive {
         tankDrive(-gamepad.left_stick_y, -gamepad.right_stick_y);
         opMode.telemetry.addLine("Drive: ").
                 addData("left motor power: ", leftDrive.getPower()).
-                addData("right motor power: ", rightDrive.getPower());
+                addData("right motor power: ", rightDrive.getPower())
+                .addData("left motor pos: ", leftDrive.getCurrentPosition())
+                .addData("right motor pos: ", rightDrive.getCurrentPosition());
 
     }
 
@@ -170,6 +173,9 @@ public class Drive {
             while (((LinearOpMode) opMode).opModeIsActive() &&
                     (opMode.getRuntime() < stopTime) &&
                     (rightDrive.isBusy() && leftDrive.isBusy())) {
+                opMode.telemetry.addData("leftPos", leftDrive.getCurrentPosition());
+                opMode.telemetry.addData("rightPos", rightDrive.getCurrentPosition());
+                opMode.telemetry.update();
             }
             leftDrive.setPower(0);
             rightDrive.setPower(0);

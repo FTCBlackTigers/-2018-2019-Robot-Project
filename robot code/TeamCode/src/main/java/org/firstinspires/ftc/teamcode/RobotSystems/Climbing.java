@@ -11,10 +11,10 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 public class Climbing {
     //TODO:set motor Encoder positions and check @ticksPerCm
     enum Angle{
-        DOWN(-10),
+        DOWN(0),
         UP(50);
         float pos;
-        final double ticksPerDegrees = 1;
+        final double ticksPerDegrees = 70.93;
         public int getTicks() {
             return ((int) (ticksPerDegrees * pos));
         }
@@ -25,11 +25,11 @@ public class Climbing {
 
     //TODO:set motor Encoder positions and check @ticksPerCm
     enum Height {
-        MIN(-10),
-        MEDIUM(50),
-        MAX(100);
+        MIN(0),
+        MEDIUM(5),
+        MAX(33f);
         float pos;
-        final double ticksPerCm = 1;
+        final double ticksPerCm = 276.27;
         public int getTicks(){
             return ((int) (ticksPerCm * pos));
         }
@@ -57,8 +57,8 @@ public class Climbing {
         liftMotor.setPower(0);
         angleMotor.setPower(0);
 
-        liftMotor.setDirection(DcMotor.Direction.FORWARD);
-        angleMotor.setDirection(DcMotor.Direction.FORWARD);
+        liftMotor.setDirection(DcMotor.Direction.REVERSE);
+        angleMotor.setDirection(DcMotor.Direction.REVERSE);
 
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         angleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -147,10 +147,10 @@ public class Climbing {
     private void liftMoveManual(double motorPower){
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if(!(Height.MAX.getTicks() <= liftMotor.getCurrentPosition() && motorPower > 0) && !(Height.MIN.getTicks() >= liftMotor.getCurrentPosition() && motorPower < 0)){
+        //if(!(Height.MAX.getTicks() <= liftMotor.getCurrentPosition() && motorPower > 0) && !(Height.MIN.getTicks() >= liftMotor.getCurrentPosition() && motorPower < 0)){
             liftMotor.setPower(motorPower);
         }
-    }
+    //}
 
 
     private void moveAngle(Angle angle){
@@ -164,8 +164,8 @@ public class Climbing {
     private void angleMoveManual(double motorPower){
         angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if(!(Angle.UP.getTicks() <= angleMotor.getCurrentPosition() && motorPower > 0) && !(Angle.DOWN.getTicks() >= angleMotor.getCurrentPosition() && motorPower < 0)){
+        //if(!(Angle.UP.getTicks() <= angleMotor.getCurrentPosition() && motorPower > 0) && !(Angle.DOWN.getTicks() >= angleMotor.getCurrentPosition() && motorPower < 0)){
             angleMotor.setPower(motorPower);
-        }
+        //}
     }
 }
