@@ -21,9 +21,9 @@ public class Drive {
     static final double WHEEL_DIAMETER_CM = 10.16;
     static final double COUNTS_PER_CM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.141592654);
-    static final double      AUTO_TURN_SPEED              = 0.3;
-    static final double     THRESHOLD = 0.1;
-    static final double     P_TURN_COEFF            = 0.1;
+    static final double      AUTO_TURN_SPEED              = 0.2;
+    static final double     THRESHOLD = 5;
+    static final double     P_TURN_COEFF            = 0.075;
     private OpMode opMode;
 
     private BT_Gyro gyro = new BT_Gyro();
@@ -36,7 +36,7 @@ public class Drive {
         rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
         gyro.init(hardwareMap);
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         leftDrive.setPower(0);
@@ -92,11 +92,11 @@ public class Drive {
             leftDrive.setPower(0);
             rightDrive.setPower(0);
             t = opMode.getRuntime();
-            while (opMode.getRuntime() < t + 300){
+            /*while (opMode.getRuntime() < t + 300){
                 error = getError(degrees);
                 opMode.telemetry.addData("Error: ", error);
                 opMode.telemetry.update();
-            }
+            }*/
         }
         leftDrive.setPower(0);
         rightDrive.setPower(0);

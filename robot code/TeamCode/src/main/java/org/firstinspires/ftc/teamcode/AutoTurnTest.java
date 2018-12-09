@@ -32,17 +32,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-@Autonomous(name = "AutoDriveTest", group = "Tests")
+@Autonomous(name = "AutoTurnTest", group = "Tests")
 @Disabled
-public class AutoDriveTest extends LinearOpMode {
+public class AutoTurnTest extends LinearOpMode {
 
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
@@ -52,7 +49,7 @@ public class AutoDriveTest extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.drive.driveByEncoder(200,0.5, Drive.Direction.FORWARD,6000);
+    robot.drive.turnByGyroAbsolut(180,6000);
 
   }
 }
