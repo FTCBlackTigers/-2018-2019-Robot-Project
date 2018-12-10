@@ -27,11 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.TeleOps;
+
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
+import java.io.*;
+
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -40,13 +43,21 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 
 @TeleOp(name = "Sensor: Color", group = "Sensor")
 
 public class SensorColor extends LinearOpMode {
 
   NormalizedColorSensor colorSensor;
-
+  private final String FILE_PATH = "org/firstinspires/ftc/teamcode/RGB_Test.txt";
+  private java.io.File file= new java.io.File(FILE_PATH);
+    FileOutputStream fileOutputStream;
+    PrintStream printStream;
   View relativeLayout;
 
 
@@ -57,29 +68,28 @@ public class SensorColor extends LinearOpMode {
     int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
     relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
     colorSensor = hardwareMap.get(NormalizedColorSensor.class,"color_sensor");
-    try {
       waitForStart();
+    try{
+        File file = new File("/sdcard/FIRST/RGB_Test.txt");
+        fileOutputStream = new FileOutputStream(file);
+        printStream = new PrintStream(fileOutputStream);
+
+        printStream.write("Time | redValue | greenValue | blueValue \n".getBytes());
+
       while (opModeIsActive()) {
-        NormalizedRGBA colors = colorSensor.getNormalizedColors();
-        //todo: check the numbers;
-        if (colors.red > 0.008 && colors.red < 0.012 && colors.green > 0.008 && colors.green < 0.023 && colors.blue > 0.035 && colors.blue < 0.45) {
-          telemetry.addLine("silver");
+          NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
-          telemetry.update();
-        }
-        else  if (colors.red > 0.0075 && colors.red < 0.0085 && colors.green > 0.0075 && colors.green < 0.0085 && colors.blue > 0.0040 && colors.blue < 0.0050) {
-          telemetry.addLine("gold");
-          telemetry.update();
-        }
-        else{
-        telemetry.addLine("nothing");
-        telemetry.addData("Blue: ",colorSensor.getNormalizedColors().blue);
-          telemetry.addData("Red: ",colorSensor.getNormalizedColors().red);
-          telemetry.addData("Green: ",colorSensor.getNormalizedColors().green);
+          printStream.write(((String)(time + "|" + colors.red +"|" + colors.green + "|" + colors.blue + "\n")).getBytes());
+          sleep(200);
+      }
 
-        telemetry.update();
-      }}
-    } finally {
+      printStream.close();
+      fileOutputStream.close();
+
+    } catch (IOException e)
+    {}
+    finally {
+
 
       relativeLayout.post(new Runnable() {
         public void run() {
@@ -87,6 +97,7 @@ public class SensorColor extends LinearOpMode {
         }
       });
       }
+
   }
 
   protected void runSample() throws InterruptedException {
@@ -100,7 +111,7 @@ public class SensorColor extends LinearOpMode {
     boolean bCurrState = false;
 
     // Get a reference to our sensor object.
-    colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
+    //colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
 
     // If possible, turn the light on in the beginning (it might already be on anyway,
     // we just make sure it is if we can).

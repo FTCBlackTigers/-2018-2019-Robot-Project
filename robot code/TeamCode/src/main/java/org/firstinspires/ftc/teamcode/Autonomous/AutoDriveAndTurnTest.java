@@ -27,56 +27,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-/**
- * Demonstrates empty OpMode
- */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "TeleOp")
-public class TeleOp extends OpMode {
+@Autonomous(name = "AutoDriveAndTurnTest", group = "Tests")
+public class AutoDriveAndTurnTest extends LinearOpMode {
 
-  private ElapsedTime runtime = new ElapsedTime();
   private Robot robot = new Robot();
+  private ElapsedTime runtime = new ElapsedTime();
+
 
   @Override
-  public void init() {
-    robot.init(hardwareMap,this);
-    telemetry.addData("Status", "Initialized");
-  }
+  public void runOpMode() throws InterruptedException {
+    robot.init(hardwareMap , this);
+    waitForStart();
+    robot.drive.driveByEncoder(80,0.5, Drive.Direction.FORWARD, 6000);
+    robot.drive.turnByGyroRelative(-45,6000);
+    robot.drive.driveByEncoder(30,0.5, Drive.Direction.FORWARD, 6000);
 
-  /*
-     * Code to run when the op mode is first enabled goes here
-     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-     */
-  @Override
-  public void init_loop() {
-  }
 
-  /*
-   * This method will be called ONCE when start is pressed
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
-  @Override
-  public void start() {
-    runtime.reset();
-  }
-
-  /*
-   * This method will be called repeatedly in a loop
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
-  @Override
-  public void loop() {
-    robot.teleop(gamepad1, gamepad2, false);
-    telemetry.addData("Status", "Run Time: " + runtime.toString());
-    telemetry.update();
   }
 }

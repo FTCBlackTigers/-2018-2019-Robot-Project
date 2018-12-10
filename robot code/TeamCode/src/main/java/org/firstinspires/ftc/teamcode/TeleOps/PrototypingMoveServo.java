@@ -27,53 +27,55 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.TeleOps;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
+@TeleOp(name = "PrototypingMoveServo", group = "Concept")
+public class PrototypingMoveServo extends OpMode {
 
-/**
- * Demonstrates empty OpMode
- */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TRX", group = "TeleOp")
-public class TeleOpTRX extends OpMode {
+  private Servo servo;
+  private double targetDownPos;
+  private double targetUpPos;
+
 
   private ElapsedTime runtime = new ElapsedTime();
-  private Robot robot = new Robot();
 
   @Override
   public void init() {
-    robot.init(hardwareMap,this);
     telemetry.addData("Status", "Initialized");
+    servo = hardwareMap.get(Servo.class, "servo");
   }
 
-  /*
-     * Code to run when the op mode is first enabled goes here
-     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-     */
+
   @Override
   public void init_loop() {
   }
 
-  /*
-   * This method will be called ONCE when start is pressed
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
   @Override
   public void start() {
     runtime.reset();
   }
 
-  /*
-   * This method will be called repeatedly in a loop
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
+
   @Override
   public void loop() {
-    robot.teleop(gamepad1, gamepad2, true);
     telemetry.addData("Status", "Run Time: " + runtime.toString());
-    telemetry.update();
+    if (gamepad1.a) {
+      targetDownPos = servo.getPosition() - 0.05;
+      servo.setPosition(targetDownPos);
+    }
+
+    if (gamepad1.y) {
+      targetUpPos = servo.getPosition() + 0.05;
+      servo.setPosition(targetUpPos);
+    }
+
+    telemetry.addData("servoPos: ", servo.getPosition());
   }
 }
