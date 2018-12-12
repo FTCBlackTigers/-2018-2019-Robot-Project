@@ -72,7 +72,7 @@ public class TeleOp extends OpMode {
 
   /*
    * This method will be called repeatedly in a loop
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
+   *@see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
    */
   @Override
   public void loop() {
