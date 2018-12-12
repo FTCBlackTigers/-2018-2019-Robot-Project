@@ -27,58 +27,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.TeleOps;
+package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
+import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-/**
- * Demonstrates empty OpMode
- */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "TeleOp")
-public class TeleOp extends OpMode {
 
-  private ElapsedTime runtime = new ElapsedTime();
+@Autonomous(name = "BlueCrater1", group = "Tests")
+public class BlueCrater1 extends LinearOpMode {
+
   private Robot robot = new Robot();
+  private ElapsedTime runtime = new ElapsedTime();
+
 
   @Override
-  public void init() {
-    robot.init(hardwareMap,this);
-    telemetry.addData("Status", "Initialized");
-  }
+  public void runOpMode() throws InterruptedException {
+    robot.init(hardwareMap , this);
+    waitForStart();
+    robot.climbing.moveAngle(Climbing.Height.DOWN);
+    robot.climbing.openServo();
+    robot.climbing.moveLift(Climbing.Angle.MIN);
+    //TODO: Use pixy to to sampling
+    //after rotate and doing the Sampling,
+    robot.drive.driveByEncoder(70, 0.5, Drive.Direction.FORWARD, 6000 );
 
-  /*
-     * Code to run when the op mode is first enabled goes here
-     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-     */
-  @Override
-  public void init_loop() {
-  }
+    robot.drive.turnByGyroAbsolut(-100,6000);
+    robot.drive.driveByEncoder(20,0.5, Drive.Direction.FORWARD, 6000);
 
-  /*
-   * This method will be called ONCE when start is pressed
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
-  @Override
-  public void start() {
-    runtime.reset();
-  }
-
-  /*
-   * This method will be called repeatedly in a loop
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
-  @Override
-  public void loop() {
-    robot.teleop(gamepad1, gamepad2, false);
-    telemetry.addData("Status", "Run Time: " + runtime.toString());
-    telemetry.update();
 
   }
 }

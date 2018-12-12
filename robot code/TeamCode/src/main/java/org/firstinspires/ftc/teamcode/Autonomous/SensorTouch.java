@@ -29,28 +29,33 @@
 
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+@TeleOp(name = "Sensor: Digital touch", group = "Sensor")
+public class SensorTouch extends LinearOpMode {
 
-import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
-import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
+    DigitalChannel digitalTouch;
 
-@Autonomous(name = "AutoDriveAndTurnTest", group = "Tests")
-public class AutoDriveAndTurnTest extends LinearOpMode {
+    @Override
+    public void runOpMode() {
 
-  private Robot robot = new Robot();
-  private ElapsedTime runtime = new ElapsedTime();
+        digitalTouch = hardwareMap.get(DigitalChannel.class, "sensor_digital");
 
+        digitalTouch.setMode(DigitalChannel.Mode.INPUT);
 
-  @Override
-  public void runOpMode() throws InterruptedException {
-    robot.init(hardwareMap , this);
-    waitForStart();
-    robot.drive.driveByEncoder(80,0.5, Drive.Direction.FORWARD, 6000);
-    robot.drive.turnByGyroRelative(-45,6000);
-    robot.drive.driveByEncoder(30,0.5, Drive.Direction.FORWARD, 6000);
+        waitForStart();
 
+        while (opModeIsActive()) {
 
-  }
+            if (digitalTouch.getState() == true) {
+                telemetry.addData("Digital Touch", "Is Not Pressed");
+            } else {
+                telemetry.addData("Digital Touch", "Is Pressed");
+            }
+
+            telemetry.update();
+        }
+    }
 }

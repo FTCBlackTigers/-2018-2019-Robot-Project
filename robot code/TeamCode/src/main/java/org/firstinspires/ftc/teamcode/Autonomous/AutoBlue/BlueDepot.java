@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-@Autonomous(name = "AutoDriveAndTurnTest", group = "Tests")
+@Autonomous(name = "BlueDepot", group = "Tests")
 public class BlueDepot extends LinearOpMode {
 
   private Robot robot = new Robot();
@@ -47,9 +47,9 @@ public class BlueDepot extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.drive.driveByEncoder(80,0.5, Drive.Direction.FORWARD, 6000);
-    robot.drive.turnByGyroRelative(-45,6000);
-    robot.drive.driveByEncoder(30,0.5, Drive.Direction.FORWARD, 6000);
+    robot.drive.driveByEncoder(60,0.5, Drive.Direction.FORWARD, 6000);
+    robot.drive.turnByGyroRelative(-90,6000);
+    robot.drive.driveByEncoder(70,0.5, Drive.Direction.FORWARD, 6000);
 
 
   }

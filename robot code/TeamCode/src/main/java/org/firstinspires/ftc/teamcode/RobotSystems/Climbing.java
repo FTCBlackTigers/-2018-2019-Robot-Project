@@ -2,15 +2,14 @@ package org.firstinspires.ftc.teamcode.RobotSystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Climbing {
     //TODO:set motor Encoder positions and check @ticksPerCm
-    enum Angle{
+    public enum Height {
         DOWN(0),
         UP(50);
         float pos;
@@ -18,13 +17,13 @@ public class Climbing {
         public int getTicks() {
             return ((int) (ticksPerDegrees * pos));
         }
-        Angle(float ang){
+        Height(float ang){
             this.pos = ang;
         }
     }
 
     //TODO:set motor Encoder positions and check @ticksPerCm
-    enum Height {
+    public enum Angle {
         MIN(0),
         MEDIUM(5),
         MAX(33f);
@@ -33,7 +32,7 @@ public class Climbing {
         public int getTicks(){
             return ((int) (ticksPerCm * pos));
         }
-        Height(float pos) {
+        Angle(float pos) {
            this.pos = pos;
         }
     }
@@ -47,12 +46,16 @@ public class Climbing {
     private DcMotor angleMotor;
     private Servo hangServo;
     private OpMode opMode;
+    private DigitalChannel liftTouch;
+    private DigitalChannel angleTouch;
 
     public  void init(HardwareMap hardwareMap, OpMode opMode) {
         this.opMode = opMode;
         liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
         angleMotor = hardwareMap.get(DcMotor.class,"angleMotor");
         hangServo = hardwareMap.get(Servo.class,"hangServo");
+        angleTouch = hardwareMap.get(DigitalChannel.class, "angle_touch");
+        liftTouch = hardwareMap.get(DigitalChannel.class, "lift_touch");
 
         liftMotor.setPower(0);
         angleMotor.setPower(0);
@@ -65,6 +68,9 @@ public class Climbing {
 
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        liftTouch.setMode(DigitalChannel.Mode.INPUT);
+        angleTouch.setMode(DigitalChannel.Mode.INPUT);
 
        lockServo();
 
@@ -81,23 +87,23 @@ public class Climbing {
         }
 
         if (operator.dpad_down) {
-            moveLift(Height.MIN);
+            moveLift(Angle.MIN);
         }
 
         if (operator.dpad_right) {
-            moveLift(Height.MEDIUM);
+            moveLift(Angle.MEDIUM);
         }
 
         if (operator.dpad_up) {
-            moveLift(Height.MAX);
+            moveLift(Angle.MAX);
         }
 
         if(operator.right_trigger > 0.7){
-           moveAngle(Angle.UP);
+           moveAngle(Height.UP);
         }
 
         if(operator.left_trigger > 0.7){
-            moveAngle(Angle.DOWN);
+            moveAngle(Height.DOWN);
         }
 
         if(-operator.right_stick_y > 0.1 || -operator.right_stick_y  <  -0.1){
@@ -118,43 +124,63 @@ public class Climbing {
 
         opMode.telemetry.addLine("climbing: \n").addData("lift motor: ",liftMotor.getPower())
                 .addData(" Position: ",liftMotor.getCurrentPosition() + "\n")
-                .addData("Angle motor power: ",angleMotor.getPower())
+                .addData("Height motor power: ",angleMotor.getPower())
                 .addData(" Position: ",angleMotor.getCurrentPosition() + "\n")
                 .addData("Servo position: ",hangServo.getPosition());
 
 
+            if (!liftTouch.getState()) {
+                //opMode.telemetry.addData("liftTouch", "Is Pressed");
+                liftMotor.setPower(0);
+                liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+            else{
+                opMode.telemetry.addData("liftTouch", "Is Not Pressed");
+            }
+
+            if (angleTouch.getState() != true) { //if angle touch sensor is pressed
+            opMode.telemetry.addData("angleTouch", "Is Pressed");
+            angleMotor.setPower(0);
+            angleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+        else {
+            opMode.telemetry.addData("angleTouch", "Is Not Pressed");
+        }
+        opMode.telemetry.addData("liftTouch", !liftTouch.getState());
+        opMode.telemetry.update();
 
     }
 
 
 
-    private void moveLift(Height height){
+    public void moveLift(Angle height){
         liftMotor.setTargetPosition(height.getTicks());
 
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         liftMotor.setPower(Math.abs(MOVING_SPEED));
+
     }
 
-    private void lockServo(){
+    public void lockServo(){
         hangServo.setPosition(HANG_CLOSE_POS);
     }
 
-    private void openServo(){
+    public void openServo(){
         hangServo.setPosition(HANG_OPEN_POS);
     }
 
     private void liftMoveManual(double motorPower){
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //if(!(Height.MAX.getTicks() <= liftMotor.getCurrentPosition() && motorPower > 0) && !(Height.MIN.getTicks() >= liftMotor.getCurrentPosition() && motorPower < 0)){
+        //if(!(Angle.MAX.getTicks() <= liftMotor.getCurrentPosition() && motorPower > 0) && !(Angle.MIN.getTicks() >= liftMotor.getCurrentPosition() && motorPower < 0)){
             liftMotor.setPower(motorPower);
         }
-    //}
 
 
-    private void moveAngle(Angle angle){
-        angleMotor.setTargetPosition(angle.getTicks());
+
+    public void moveAngle(Height Angle){
+        angleMotor.setTargetPosition(Angle.getTicks());
 
         angleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -164,7 +190,7 @@ public class Climbing {
     private void angleMoveManual(double motorPower){
         angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //if(!(Angle.UP.getTicks() <= angleMotor.getCurrentPosition() && motorPower > 0) && !(Angle.DOWN.getTicks() >= angleMotor.getCurrentPosition() && motorPower < 0)){
+        //if(!(Height.UP.getTicks() <= angleMotor.getCurrentPosition() && motorPower > 0) && !(Height.DOWN.getTicks() >= angleMotor.getCurrentPosition() && motorPower < 0)){
             angleMotor.setPower(motorPower);
         //}
     }

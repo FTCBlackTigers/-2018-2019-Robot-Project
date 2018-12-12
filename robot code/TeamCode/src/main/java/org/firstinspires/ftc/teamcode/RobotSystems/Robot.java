@@ -12,7 +12,7 @@ public class Robot  {
 
     public void init(HardwareMap hardwareMap, OpMode opMode) {
         drive.init(hardwareMap, opMode);
-       // intake.init(hardwareMap, opMode);
+        //intake.init(hardwareMap, opMode);
         climbing.init(hardwareMap, opMode);
     }
 
