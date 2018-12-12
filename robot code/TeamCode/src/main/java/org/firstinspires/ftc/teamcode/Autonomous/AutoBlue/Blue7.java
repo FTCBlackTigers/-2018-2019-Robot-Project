@@ -27,17 +27,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Autonomous.AutoRed;
+package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-@Autonomous(name = "RedCrater", group = "Tests")
-public class RedCrater extends LinearOpMode {
+/**
+ * doing Landing, Team Marker and Parking
+ * PTS= 50
+ * In Case of no Pixy
+ * Starting from BlueDepot
+ */
+@Autonomous(name = "Blue7", group = "Tests")
+public class Blue7 extends LinearOpMode {
 
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
@@ -47,9 +54,14 @@ public class RedCrater extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.drive.driveByEncoder(80,0.5, Drive.Direction.FORWARD, 6000);
-    robot.drive.turnByGyroRelative(-45,6000);
-    robot.drive.driveByEncoder(30,0.5, Drive.Direction.FORWARD, 6000);
+    robot.climbing.moveAngle(Climbing.Height.DOWN);
+    robot.climbing.openServo();
+    robot.climbing.moveLift(Climbing.Angle.MIN);
+    robot.drive.driveByEncoder(55, 0.5, Drive.Direction.BACKWARD, 5000);
+    robot.intake.release(); //released the Team Marker
+    wait(1500);
+    robot.drive.turnByGyroAbsolut(100, 2000);
+    robot.drive.driveByEncoder(100, 0.5, Drive.Direction.BACKWARD, 5000);
 
 
   }

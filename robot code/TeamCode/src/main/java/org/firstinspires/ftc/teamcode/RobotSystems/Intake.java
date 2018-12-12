@@ -113,13 +113,13 @@ public class Intake {
         rightServo.setPosition(RIGHT_SERVO_CLOSE_POS);
     }
 
-    private void release(){
+    public void release(){
         openLeftGate();
         openRightGate();
         collectMotor.setPower(RELEASE_SPEED);
     }
 
-    private void collect() {
+   public void collect() {
         collectMotor.setPower(COLLECTION_SPEED);
         this.leftOutput();
         this.rightOutput();

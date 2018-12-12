@@ -27,19 +27,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
+package org.firstinspires.ftc.teamcode.Autonomous.AutoRed;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-
-@Autonomous(name = "BlueCrater1", group = "Tests")
-public class BlueCrater1 extends LinearOpMode {
+@Autonomous(name = "RedCrater1", group = "Tests")
+public class RedCrater1 extends LinearOpMode {
 
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
@@ -49,15 +47,9 @@ public class BlueCrater1 extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.climbing.moveAngle(Climbing.Height.DOWN);
-    robot.climbing.openServo();
-    robot.climbing.moveLift(Climbing.Angle.MIN);
-    //TODO: Use pixy to to sampling
-    //after rotate and doing the Sampling,
-    robot.drive.driveByEncoder(70, 0.5, Drive.Direction.FORWARD, 6000 );
-
-    robot.drive.turnByGyroAbsolut(-100,6000);
-    robot.drive.driveByEncoder(20,0.5, Drive.Direction.FORWARD, 6000);
+    robot.drive.driveByEncoder(80,0.5, Drive.Direction.FORWARD, 6000);
+    robot.drive.turnByGyroRelative(-45,6000);
+    robot.drive.driveByEncoder(30,0.5, Drive.Direction.FORWARD, 6000);
 
 
   }

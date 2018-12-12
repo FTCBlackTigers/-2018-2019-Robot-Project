@@ -33,11 +33,18 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-@Autonomous(name = "BlueDepot", group = "Tests")
-public class BlueDepot extends LinearOpMode {
+/**
+ * doing Landing, Sampling and Parking.
+ * PTS=65
+ * In case of broken robot
+ * Starting from BlueCreater
+ */
+@Autonomous(name = "Blue8", group = "Tests")
+public class Blue8 extends LinearOpMode {
 
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
@@ -47,9 +54,20 @@ public class BlueDepot extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.drive.driveByEncoder(60,0.5, Drive.Direction.FORWARD, 6000);
-    robot.drive.turnByGyroRelative(-90,6000);
-    robot.drive.driveByEncoder(70,0.5, Drive.Direction.FORWARD, 6000);
+    //TODO: correct Values
+
+    robot.climbing.moveAngle(Climbing.Height.DOWN);
+    robot.climbing.openServo();
+    robot.climbing.moveLift(Climbing.Angle.MIN); //5 sec
+
+    //TODO: Use pixy to do sampling
+    double midAngle = 0; //-pixy angle
+
+    robot.drive.turnByGyroAbsolut(midAngle,2000);
+    robot.drive.driveByEncoder(5,0.2, Drive.Direction.BACKWARD,1000);
+    //rotate to the creater and park
+
+
 
 
   }
