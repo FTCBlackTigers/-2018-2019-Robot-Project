@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RobotSystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -13,14 +14,15 @@ public class Intake {
         GOLD, SILVER, UNKNOWN;
     }
     /*
-     * TODO: change values
+     * TODO: correct values
      * */
-    private final double COLLECTION_SPEED = 0.5;
+    private final double COLLECTION_SPEED = 0.8;
     private final double RELEASE_SPEED = 0.4;
-    private final double LEFT_SERVO_OPEN_POS = 1;
+
+    private final double LEFT_SERVO_OPEN_POS = 0.6;
     private final double RIGHT_SERVO_OPEN_POS = 0;
-    private final double LEFT_SERVO_CLOSE_POS = 0.6;
-    private final double RIGHT_SERVO_CLOSE_POS = 1;
+    private final double LEFT_SERVO_CLOSE_POS = 0;
+    private final double RIGHT_SERVO_CLOSE_POS = 0.6;
 
     private OpMode opMode;
 
@@ -42,15 +44,14 @@ public class Intake {
         collectMotor.setPower(0);
         collectMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        leftColorSensor = hardwareMap.get(NormalizedColorSensor.class, "leftColorSensor");
+        rightColorSensor = hardwareMap.get(NormalizedColorSensor.class, "rightColorSensor");
+        searchMineral = Minerals.GOLD;
+
         leftServo = hardwareMap.get(Servo.class, "leftServo");
         rightServo = hardwareMap.get(Servo.class, "rightServo");
         closeLeftGate();
         closeRightGate();
-
-        leftColorSensor = hardwareMap.get(NormalizedColorSensor.class, "leftColorSensor");
-        rightColorSensor = hardwareMap.get(NormalizedColorSensor.class, "rightColorSensor");
-
-        searchMineral = Minerals.GOLD;
     }
 
     public void teleOpMotion(Gamepad driver, Gamepad operator) {
