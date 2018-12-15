@@ -19,10 +19,10 @@ public class Intake {
     private final double COLLECTION_SPEED = 0.8;
     private final double RELEASE_SPEED = 0.4;
 
-    private final double LEFT_SERVO_OPEN_POS = 0.6;
+    private final double LEFT_SERVO_OPEN_POS = 0.8;
     private final double RIGHT_SERVO_OPEN_POS = 0;
-    private final double LEFT_SERVO_CLOSE_POS = 0;
-    private final double RIGHT_SERVO_CLOSE_POS = 0.6;
+    private final double LEFT_SERVO_CLOSE_POS = 0.15;
+    private final double RIGHT_SERVO_CLOSE_POS = 0.7;
 
     private OpMode opMode;
 

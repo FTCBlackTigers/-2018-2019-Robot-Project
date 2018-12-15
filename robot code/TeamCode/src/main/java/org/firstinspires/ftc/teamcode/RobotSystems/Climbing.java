@@ -9,23 +9,25 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Climbing {
     //TODO:set motor Encoder positions and check @ticksPerCm
-    public enum Height {
+    public enum Angle {
         DOWN(0),
-        UP(50);
+        COLLECT(200),
+        CLIMB(90),
+        PUT(90);
         float pos;
-        final double ticksPerDegrees = 70.93;
+        final double ticksPerDegrees = 58.9;
 
         public int getTicks() {
             return ((int) (ticksPerDegrees * pos));
         }
 
-        Height(float ang) {
+        Angle(float ang) {
             this.pos = ang;
         }
     }
 
     //TODO:set motor Encoder positions and check @ticksPerCm
-    public enum Angle {
+    public enum Height {
         MIN(0),
         MEDIUM(5),
         MAX(33f);
@@ -36,7 +38,7 @@ public class Climbing {
             return ((int) (ticksPerCm * pos));
         }
 
-        Angle(float pos) {
+        Height(float pos) {
             this.pos = pos;
         }
     }
@@ -52,6 +54,11 @@ public class Climbing {
     private OpMode opMode;
     private DigitalChannel liftTouch;
     private DigitalChannel angleTouch;
+    private boolean angleTouchIsPrevActive;
+    private boolean angleTouchIsActive;
+    private boolean liftTouchISprevActive;
+    private boolean liftTouchISActive;
+
 
     public void init(HardwareMap hardwareMap, OpMode opMode) {
         this.opMode = opMode;
@@ -65,7 +72,7 @@ public class Climbing {
         angleMotor.setPower(0);
 
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
-        angleMotor.setDirection(DcMotor.Direction.REVERSE);
+        angleMotor.setDirection(DcMotor.Direction.FORWARD);
 
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         angleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -81,6 +88,10 @@ public class Climbing {
     }
 
     public void teleOpMotion(Gamepad operator) {
+        angleTouchIsActive = !angleTouch.getState();
+
+
+
         if (!liftMotor.isBusy()) {
             liftMotor.setPower(0);
             liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -92,23 +103,23 @@ public class Climbing {
         }
 
         if (operator.dpad_down) {
-//            moveLift(Angle.MIN);
+//            moveLift(Height.MIN);
         }
 
         if (operator.dpad_right) {
-//           moveLift(Angle.MEDIUM);
+//           moveLift(Height.MEDIUM);
         }
 
         if (operator.dpad_up) {
-//            moveLift(Angle.MAX);
+//            moveLift(Height.MAX);
         }
 
         if (operator.right_trigger > 0.7) {
-//            moveAngle(Height.UP);
+           moveAngle(Angle.CLIMB);
         }
 
         if (operator.left_trigger > 0.7) {
-//            moveAngle(Height.DOWN);
+           moveAngle(Angle.COLLECT);
         }
 
         if (-operator.right_stick_y > 0.1 || -operator.right_stick_y < -0.1) {
@@ -127,19 +138,23 @@ public class Climbing {
             lockServo();
         }
 
-        opMode.telemetry.addLine("climbing: \n").addData("lift motor: ", liftMotor.getPower())
+        opMode.telemetry.addLine("climbing: \n").addData("lift motor power: ", liftMotor.getPower())
                 .addData(" Position: ", liftMotor.getCurrentPosition() + "\n")
                 .addData("Height motor power: ", angleMotor.getPower())
                 .addData(" Position: ", angleMotor.getCurrentPosition() + "\n")
                 .addData("Servo position: ", hangServo.getPosition());
 
 
-        if (!liftTouch.getState()) {
-            liftMotor.setPower(0);
-            liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (angleTouchIsActive && !angleTouchIsPrevActive) {
+            angleMotor.setPower(0);
+            angleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            opMode.telemetry.addData("angleTouch", "Is Pressed");
         } else {
-            opMode.telemetry.addData("liftTouch", "Is Not Pressed");
+            opMode.telemetry.addData("angleTouch", "Is Not Pressed");
         }
+
+
 
         //TODO: Touch Sensor
 //        if ((angleTouch.getState() && !   liftTouch.getState()) || (!angleTouch.getState() && liftTouch.getState())) {
@@ -148,10 +163,11 @@ public class Climbing {
 //            angleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //            liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        }
+        angleTouchIsPrevActive = angleTouchIsActive;
     }
 
 
-    public void moveLift(Angle height) {
+    public void moveLift(Height height) {
         liftMotor.setTargetPosition(height.getTicks());
 
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -171,12 +187,12 @@ public class Climbing {
     private void liftMoveManual(double motorPower) {
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //if(!(Angle.MAX.getTicks() <= liftMotor.getCurrentPosition() && motorPower > 0) && !(Angle.MIN.getTicks() >= liftMotor.getCurrentPosition() && motorPower < 0)){
+        //if(!(Height.MAX.getTicks() <= liftMotor.getCurrentPosition() && motorPower > 0) && !(Height.MIN.getTicks() >= liftMotor.getCurrentPosition() && motorPower < 0)){
         liftMotor.setPower(motorPower);
     }
 
 
-    public void moveAngle(Height Angle) {
+    public void moveAngle(Angle Angle) {
         angleMotor.setTargetPosition(Angle.getTicks());
         angleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         angleMotor.setPower(Math.abs(MOVING_SPEED));
@@ -185,8 +201,9 @@ public class Climbing {
     private void angleMoveManual(double motorPower) {
         angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //if(!(Height.UP.getTicks() <= angleMotor.getCurrentPosition() && motorPower > 0) && !(Height.DOWN.getTicks() >= angleMotor.getCurrentPosition() && motorPower < 0)){
-        angleMotor.setPower(motorPower);
-        //}
+        if(angleTouchIsActive && motorPower < 0) {
+            return;
+        }
+        angleMotor.setPower(motorPower*0.5);
     }
 }

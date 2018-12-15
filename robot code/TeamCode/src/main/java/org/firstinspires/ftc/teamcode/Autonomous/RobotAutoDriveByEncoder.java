@@ -103,7 +103,7 @@ public class RobotAutoDriveByEncoder extends LinearOpMode {
         runtime.reset();
         while (runtime.seconds() < 5) {
             telemetry.addLine("Runtime: " + runtime.seconds());
-            telemetry.addLine("Height = " + BTVuforia.singalton.getRotation());
+            telemetry.addLine("Angle = " + BTVuforia.singalton.getRotation());
             telemetry.update();
         }
         frontLeftDrive.setPower(0.2);
@@ -112,7 +112,7 @@ public class RobotAutoDriveByEncoder extends LinearOpMode {
         frontRightDrive.setPower(-0.2);
         backRightDrive.setPower(-0.2);
         while((BTVuforia.singalton.getRotation() < 85 || BTVuforia.singalton.getRotation() > 95) && opModeIsActive()){
-            telemetry.addLine("Height = " + BTVuforia.singalton.getRotation());
+            telemetry.addLine("Angle = " + BTVuforia.singalton.getRotation());
             telemetry.update();
         }
         frontLeftDrive.setPower(0);

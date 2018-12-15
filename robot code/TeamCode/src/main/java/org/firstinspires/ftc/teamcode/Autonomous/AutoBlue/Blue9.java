@@ -53,9 +53,9 @@ public class Blue9 extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.climbing.moveAngle(Climbing.Height.DOWN);
+    robot.climbing.moveAngle(Climbing.Angle.DOWN);
     robot.climbing.openServo();
-    robot.climbing.moveLift(Climbing.Angle.MIN); //5 sec
+    robot.climbing.moveLift(Climbing.Height.MIN); //5 sec
     //in front of the Sampling
     //TODO: Use pixy to do sampling
     double midAngle = 0; //-pixy angle

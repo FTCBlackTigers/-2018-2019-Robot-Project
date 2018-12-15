@@ -56,9 +56,9 @@ public class Blue8 extends LinearOpMode {
     waitForStart();
     //TODO: correct Values
 
-    robot.climbing.moveAngle(Climbing.Height.DOWN);
+    robot.climbing.moveAngle(Climbing.Angle.DOWN);
     robot.climbing.openServo();
-    robot.climbing.moveLift(Climbing.Angle.MIN); //5 sec
+    robot.climbing.moveLift(Climbing.Height.MIN); //5 sec
 
     //TODO: Use pixy to do sampling
     double midAngle = 0; //-pixy angle

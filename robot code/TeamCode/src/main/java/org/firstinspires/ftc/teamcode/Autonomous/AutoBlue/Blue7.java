@@ -54,9 +54,9 @@ public class Blue7 extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.climbing.moveAngle(Climbing.Height.DOWN);
+    robot.climbing.moveAngle(Climbing.Angle.DOWN);
     robot.climbing.openServo();
-    robot.climbing.moveLift(Climbing.Angle.MIN);
+    robot.climbing.moveLift(Climbing.Height.MIN);
     robot.drive.driveByEncoder(55, 0.5, Drive.Direction.BACKWARD, 5000);
     robot.intake.release(); //released the Team Marker
     wait(1500);
