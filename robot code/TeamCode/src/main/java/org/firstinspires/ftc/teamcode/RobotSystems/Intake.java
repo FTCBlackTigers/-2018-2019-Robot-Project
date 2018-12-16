@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 public class Intake {
     enum Minerals{
@@ -52,7 +53,10 @@ public class Intake {
         rightServo = hardwareMap.get(Servo.class, "rightServo");
         closeLeftGate();
         closeRightGate();
-    }
+        if (leftColorSensor instanceof SwitchableLight && rightColorSensor instanceof  SwitchableLight) {
+        ((SwitchableLight)leftColorSensor).enableLight(false);
+        ((SwitchableLight)rightColorSensor).enableLight(false);
+    }}
 
     public void teleOpMotion(Gamepad driver, Gamepad operator) {
 

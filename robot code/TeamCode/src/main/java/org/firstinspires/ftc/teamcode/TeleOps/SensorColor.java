@@ -39,6 +39,7 @@ import java.io.*;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
@@ -55,40 +56,47 @@ public class SensorColor extends LinearOpMode {
 
   NormalizedColorSensor colorSensor;
   private final String FILE_PATH = "org/firstinspires/ftc/teamcode/RGB_Test.txt";
-  private java.io.File file= new java.io.File(FILE_PATH);
-    FileOutputStream fileOutputStream;
-    PrintStream printStream;
+  private java.io.File file = new java.io.File(FILE_PATH);
+  FileOutputStream fileOutputStream;
+  PrintStream printStream;
   View relativeLayout;
+  private DcMotor collectMotor;
 
+  @Override
 
-  @Override public void runOpMode() throws InterruptedException {
+  public void runOpMode() throws InterruptedException {
 
     // Get a reference to the RelativeLayout so we can later change the background
     // color of the Robot Controller app to match the hue detected by the RGB sensor.
     int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
     relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
-    colorSensor = hardwareMap.get(NormalizedColorSensor.class,"color_sensor");
-      waitForStart();
-    try{
-        File file = new File("/sdcard/FIRST/RGB_Test.txt");
-        fileOutputStream = new FileOutputStream(file);
-        printStream = new PrintStream(fileOutputStream);
+    colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
+    collectMotor = hardwareMap.get(DcMotor.class, "collectMotor");
+    collectMotor.setDirection(DcMotor.Direction.FORWARD);
 
-        printStream.write("Time | redValue | greenValue | blueValue \n".getBytes());
+
+    waitForStart();
+    try {
+      File file = new File("/sdcard/FIRST/RGB_Test.txt");
+      fileOutputStream = new FileOutputStream(file);
+      printStream = new PrintStream(fileOutputStream);
+
+      printStream.write("Time | redValue | greenValue | blueValue \n".getBytes());
 
       while (opModeIsActive()) {
-          NormalizedRGBA colors = colorSensor.getNormalizedColors();
+        collectMotor.setPower(0.5);
+        NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
-          printStream.write(((String)(time + "|" + colors.red +"|" + colors.green + "|" + colors.blue + "\n")).getBytes());
-          sleep(200);
+        printStream.write(((String) (time + "|" + colors.red + "|" + colors.green + "|" + colors.blue + "\n")).getBytes());
+        sleep(200);
       }
 
+      collectMotor.setPower(0);
       printStream.close();
       fileOutputStream.close();
 
-    } catch (IOException e)
-    {}
-    finally {
+    } catch (IOException e) {
+    } finally {
 
 
       relativeLayout.post(new Runnable() {
@@ -96,7 +104,7 @@ public class SensorColor extends LinearOpMode {
           relativeLayout.setBackgroundColor(Color.WHITE);
         }
       });
-      }
+    }
 
   }
 
@@ -116,7 +124,7 @@ public class SensorColor extends LinearOpMode {
     // If possible, turn the light on in the beginning (it might already be on anyway,
     // we just make sure it is if we can).
     if (colorSensor instanceof SwitchableLight) {
-      ((SwitchableLight)colorSensor).enableLight(true);
+      ((SwitchableLight) colorSensor).enableLight(true);
     }
 
     // Wait for the start button to be pressed.
@@ -132,7 +140,7 @@ public class SensorColor extends LinearOpMode {
         // If the button is (now) down, then toggle the light
         if (bCurrState) {
           if (colorSensor instanceof SwitchableLight) {
-            SwitchableLight light = (SwitchableLight)colorSensor;
+            SwitchableLight light = (SwitchableLight) colorSensor;
             light.enableLight(!light.isLightOn());
           }
         }

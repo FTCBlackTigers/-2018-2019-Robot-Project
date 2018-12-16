@@ -57,8 +57,8 @@ public class Drive {
     }
 
     private void tankDrive(double powerLeftDrive, double powerRightDrive) {
-        leftDrive.setPower(powerLeftDrive);
-        rightDrive.setPower(powerRightDrive);
+        leftDrive.setPower(powerLeftDrive * 0.5);
+        rightDrive.setPower(powerRightDrive * 0.5);
     }
 
     public void turnByGyroAbsolut (double degrees, double timeMs) {
