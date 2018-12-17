@@ -42,6 +42,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import java.io.BufferedReader;
@@ -61,6 +62,7 @@ public class SensorColor extends LinearOpMode {
   PrintStream printStream;
   View relativeLayout;
   private DcMotor collectMotor;
+  private Servo servo;
 
   @Override
 
@@ -74,6 +76,8 @@ public class SensorColor extends LinearOpMode {
     collectMotor = hardwareMap.get(DcMotor.class, "collectMotor");
     collectMotor.setDirection(DcMotor.Direction.FORWARD);
 
+    servo = hardwareMap.get(Servo.class, "Servo");
+    servo.setPosition(0.7);
 
     waitForStart();
     try {

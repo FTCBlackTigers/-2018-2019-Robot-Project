@@ -126,8 +126,8 @@ public class Intake {
 
    public void collect() {
         collectMotor.setPower(COLLECTION_SPEED);
-        this.leftOutput();
-        this.rightOutput();
+        //this.leftOutput();
+        //this.rightOutput();
     }
 
     private Minerals getLeftMineral() {
