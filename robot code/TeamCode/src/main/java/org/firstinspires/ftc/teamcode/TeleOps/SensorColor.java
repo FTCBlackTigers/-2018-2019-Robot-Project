@@ -39,6 +39,7 @@ import java.io.*;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -55,14 +56,17 @@ import java.io.OutputStreamWriter;
 
 public class SensorColor extends LinearOpMode {
 
-  NormalizedColorSensor colorSensor;
+  ColorSensor colorSensor;
+  NormalizedColorSensor normalizedColorSensor;
   private final String FILE_PATH = "org/firstinspires/ftc/teamcode/RGB_Test.txt";
+  final double SCALE_FACTOR = 255;
   private java.io.File file = new java.io.File(FILE_PATH);
   FileOutputStream fileOutputStream;
   PrintStream printStream;
   View relativeLayout;
   private DcMotor collectMotor;
   private Servo servo;
+  float hsvValues[] = {0F, 0F, 0F};
 
   @Override
 
@@ -72,10 +76,10 @@ public class SensorColor extends LinearOpMode {
     // color of the Robot Controller app to match the hue detected by the RGB sensor.
     int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
     relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
-    colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
+    colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
     collectMotor = hardwareMap.get(DcMotor.class, "collectMotor");
     collectMotor.setDirection(DcMotor.Direction.FORWARD);
-
+    normalizedColorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
     servo = hardwareMap.get(Servo.class, "Servo");
     servo.setPosition(0.7);
 
@@ -89,10 +93,20 @@ public class SensorColor extends LinearOpMode {
 
       while (opModeIsActive()) {
         collectMotor.setPower(0.5);
-        NormalizedRGBA colors = colorSensor.getNormalizedColors();
+        NormalizedRGBA colors = normalizedColorSensor.getNormalizedColors();
 
-        printStream.write(((String) (time + "|" + colors.red + "|" + colors.green + "|" + colors.blue + "\n")).getBytes());
-        sleep(200);
+        Color.RGBToHSV((int) (colorSensor.red() * SCALE_FACTOR),
+                (int) (colorSensor.green() * SCALE_FACTOR),
+                (int) (colorSensor.blue() * SCALE_FACTOR),
+                hsvValues);
+
+        printStream.write((((String) (time + "|" + hsvValues[0] + "| " + hsvValues[1] + "| "  + hsvValues[2]) + "\n")).getBytes());
+        telemetry.addLine(time + "|" + colors.red + "|" + colors.green + "|" + colors.blue + "\n");
+        telemetry.addLine("Red : " + colorSensor.red() + "| green : " + colorSensor.green() + "| blue : "  + colorSensor.blue());
+        telemetry.addLine("Hue : " + hsvValues[0] + "| s : " + hsvValues[1] + "| value : "  + hsvValues[2]);
+        telemetry.update();
+
+       sleep(200);
       }
 
       collectMotor.setPower(0);
@@ -152,7 +166,7 @@ public class SensorColor extends LinearOpMode {
       bPrevState = bCurrState;
 
       // Read the sensor
-      NormalizedRGBA colors = colorSensor.getNormalizedColors();
+      NormalizedRGBA colors = normalizedColorSensor.getNormalizedColors();
 
       /** Use telemetry to display feedback on the driver station. We show the conversion
        * of the colors to hue, saturation and value, and display the the normalized values

@@ -11,6 +11,7 @@ public class Climbing {
     //TODO:set motor Encoder positions and check @ticksPerCm
     public enum Angle {
         DOWN(0),
+        STARTPOS(30),
         COLLECT(200),
         CLIMB(90),
         PUT(90);
@@ -30,7 +31,7 @@ public class Climbing {
     public enum Height {
         MIN(0),
         MEDIUM(10),
-        MAX(33f);
+        MAX(28);
         float pos;
         final double ticksPerCm = 277.105;
 

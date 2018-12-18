@@ -28,7 +28,7 @@ public class Intake {
     private OpMode opMode;
 
     private DcMotor collectMotor;
-    private Servo leftServo, rightServo;
+    public Servo leftServo, rightServo;
     private NormalizedColorSensor leftColorSensor, rightColorSensor;
     private Minerals searchMineral;
 
@@ -178,7 +178,7 @@ public class Intake {
             openRightGate();
         }
     }
-    private void stopMotor(){collectMotor.setPower(0);}
+    public void stopMotor(){collectMotor.setPower(0);}
     public void setSearchMineral(Minerals mineral){
         this.searchMineral = mineral;
     }

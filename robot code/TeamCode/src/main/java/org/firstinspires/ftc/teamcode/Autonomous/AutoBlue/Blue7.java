@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
@@ -41,7 +42,7 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
  * doing Landing, Team Marker and Parking
  * PTS= 50
  * In Case of no Pixy
- * Starting from BlueDepot
+ * Starting from BlueDepot On The Lander
  */
 @Autonomous(name = "Blue7", group = "Tests")
 public class Blue7 extends LinearOpMode {
@@ -53,15 +54,32 @@ public class Blue7 extends LinearOpMode {
   @Override
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
+    robot.intake.leftServo.setPosition(0.15);
+    robot.intake.rightServo.setPosition(0.7);
+    robot.climbing.lockServo();
+    telemetry.addLine("Yeve is mitragesh");
+    telemetry.update();
     waitForStart();
-    robot.climbing.moveAngle(Climbing.Angle.DOWN);
+    robot.climbing.moveAngle(Climbing.Angle.STARTPOS);
+    sleep(2050);
+    robot.climbing.moveLift(Climbing.Height.MEDIUM);
+    sleep(2050);
+    robot.climbing.moveAngle(Climbing.Angle.CLIMB);
+    sleep(2500);
+    robot.climbing.moveLift(Climbing.Height.MAX);
+    sleep(2500);
     robot.climbing.openServo();
+    sleep(2500);
     robot.climbing.moveLift(Climbing.Height.MIN);
-    robot.drive.driveByEncoder(55, 0.5, Drive.Direction.BACKWARD, 5000);
-    robot.intake.release(); //released the Team Marker
-    wait(1500);
-    robot.drive.turnByGyroAbsolut(100, 2000);
-    robot.drive.driveByEncoder(100, 0.5, Drive.Direction.BACKWARD, 5000);
+    sleep(2500);
+    robot.drive.driveByEncoder(75, 0.3, Drive.Direction.BACKWARD, 5000);
+    sleep(2500);
+    robot.climbing.moveAngle(Climbing.Angle.DOWN);
+    robot.intake.collect(); //released the Team Marker
+    sleep(1500);
+    robot.intake.stopMotor();
+   // robot.drive.turnByGyroAbsolut(-100, 2000);
+   // robot.drive.driveByEncoder(100, 0.3, Drive.Direction.BACKWARD, 5000);
 
 
   }
