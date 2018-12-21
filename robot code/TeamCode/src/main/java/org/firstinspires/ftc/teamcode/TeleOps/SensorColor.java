@@ -89,10 +89,10 @@ public class SensorColor extends LinearOpMode {
       fileOutputStream = new FileOutputStream(file);
       printStream = new PrintStream(fileOutputStream);
 
-      printStream.write("Time | redValue | greenValue | blueValue \n".getBytes());
+      printStream.write("Time | Hue | S_Value | Value \n".getBytes());
 
       while (opModeIsActive()) {
-        collectMotor.setPower(0.5);
+        collectMotor.setPower(0.8);
         NormalizedRGBA colors = normalizedColorSensor.getNormalizedColors();
 
         Color.RGBToHSV((int) (colorSensor.red() * SCALE_FACTOR),

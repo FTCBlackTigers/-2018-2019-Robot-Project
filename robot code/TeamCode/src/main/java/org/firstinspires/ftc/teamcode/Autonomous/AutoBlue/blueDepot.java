@@ -40,12 +40,13 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
 /**
  * doing Landing, Team Marker and Parking
- * PTS= 50
+ * PTS = 50
  * In Case of no Pixy
  * Starting from BlueDepot On The Lander
+ * FIRST Autonomous
  */
-@Autonomous(name = "Blue7", group = "Tests")
-public class Blue7 extends LinearOpMode {
+@Autonomous(name = "blueDepot", group = "Tests")
+public class blueDepot extends LinearOpMode {
 
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
@@ -60,21 +61,9 @@ public class Blue7 extends LinearOpMode {
     telemetry.addLine("Yeve is mitragesh");
     telemetry.update();
     waitForStart();
-    robot.climbing.moveAngle(Climbing.Angle.STARTPOS);
-    sleep(2050);
-    robot.climbing.moveLift(Climbing.Height.MEDIUM);
-    sleep(2050);
-    robot.climbing.moveAngle(Climbing.Angle.CLIMB);
-    sleep(2500);
-    robot.climbing.moveLift(Climbing.Height.MAX);
-    sleep(2500);
-    robot.climbing.openServo();
-    sleep(2500);
-    robot.climbing.moveLift(Climbing.Height.MIN);
-    sleep(2500);
+    robot.climbing.land();
     robot.drive.driveByEncoder(75, 0.3, Drive.Direction.BACKWARD, 5000);
-    sleep(2500);
-    robot.climbing.moveAngle(Climbing.Angle.DOWN);
+    robot.climbing.moveliftAuto(Climbing.Height.MIN);
     robot.intake.collect(); //released the Team Marker
     sleep(1500);
     robot.intake.stopMotor();

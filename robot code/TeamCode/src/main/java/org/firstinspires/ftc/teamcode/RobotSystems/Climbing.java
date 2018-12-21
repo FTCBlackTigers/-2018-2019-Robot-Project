@@ -1,11 +1,16 @@
 package org.firstinspires.ftc.teamcode.RobotSystems;
 
+import android.graphics.Path;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import static java.lang.Thread.sleep;
 
 public class Climbing {
     //TODO:set motor Encoder positions and check @ticksPerCm
@@ -207,6 +212,46 @@ public class Climbing {
         }
         angleMotor.setPower(motorPower*0.6);
 
+    }
+    public void waitForFinish(DcMotor motor){
+
+        while(motor.isBusy() && ((LinearOpMode) opMode).opModeIsActive()){
+            opMode.telemetry.addData(motor.getDeviceName() + ": ",motor.getCurrentPosition());
+            opMode.telemetry.update();
+        }
+
+    }
+
+    public void land() {
+        moveAngle(Climbing.Angle.STARTPOS);
+        waitForFinish(angleMotor);
+        moveLift(Climbing.Height.MEDIUM);
+        waitForFinish(liftMotor);
+        moveAngle(Climbing.Angle.CLIMB);
+        waitForFinish(angleMotor);
+        moveLift(Climbing.Height.MAX);
+        waitForFinish(liftMotor);
+        openServo();
+        ((LinearOpMode) opMode).sleep(300);
+        moveAngle(Angle.DOWN);
+        waitForFinish(angleMotor);
+        moveLift(Climbing.Height.MIN);
+        waitForFinish(liftMotor);
+        angleMotor.setPower(0);
+        liftMotor.setPower(0);
+
+    }
+
+    public void moveliftAuto(Height height) {
+        moveLift(height);
+        waitForFinish(liftMotor);
+        liftMotor.setPower(0);
+    }
+
+    public void moveAngleAuto(Angle angle) {
+        moveAngle(angle);
+        waitForFinish(angleMotor);
+        angleMotor.setPower(0);
     }
 
 }

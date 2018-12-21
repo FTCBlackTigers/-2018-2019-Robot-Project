@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.RobotSystems;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -29,7 +32,7 @@ public class Intake {
 
     private DcMotor collectMotor;
     public Servo leftServo, rightServo;
-    private NormalizedColorSensor leftColorSensor, rightColorSensor;
+    private ColorSensor leftColorSensor, rightColorSensor;
     private Minerals searchMineral;
 
     private boolean collectModeIsPrevActive;
@@ -45,8 +48,8 @@ public class Intake {
         collectMotor.setPower(0);
         collectMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        leftColorSensor = hardwareMap.get(NormalizedColorSensor.class, "leftColorSensor");
-        rightColorSensor = hardwareMap.get(NormalizedColorSensor.class, "rightColorSensor");
+        leftColorSensor = hardwareMap.get(ColorSensor.class, "leftColorSensor");
+        rightColorSensor = hardwareMap.get(ColorSensor.class, "rightColorSensor");
         searchMineral = Minerals.GOLD;
 
         leftServo = hardwareMap.get(Servo.class, "leftServo");
@@ -104,6 +107,9 @@ public class Intake {
 
     private void openLeftGate() {
         leftServo.setPosition(LEFT_SERVO_OPEN_POS);
+        LeftScounter = 0;
+        LeftGcounter = 0;
+
     }
 
     private void openRightGate() {
@@ -126,35 +132,49 @@ public class Intake {
 
    public void collect() {
         collectMotor.setPower(COLLECTION_SPEED);
-        //this.leftOutput();
+        this.leftOutput();
         //this.rightOutput();
     }
-
+        private int LeftScounter = 0;
+        private int LeftGcounter = 0;
     private Minerals getLeftMineral() {
-        NormalizedRGBA colors = leftColorSensor.getNormalizedColors();
-        opMode.telemetry.addLine("leftColorSensor: ").addData("red", colors.red)
-                .addData("green", colors.green)
-                .addData("blue", colors.blue);
+        float[] hsvValuse = new float[3];
+        Color.RGBToHSV(leftColorSensor.red() * 255, leftColorSensor.green() * 255, leftColorSensor.blue()* 255, hsvValuse);
+        opMode.telemetry.addLine("leftColorSensor: ").addData("Hue: ", hsvValuse[0]);
 
         //TODO: check the color values;
-        if(colors.red > 0.080 && colors.red < 0.12 && colors.green > 0.080 && colors.green < 0.12 && colors.blue > 0.060 && colors.blue < 0.1 ){
+        if(hsvValuse[2] < 4000 && hsvValuse[2] > 1000){
+            LeftScounter++;
+        }else {
+            LeftScounter = 0;
+        }
+        if(LeftScounter >= 3) {
             return Minerals.SILVER;
         }
-        if(colors.red > 0.03 && colors.red < 0.50 && colors.green > 0.02 && colors.green < 0.04 && colors.blue > 0.01 && colors.blue < 0.02 ){
+
+
+        if(hsvValuse[2]< 900 && hsvValuse[2] > 360){
+            LeftGcounter++;
+        }else{
+            LeftGcounter = 0;
+        }
+        if(LeftGcounter >= 3){
             return Minerals.GOLD;
         }
+
         return Minerals.UNKNOWN;
     }
 
     private Minerals getRightMineral() {
-        NormalizedRGBA colors = rightColorSensor.getNormalizedColors();
-        opMode.telemetry.addLine("rightColorSensor: ").addData("red", colors.red)
-                .addData("green", colors.green)
-                .addData("blue", colors.blue);
-        if(colors.red > 0.080 && colors.red < 0.12 && colors.green > 0.080 && colors.green < 0.12 && colors.blue > 0.060 && colors.blue < 0.1 ){
+        float[] hsvValuse = new float[3];
+        Color.RGBToHSV(rightColorSensor.red() * 255, rightColorSensor.green() * 255, rightColorSensor.blue()* 255, hsvValuse);
+        opMode.telemetry.addLine("rightColorSensor: ").addData("Hue: ", hsvValuse[0]);
+
+        //TODO: check the color values;
+        if(false){
             return Minerals.SILVER;
         }
-        if(colors.red > 0.03 && colors.red < 0.50 && colors.green > 0.02 && colors.green < 0.04 && colors.blue > 0.01 && colors.blue < 0.02 ){
+        if(false){
             return Minerals.GOLD;
         }
         return Minerals.UNKNOWN;
@@ -162,11 +182,13 @@ public class Intake {
 
 
     private void leftOutput(){
+        //TODO:FIX
         if(getLeftMineral() == Minerals.UNKNOWN) {
             closeLeftGate();
         }
         else if (this.getLeftMineral() != searchMineral) {
-                    openLeftGate();
+            openLeftGate();
+
         }
     }
 
