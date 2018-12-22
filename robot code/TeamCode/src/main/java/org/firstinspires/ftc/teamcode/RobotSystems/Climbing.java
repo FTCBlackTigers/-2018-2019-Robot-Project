@@ -50,8 +50,8 @@ public class Climbing {
     }
 
     //TODO: update the values down
-    private final double HANG_OPEN_POS = 0;
-    private final double HANG_CLOSE_POS = 0.5;
+    private final double HANG_OPEN_POS = 0.5;
+    private final double HANG_CLOSE_POS = 0;
     private final double MOVING_SPEED = 0.5;
 
     private DcMotor liftMotor;
