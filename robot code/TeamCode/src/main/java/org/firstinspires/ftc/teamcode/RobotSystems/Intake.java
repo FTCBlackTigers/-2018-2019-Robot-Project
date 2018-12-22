@@ -40,7 +40,6 @@ public class Intake {
     private boolean releaseModeIsActive;
     private boolean collectModeIsActive;
 
-    Telemetry.Item item;
     public void init(HardwareMap hardwareMap, OpMode opMode){
         this.opMode = opMode;
         collectMotor = hardwareMap.get(DcMotor.class, "collectMotor");
@@ -57,13 +56,11 @@ public class Intake {
         closeLeftGate();
         closeRightGate();
         if (leftColorSensor instanceof SwitchableLight && rightColorSensor instanceof  SwitchableLight) {
-        ((SwitchableLight)leftColorSensor).enableLight(false);
-        ((SwitchableLight)rightColorSensor).enableLight(false);
+            ((SwitchableLight)leftColorSensor).enableLight(false);
+            ((SwitchableLight)rightColorSensor).enableLight(false);
         }
     }
 
-    float v = 0;
-    Minerals minerals = Minerals.UNKNOWN;
     public void teleOpMotion(Gamepad driver, Gamepad operator) {
 
         releaseModeIsActive = driver.left_bumper || operator.left_bumper;
@@ -93,7 +90,7 @@ public class Intake {
         if(operator.b) {
             setSearchMineral(Minerals.SILVER);
        }
-        item = opMode.telemetry.addData("openLeft: ", this.v +", "+minerals);
+
         opMode.telemetry.addLine("intake: \n" )
                 .addData("collectMotorPower: ", collectMotor.getPower()+"\n")
                 .addData("rightServoPos: ", rightServo.getPosition())
@@ -104,15 +101,10 @@ public class Intake {
 
         releaseModeIsPrevActive = releaseModeIsActive;
         collectModeIsPrevActive = collectModeIsActive;
-
-
     }
 
     private void openLeftGate() {
         leftServo.setPosition(LEFT_SERVO_OPEN_POS);
-        LeftScounter = 0;
-        LeftGcounter = 0;
-
     }
 
     private void openRightGate() {
@@ -136,16 +128,14 @@ public class Intake {
    public void collect() {
         collectMotor.setPower(COLLECTION_SPEED);
         this.leftOutput();
-        //this.rightOutput();
+        this.rightOutput();
     }
-    private int LeftScounter = 0;
-    private int LeftGcounter = 0;
-    float[] hsvValues = new float[3];
+
     private Minerals getLeftMineral() {
+        float[] hsvValues = new float[3];
         Color.RGBToHSV(leftColorSensor.red() * 255, leftColorSensor.green() * 255, leftColorSensor.blue()* 255, hsvValues);
         opMode.telemetry.addLine("leftColorSensor: ").addData("Value: ", hsvValues[2]);
 
-        //TODO: check the color values;
         if(hsvValues[2] >= 1550) {
             return Minerals.SILVER;
         }
@@ -158,13 +148,12 @@ public class Intake {
     private Minerals getRightMineral() {
         float[] hsvValues = new float[3];
         Color.RGBToHSV(rightColorSensor.red() * 255, rightColorSensor.green() * 255, rightColorSensor.blue()* 255, hsvValues);
-        opMode.telemetry.addLine("rightColorSensor: ").addData("Hue: ", hsvValues[0]);
+        opMode.telemetry.addLine("rightColorSensor: ").addData("Value: ", hsvValues[2]);
 
-        //TODO: check the color values;
-        if(false){
+        if(hsvValues[2] >= 1550) {
             return Minerals.SILVER;
         }
-        if(false){
+        if (hsvValues[2] >= 300 && hsvValues[2] <= 550) {
             return Minerals.GOLD;
         }
         return Minerals.UNKNOWN;
@@ -172,28 +161,27 @@ public class Intake {
 
 
     private void leftOutput(){
-        //TODO:FIX
         Minerals imat= getLeftMineral();
         if(imat == Minerals.UNKNOWN) {
             closeLeftGate();
         }
         else if (imat != searchMineral) {
             openLeftGate();
-            this.v = hsvValues[2];
-            this.minerals = imat;
-
         }
     }
 
     private void rightOutput(){
-        if(getRightMineral() == Minerals.UNKNOWN) {
+        Minerals imat= getRightMineral();
+        if(imat == Minerals.UNKNOWN) {
             closeRightGate();
         }
-        else if (this.getRightMineral() != searchMineral) {
+        else if (imat != searchMineral) {
             openRightGate();
         }
     }
+
     public void stopMotor(){collectMotor.setPower(0);}
+
     public void setSearchMineral(Minerals mineral){
         this.searchMineral = mineral;
     }
