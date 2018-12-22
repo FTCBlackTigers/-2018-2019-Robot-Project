@@ -22,7 +22,7 @@ public class Intake {
 
     private final double COLLECTION_SPEED = 0.8;
     private final double RELEASE_SPEED = 0.4;
-    private final double TEAM_MARKER_SPEED = -0.4;
+    private final double TEAM_MARKER_SPEED = -0.1;
     private final double LEFT_SERVO_OPEN_POS = 0.8;
     private final double RIGHT_SERVO_OPEN_POS = 0;
     private final double LEFT_SERVO_CLOSE_POS = 0.15;
@@ -187,7 +187,11 @@ public class Intake {
         }
     }
 
-    public void stopMotor(){collectMotor.setPower(0);}
+    public void stopMotor(){
+        collectMotor.setPower(0);
+        closeRightGate();
+        closeLeftGate();
+    }
 
     public void setSearchMineral(Minerals mineral){
         this.searchMineral = mineral;

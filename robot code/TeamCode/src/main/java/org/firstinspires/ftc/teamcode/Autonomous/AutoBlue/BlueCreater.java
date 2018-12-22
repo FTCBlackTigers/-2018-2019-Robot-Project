@@ -32,39 +32,41 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.sun.tools.javac.comp.Todo;
 
 import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
 /**
- * doing Landing, Sampling and Parking.
+ * doing Landing, Sampling Team Marker and Parking.
  * PTS=65
  * In case of broken robot
  * Starting from BlueCreater
  */
-@Autonomous(name = "Blue8", group = "Tests")
-public class Blue8 extends LinearOpMode {
-
+@Autonomous(name = "BlueCreater", group = "Tests")
+public class BlueCreater extends LinearOpMode {
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
-
 
   @Override
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    //TODO: correct Values
+    robot.climbing.land();
+    //TODO: add pixy to the code with Shalev the god of java
+    robot.drive.driveByEncoder(20, 0.3, Drive.Direction.BACKWARD, 2000);
+    robot.climbing.moveliftAuto(Climbing.Height.MEDIUM);
+    robot.drive.turnByGyroRelative(95, 2000);
+    robot.drive.driveByEncoder(90, 0.3, Drive.Direction.BACKWARD, 2000);
+    robot.drive.turnByGyroRelative(40, 2000);
+    robot.drive.driveByEncoder(60, 0.3, Drive.Direction.BACKWARD, 2000);
+    robot.intake.release();
+    sleep(500);
+    robot.intake.stopMotor();
+    robot.drive.driveByEncoder(100,0.5, Drive.Direction.FORWARD,1000);
+    robot.drive.driveByEncoder(10,0.2, Drive.Direction.FORWARD,1000);
 
-    robot.climbing.moveAngle(Climbing.Angle.DOWN);
-    robot.climbing.moveLift(Climbing.Height.MIN); //5 sec
-
-    //TODO: Use pixy to do sampling
-    double midAngle = 0; //-pixy angle
-
-    robot.drive.turnByGyroAbsolut(midAngle,2000);
-    robot.drive.driveByEncoder(5,0.2, Drive.Direction.BACKWARD,1000);
-    //rotate to the creater and park
 
 
 
