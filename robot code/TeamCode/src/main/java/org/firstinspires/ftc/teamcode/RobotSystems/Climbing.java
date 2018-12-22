@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import static java.lang.Thread.sleep;
 
 public class Climbing {
-    //TODO:set motor Encoder positions and check @ticksPerCm
     public enum Angle {
         DOWN(0),
         STARTPOS(30),
@@ -32,7 +31,6 @@ public class Climbing {
         }
     }
 
-    //TODO:set motor Encoder positions and check @ticksPerCm
     public enum Height {
         MIN(0),
         MEDIUM(10),
@@ -49,14 +47,10 @@ public class Climbing {
         }
     }
 
-    //TODO: update the values down
-    private final double HANG_OPEN_POS = 0.5;
-    private final double HANG_CLOSE_POS = 0;
     private final double MOVING_SPEED = 0.5;
 
     private DcMotor liftMotor;
     private DcMotor angleMotor;
-    private Servo hangServo;
     private OpMode opMode;
     private DigitalChannel liftTouch;
     private DigitalChannel angleTouch;
@@ -70,7 +64,6 @@ public class Climbing {
         this.opMode = opMode;
         liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
         angleMotor = hardwareMap.get(DcMotor.class, "angleMotor");
-        hangServo = hardwareMap.get(Servo.class, "hangServo");
         angleTouch = hardwareMap.get(DigitalChannel.class, "angle_touch");
         liftTouch = hardwareMap.get(DigitalChannel.class, "lift_touch");
 
@@ -88,8 +81,6 @@ public class Climbing {
 
         liftTouch.setMode(DigitalChannel.Mode.INPUT);
         angleTouch.setMode(DigitalChannel.Mode.INPUT);
-
-        lockServo();
 
     }
 
@@ -137,19 +128,10 @@ public class Climbing {
             angleMoveManual(-operator.left_stick_y);
         }
 
-        if (operator.a) {
-            openServo();
-        }
-
-        if (operator.x) {
-            lockServo();
-        }
-
         opMode.telemetry.addLine("climbing: \n").addData("lift motor power: ", liftMotor.getPower())
                 .addData(" Position: ", liftMotor.getCurrentPosition() + "\n")
                 .addData("Height motor power: ", angleMotor.getPower())
                 .addData(" Position: ", angleMotor.getCurrentPosition() + "\n")
-                .addData("Servo position: ", hangServo.getPosition() + "\n")
                 .addData("liftTouch : " , liftTouchIsActive)
                 .addData(" angleTouch : ", angleTouchIsActive);
 
@@ -180,23 +162,14 @@ public class Climbing {
 
     }
 
-    public void lockServo() {
-        hangServo.setPosition(HANG_CLOSE_POS);
-    }
-
-    public void openServo() {
-        hangServo.setPosition(HANG_OPEN_POS);
-    }
-
     private void liftMoveManual(double motorPower) {
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        if(liftTouchIsActive && motorPower < 0) { //TODO:Check direction
+        if (liftTouchIsActive && motorPower < 0) {
             return;
         }
-        liftMotor.setPower(motorPower*0.8);
+        liftMotor.setPower(motorPower * 0.8);
         //if(!(Height.MAX.getTicks() <= liftMotor.getCurrentPosition() && motorPower > 0) && !(Height.MIN.getTicks() >= liftMotor.getCurrentPosition() && motorPower < 0)){
     }
-
 
     public void moveAngle(Angle Angle) {
         angleMotor.setTargetPosition(Angle.getTicks());
@@ -231,12 +204,8 @@ public class Climbing {
         waitForFinish(angleMotor);
         moveLift(Climbing.Height.MAX);
         waitForFinish(liftMotor);
-        openServo();
-        ((LinearOpMode) opMode).sleep(300);
-        moveAngle(Angle.DOWN);
+        moveAngle(Angle.STARTPOS);
         waitForFinish(angleMotor);
-        moveLift(Climbing.Height.MIN);
-        waitForFinish(liftMotor);
         angleMotor.setPower(0);
         liftMotor.setPower(0);
 

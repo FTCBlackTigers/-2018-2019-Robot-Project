@@ -22,7 +22,7 @@ public class Intake {
 
     private final double COLLECTION_SPEED = 0.8;
     private final double RELEASE_SPEED = 0.4;
-
+    private final double TEAM_MARKER_SPEED = -0.4;
     private final double LEFT_SERVO_OPEN_POS = 0.8;
     private final double RIGHT_SERVO_OPEN_POS = 0;
     private final double LEFT_SERVO_CLOSE_POS = 0.15;
@@ -91,6 +91,7 @@ public class Intake {
             setSearchMineral(Minerals.SILVER);
        }
 
+
         opMode.telemetry.addLine("intake: \n" )
                 .addData("collectMotorPower: ", collectMotor.getPower()+"\n")
                 .addData("rightServoPos: ", rightServo.getPosition())
@@ -129,6 +130,12 @@ public class Intake {
         collectMotor.setPower(COLLECTION_SPEED);
         this.leftOutput();
         this.rightOutput();
+    }
+
+    public void putTeamMarker(){
+        collectMotor.setPower(TEAM_MARKER_SPEED);
+        openRightGate();
+        openLeftGate();
     }
 
     private Minerals getLeftMineral() {

@@ -54,7 +54,6 @@ public class Blue9 extends LinearOpMode {
     robot.init(hardwareMap , this);
     waitForStart();
     robot.climbing.moveAngle(Climbing.Angle.DOWN);
-    robot.climbing.openServo();
     robot.climbing.moveLift(Climbing.Height.MIN); //5 sec
     //in front of the Sampling
     //TODO: Use pixy to do sampling

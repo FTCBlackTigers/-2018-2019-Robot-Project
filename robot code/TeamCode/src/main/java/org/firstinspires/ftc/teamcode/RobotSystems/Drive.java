@@ -13,8 +13,8 @@ public class Drive {
     }
 
 
-    static final double COUNTS_PER_MOTOR_REV = 28;       // TODO: check the ticks with Shalev The God Of JAVA
-    static final double DRIVE_GEAR_REDUCTION = 40;    //TODO: check the DRIVE_GEAR_REDUCTION
+    static final double COUNTS_PER_MOTOR_REV = 28;
+    static final double DRIVE_GEAR_REDUCTION = 40;
     static final double WHEEL_DIAMETER_CM = 10.16;
     static final double COUNTS_PER_CM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.141592654);

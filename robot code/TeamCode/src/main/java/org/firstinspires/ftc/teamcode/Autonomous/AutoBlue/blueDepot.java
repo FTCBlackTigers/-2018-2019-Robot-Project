@@ -55,9 +55,6 @@ public class blueDepot extends LinearOpMode {
   @Override
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
-    robot.intake.leftServo.setPosition(0.15);
-    robot.intake.rightServo.setPosition(0.7);
-    robot.climbing.lockServo();
     telemetry.addLine("Yeve is mitragesh");
     telemetry.update();
     waitForStart();
