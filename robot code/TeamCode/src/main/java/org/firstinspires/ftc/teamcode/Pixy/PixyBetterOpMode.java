@@ -75,22 +75,18 @@ public class PixyBetterOpMode extends OpMode {
      * This method will be called repeatedly in a loop
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
      */
-    @Override
-    public void loop() {
-        // Update every tenth of a second.
-        if (elapsedTime.milliseconds() > 100) {
-            elapsedTime.reset();
-            blocks1 = pixyCam.getBiggestBlocks(1);
-            telemetry.addData("Elapsed: ", elapsedTime2.toString());
-            telemetry.addData("Counts", "%d", blocks1.totalCount);
+            @Override
+            public void loop() {
+                // Update every tenth of a second.
+                if (elapsedTime.milliseconds() > 100) {
+                    elapsedTime.reset();
+                    blocks1 = pixyCam.getBiggestBlocks(1);
+                    telemetry.addData("Elapsed: ", elapsedTime2.toString());
+                    telemetry.addData("Counts", "%d", blocks1.totalCount);
             file.println("----------------------------");
             file.format("Elapsed: %s Counts: %d\n", elapsedTime2.toString(), blocks1.totalCount);
-            for (int i = 0; i < blocks1.size(); i++) {
-                PixyBlock block = blocks1.get(i);
-                if (!block.isEmpty()) {
-                    telemetry.addData("Block 1[" + i + "]", block.toString());
-                }
-            }
+
+            telemetry.addLine(blocks1.toString());
             telemetry.update();
         }
     }

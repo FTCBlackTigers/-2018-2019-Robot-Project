@@ -48,8 +48,11 @@ public class Climbing {
     }
 
     private final double MOVING_SPEED = 0.5;
+    private final double HANG_OPEN_POS = 0.25;
+    private final double HANG_CLOSE_POS = 0;
 
     private DcMotor liftMotor;
+    private Servo hangServo;
     private DcMotor angleMotor;
     private OpMode opMode;
     private DigitalChannel liftTouch;
@@ -64,6 +67,7 @@ public class Climbing {
         this.opMode = opMode;
         liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
         angleMotor = hardwareMap.get(DcMotor.class, "angleMotor");
+        hangServo = hardwareMap.get(Servo.class, "hangServo");
         angleTouch = hardwareMap.get(DigitalChannel.class, "angle_touch");
         liftTouch = hardwareMap.get(DigitalChannel.class, "lift_touch");
 
@@ -81,6 +85,7 @@ public class Climbing {
 
         liftTouch.setMode(DigitalChannel.Mode.INPUT);
         angleTouch.setMode(DigitalChannel.Mode.INPUT);
+        lockServo();
 
     }
 
@@ -127,10 +132,17 @@ public class Climbing {
         if (-operator.left_stick_y > 0.1 || -operator.left_stick_y < -0.1) {
             angleMoveManual(-operator.left_stick_y);
         }
+        if (operator.a) {
+            openServo();
+        }
 
+        if (operator.x) {
+            lockServo();
+        }
         opMode.telemetry.addLine("climbing: \n").addData("lift motor power: ", liftMotor.getPower())
                 .addData(" Position: ", liftMotor.getCurrentPosition() + "\n")
                 .addData("Height motor power: ", angleMotor.getPower())
+                .addData("Servo position: ", hangServo.getPosition() + "\n")
                 .addData(" Position: ", angleMotor.getCurrentPosition() + "\n")
                 .addData("liftTouch : " , liftTouchIsActive)
                 .addData(" angleTouch : ", angleTouchIsActive);
@@ -186,6 +198,14 @@ public class Climbing {
         angleMotor.setPower(motorPower*0.6);
 
     }
+
+    public void lockServo() {
+        hangServo.setPosition(HANG_CLOSE_POS);
+    }
+
+    public void openServo() {
+        hangServo.setPosition(HANG_OPEN_POS);
+    }
     public void waitForFinish(DcMotor motor){
 
         while(motor.isBusy() && ((LinearOpMode) opMode).opModeIsActive()){
@@ -204,6 +224,8 @@ public class Climbing {
         waitForFinish(angleMotor);
         moveLift(Climbing.Height.MAX);
         waitForFinish(liftMotor);
+        openServo();
+        ((LinearOpMode) opMode).sleep(300);
         moveAngle(Angle.STARTPOS);
         waitForFinish(angleMotor);
         angleMotor.setPower(0);

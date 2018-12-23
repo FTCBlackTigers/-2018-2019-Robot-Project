@@ -120,7 +120,7 @@ public class PixyCam extends I2cDeviceSynchDeviceWithParameters<I2cDeviceSynch, 
     }
 
     public PixyBlockList getBiggestBlocks() {
-        byte[] buffer = ReadEntireWindow(this.extendedGeneralQueryReadWindow);
+        byte[] buffer = ReadEntireWindow(this.legoProtocolGeneralQueryReadWindow);
 
         PixyBlockList list = new PixyBlockList(buffer[0]);
 
@@ -171,5 +171,9 @@ public class PixyCam extends I2cDeviceSynchDeviceWithParameters<I2cDeviceSynch, 
     @Override
     public String getDeviceName() {
         return "PixyCam";
+    }
+
+    public String toString() {
+        return"";
     }
 }

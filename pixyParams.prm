@@ -1,5 +1,5 @@
 <Pixy_parameters>
- <data key="signature1" type="INT8_ARRAY" value="gSsAgSAAAAApEQAADRMAABwSAADv6v//d+z//7Lr//8tVnoAAAAAAA=="/>
+ <data key="signature1" type="INT8_ARRAY" value="gSwAgSAAAAClGwAASSAAAPgdAADH4P//ceP//xzi//8LJ0IAAAAAAA=="/>
  <data key="Signature 1 range" type="FLOAT32" value="3.5"/>
  <data key="Signature label 1" type="STRING" value="GOLD"/>
  <data key="signature2" type="INT8_ARRAY" value="gQAAgSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="/>
@@ -33,7 +33,7 @@
  <data key="Data out port" type="INT8" value="2"/>
  <data key="I2C address" type="INT8" value="84"/>
  <data key="UART baudrate" type="INT32" value="19200"/>
- <data key="Pixy 1.0 compatibility mode" type="INT8" value="0"/>
+ <data key="Pixy 1.0 compatibility mode" type="INT8" value="1"/>
  <data key="Camera brightness" type="INT8" value="50"/>
  <data key="Auto Exposure Correction" type="INT8" value="1"/>
  <data key="AEC Value" type="INT32" value="0"/>
@@ -84,6 +84,4 @@
  <data key="Default program" type="INT8" value="0"/>
  <data key="Program select on power-up" type="INT8" value="0"/>
  <data key="Debug" type="INT8" value="0"/>
- <data key="fwver" type="INT16" value="0"/>
- <data key="fwtype" type="STRING" value="general"/>
 </Pixy_parameters>

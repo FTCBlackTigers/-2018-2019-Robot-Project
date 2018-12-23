@@ -65,9 +65,9 @@ public class blueDepot extends LinearOpMode {
     robot.intake.stopMotor();
     robot.drive.turnByGyroRelative(-40,1000);
     robot.drive.driveByEncoder(110,0.4, Drive.Direction.FORWARD,2000);
-    //robot.climbing.moveAngleAuto(Climbing.Angle.COLLECT);
-    //while (opModeIsActive()) {
-     // robot.intake.collect();
-    //}
+    robot.climbing.moveAngleAuto(Climbing.Angle.COLLECT);
+    while (opModeIsActive()) {
+      robot.intake.collect();
+    }
   }
 }

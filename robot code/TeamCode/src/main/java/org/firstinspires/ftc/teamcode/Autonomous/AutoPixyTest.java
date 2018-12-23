@@ -40,10 +40,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-@Autonomous(name = "AutoDriveTest", group = "Tests")
-@Disabled
-public class AutoDriveTest extends LinearOpMode {
+@Autonomous(name = "AutoPixyTest", group = "Tests")
 
+public class AutoPixyTest extends LinearOpMode {
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
 
@@ -52,7 +51,7 @@ public class AutoDriveTest extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.drive.driveByEncoder(200,0.5, Drive.Direction.FORWARD,6000);
+    robot.drive.moveByPixy();
 
   }
 }
