@@ -40,6 +40,7 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 /**
  * doing 2 Sampling,Team Marker and Parking
  * PTS=75
+ * Starting from blueCrater
  */
 @Autonomous(name = "Blue6", group = "Tests")
 public class Blue6 extends LinearOpMode {
@@ -54,23 +55,22 @@ public class Blue6 extends LinearOpMode {
     robot.init(hardwareMap , this);
     waitForStart();
     //TODO: Use pixy to do sampling
-    double midAngle = 0; //-pixy angle
+    //robot.drive.moveByPixy();
     //Sampling
+    robot.drive.driveByEncoder(30, 0.5, Drive.Direction.FORWARD, 2500);
     robot.drive.turnByGyroAbsolut(90,1500);//FIX
     //TurnLeft
-    robot.drive.driveByEncoder(60, 0.5, Drive.Direction.BACKWARD, 2500);//FIX
+    robot.drive.driveByEncoder(60, 0.5, Drive.Direction.FORWARD, 2500);//FIX
    //drive forward
     robot.drive.turnByGyroAbsolut(90,15001);//FIX
     //Rotate left
-    robot.drive.driveByEncoder(60, 0.5, Drive.Direction.BACKWARD, 2500);//FIX
+    robot.drive.driveByEncoder(60, 0.5, Drive.Direction.FORWARD, 2500);//FIX
     //drive forward
     robot.drive.turnByGyroAbsolut(90,2000);//FIX
     //Rotate to the Sampling
     //TODO: Use pixy to do sampling
-    double midAngle2 = 0; //-pixy angle
-    robot.drive.turnByGyroAbsolut(midAngle2,1500);
     //Correct our angle
-    robot.drive.driveByEncoder(55, 0.5, Drive.Direction.BACKWARD, 2300);
+    robot.drive.driveByEncoder(55, 0.5, Drive.Direction.FORWARD, 2300);
     //driving to the depot
     robot.intake.release(); //released the Team Marker
     wait(1500);

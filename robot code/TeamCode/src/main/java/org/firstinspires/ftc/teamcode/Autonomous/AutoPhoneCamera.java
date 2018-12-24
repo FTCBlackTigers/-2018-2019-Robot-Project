@@ -27,47 +27,42 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.Prototyping.vRecognation;
+import org.firstinspires.ftc.teamcode.Prototyping.UVC_Camera;
+import org.firstinspires.ftc.teamcode.Prototyping.vRecognation;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
+@Autonomous(name = "AutoPhoneCamera", group = "Tests")
 
-/** doing Landing,Sampling and Team Marker
-  * PTS=70
- *  Starting in BlueDepot
- */
-@Autonomous(name = "Blue9", group = "Tests")
-public class Blue9 extends LinearOpMode {
-
+public class AutoPhoneCamera extends LinearOpMode {
   private Robot robot = new Robot();
+  private vRecognation recognation = null;
   private ElapsedTime runtime = new ElapsedTime();
 
 
   @Override
   public void runOpMode() throws InterruptedException {
-    robot.init(hardwareMap , this);
+    recognation = new vRecognation(hardwareMap, this);
     waitForStart();
-    robot.climbing.moveAngle(Climbing.Angle.DOWN);
-    robot.climbing.moveLift(Climbing.Height.MIN); //5 sec
-    //in front of the Sampling
-    //TODO: Use pixy to do sampling
-    double midAngle = 0; //-pixy angle
-    robot.drive.turnByGyroAbsolut(midAngle,1500);
-    //correct our angle
-    robot.drive.driveByEncoder(55,0.5, Drive.Direction.BACKWARD,2000);
-    //drive into the Depot
-    robot.intake.release();
-    wait(1500);
-    //released the Team Marker
-
-
-
-
+    while (opModeIsActive()) {
+      double r = recognation.getGoldPos();
+      if (r != -999){
+      telemetry.addData("gold pos: ", r);
+        //telemetry.addData("gold height: ", r.getHeight());
+        //telemetry.addData("gold width: ", r.getWidth());
+      telemetry.update();
+    }
   }
-}
+}}

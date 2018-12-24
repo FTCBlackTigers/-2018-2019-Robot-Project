@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Pixy.PixyBlock;
 import org.firstinspires.ftc.teamcode.Pixy.PixyCam;
+import org.firstinspires.ftc.teamcode.Prototyping.vRecognation;
 
 public class Drive {
     public enum Direction {
@@ -25,13 +26,16 @@ public class Drive {
     static final double THRESHOLD = 5;
     static final double P_TURN_COEFF = 0.075;
     private final int PIXY_MIDDLE_PIXEL = 200;
-    private final int PIXY_PIXEL_THRESHHOLDD = 10;
+    private final int PIXY_PIXEL_THRESHOLD = 10;
+    private final double PHONE_CAMERA_MIDDLE_PIXEL = 500;
+    private final double PHONE_CAMERA_THRESHOLD = 30;
 
     private OpMode opMode;
     private BT_Gyro gyro = new BT_Gyro();
     private DcMotor leftDrive;
     private DcMotor rightDrive;
     PixyCam pixyCam;
+    private vRecognation recognation = null;
 
     public void init(HardwareMap hardwareMap, OpMode opMode) {
         this.opMode = opMode;
@@ -39,6 +43,9 @@ public class Drive {
         rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
         gyro.init(hardwareMap);
         pixyCam = hardwareMap.get(PixyCam.class, "pixy");
+        if (opMode instanceof  LinearOpMode) {
+            recognation = new vRecognation(hardwareMap, opMode);
+        }
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -232,7 +239,7 @@ public class Drive {
         opMode.telemetry.addLine(block.toString());
         opMode.telemetry.update();
         int error = block.x - PIXY_MIDDLE_PIXEL;
-        while (((LinearOpMode) opMode).opModeIsActive() && Math.abs(error) >= PIXY_PIXEL_THRESHHOLDD && !block.isEmpty()) {
+        while (((LinearOpMode) opMode).opModeIsActive() && Math.abs(error) >= PIXY_PIXEL_THRESHOLD && !block.isEmpty()) {
             leftDrive.setPower(0.2 * Math.signum(error));
             rightDrive.setPower(0.2 * -Math.signum(error));
             error = block.x - PIXY_MIDDLE_PIXEL;
@@ -241,6 +248,27 @@ public class Drive {
         }
         leftDrive.setPower(0);
         rightDrive.setPower(0);
+    }
+
+
+    public void moveByCamera() {
+       if (opMode instanceof  LinearOpMode) {
+           double r = recognation.getGoldPos();
+           double error = r - PHONE_CAMERA_MIDDLE_PIXEL;
+           while (((LinearOpMode) opMode).opModeIsActive() && Math.abs(error) >= PHONE_CAMERA_THRESHOLD) {
+               leftDrive.setPower(0.2 * Math.signum(error));
+               rightDrive.setPower(0.2 * -Math.signum(error));
+               r = recognation.getGoldPos();
+               error = r - PHONE_CAMERA_MIDDLE_PIXEL;
+               opMode.telemetry.addData("gold pos:", r);
+               opMode.telemetry.addData("error:", error);
+               opMode.telemetry.update();
+           }
+           leftDrive.setPower(0);
+           rightDrive.setPower(0);
+       }
+
+
     }
 }
 

@@ -224,10 +224,13 @@ public class Climbing {
         waitForFinish(angleMotor);
         moveLift(Climbing.Height.MAX);
         waitForFinish(liftMotor);
+        moveAngle(Climbing.Angle.CLIMB);
+        waitForFinish(angleMotor);
         openServo();
         ((LinearOpMode) opMode).sleep(300);
         moveAngle(Angle.STARTPOS);
         waitForFinish(angleMotor);
+
         angleMotor.setPower(0);
         liftMotor.setPower(0);
 

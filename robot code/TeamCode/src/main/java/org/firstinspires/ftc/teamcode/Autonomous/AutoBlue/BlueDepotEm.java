@@ -27,22 +27,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-@Autonomous(name = "AutoPixyTest", group = "Tests")
 
-public class AutoPixyTest extends LinearOpMode {
+/** doing Landing,Sampling and Team Marker
+  * PTS=70
+ *  Starting in BlueDepot
+ */
+@Autonomous(name = "BlueDepotEm", group = "Tests")
+public class BlueDepotEm extends LinearOpMode {
+
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
 
@@ -51,7 +53,19 @@ public class AutoPixyTest extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.drive.moveByPixy();
+    robot.climbing.land();
+    //in front of the Sampling
+    //TODO: Use pixy to do sampling
+    //robot.drive.moveByPixy();
+    //correct our angle
+    robot.drive.driveByEncoder(55,0.5, Drive.Direction.BACKWARD,2000);
+    //drive into the Depot
+    robot.intake.release();
+    sleep(1500);
+    //released the Team Marker
+
+
+
 
   }
 }

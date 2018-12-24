@@ -73,11 +73,16 @@ public class Intake {
             this.release();
         }
 
+        /*if (driver.dpad_up){
+            putTeamMarker();
+        }else stopMotor();*/
+
         if(collectModeIsPrevActive && !collectModeIsActive) {
             closeRightGate();
             closeLeftGate();
             this.stopMotor();
         }
+
         if(releaseModeIsPrevActive && !releaseModeIsActive) {
             this.stopMotor();
             closeRightGate();
@@ -87,6 +92,7 @@ public class Intake {
         if(operator.y) {
             setSearchMineral(Minerals.GOLD);
         }
+
         if(operator.b) {
             setSearchMineral(Minerals.SILVER);
        }
