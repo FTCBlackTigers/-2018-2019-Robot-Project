@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.worstPrograms.BTVuforia;
+import org.firstinspires.ftc.teamcode.Prototyping.BTVuforia;
 
 
 @Autonomous(name=" Auto Drive By Encoder", group="")

@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.worstPrograms;
+package org.firstinspires.ftc.teamcode.Prototyping;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
