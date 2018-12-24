@@ -17,7 +17,7 @@ public class Climbing {
         DOWN(0),
         STARTPOS(30),
         COLLECT(200),
-        CLIMB(90),
+        CLIMB(95),
         PUT(90);
         float pos;
         final double ticksPerDegrees = 58.9;
@@ -34,7 +34,7 @@ public class Climbing {
     public enum Height {
         MIN(0),
         MEDIUM(10),
-        MAX(28);
+        MAX(29);
         float pos;
         final double ticksPerCm = 277.105;
 
