@@ -17,7 +17,7 @@ public class Climbing {
         DOWN(0),
         STARTPOS(30),
         COLLECT(200),
-        CLIMB(95),
+        CLIMB(130),
         PUT(90);
         float pos;
         final double ticksPerDegrees = 58.9;
@@ -47,8 +47,8 @@ public class Climbing {
         }
     }
 
-    private final double MOVING_SPEED = 0.5;
-    private final double HANG_OPEN_POS = 0.25;
+    private final double MOVING_SPEED = 0.8;
+    private final double HANG_OPEN_POS = 0.27;
     private final double HANG_CLOSE_POS = 0;
 
     private DcMotor liftMotor;
@@ -216,12 +216,12 @@ public class Climbing {
     }
 
     public void land() {
-        moveAngle(Climbing.Angle.STARTPOS);
+        /*moveAngle(Climbing.Angle.STARTPOS);
         waitForFinish(angleMotor);
-        moveLift(Climbing.Height.MEDIUM);
+        moveLift(Height.MEDIUM);
         waitForFinish(liftMotor);
-        moveAngle(Climbing.Angle.CLIMB);
-        waitForFinish(angleMotor);
+        moveAngle(Angle.CLIMB);
+        waitForFinish(angleMotor);*/
         moveLift(Climbing.Height.MAX);
         waitForFinish(liftMotor);
         moveAngle(Climbing.Angle.CLIMB);

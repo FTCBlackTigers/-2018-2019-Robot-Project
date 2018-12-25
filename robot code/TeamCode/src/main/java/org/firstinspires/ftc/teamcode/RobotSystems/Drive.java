@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Pixy.PixyBlock;
 import org.firstinspires.ftc.teamcode.Pixy.PixyCam;
 import org.firstinspires.ftc.teamcode.Prototyping.vRecognation;
@@ -22,13 +23,13 @@ public class Drive {
     static final double WHEEL_DIAMETER_CM = 10.16;
     static final double COUNTS_PER_CM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.141592654);
-    static final double AUTO_TURN_SPEED = 0.2;
+    static final double AUTO_TURN_SPEED = 0.3;
     static final double THRESHOLD = 5;
     static final double P_TURN_COEFF = 0.075;
     private final int PIXY_MIDDLE_PIXEL = 200;
     private final int PIXY_PIXEL_THRESHOLD = 10;
-    private final double PHONE_CAMERA_MIDDLE_PIXEL = 500;
-    private final double PHONE_CAMERA_THRESHOLD = 30;
+    private final double PHONE_CAMERA_MIDDLE_PIXEL = 850;
+    private final double PHONE_CAMERA_THRESHOLD = 50;
 
     private OpMode opMode;
     private BT_Gyro gyro = new BT_Gyro();
@@ -251,25 +252,39 @@ public class Drive {
     }
 
 
-    public void moveByCamera() {
-       if (opMode instanceof  LinearOpMode) {
-           double r = recognation.getGoldPos();
-           double error = r - PHONE_CAMERA_MIDDLE_PIXEL;
-           while (((LinearOpMode) opMode).opModeIsActive() && Math.abs(error) >= PHONE_CAMERA_THRESHOLD) {
-               leftDrive.setPower(0.2 * Math.signum(error));
-               rightDrive.setPower(0.2 * -Math.signum(error));
-               r = recognation.getGoldPos();
-               error = r - PHONE_CAMERA_MIDDLE_PIXEL;
-               opMode.telemetry.addData("gold pos:", r);
-               opMode.telemetry.addData("error:", error);
-               opMode.telemetry.update();
-           }
-           leftDrive.setPower(0);
-           rightDrive.setPower(0);
-       }
-
-
+    public void Sampling() {
+        if (opMode instanceof LinearOpMode) {
+            double goldPos = recognation.getGoldPos();
+            //double lastPos = goldPos;
+            double startTime = opMode.getRuntime();
+            double error = goldPos - PHONE_CAMERA_MIDDLE_PIXEL;
+            while (((LinearOpMode) opMode).opModeIsActive() && Math.abs(error) >= PHONE_CAMERA_THRESHOLD) {
+                goldPos = recognation.getGoldPos();
+                error = goldPos - PHONE_CAMERA_MIDDLE_PIXEL;
+                if (goldPos != -999) {
+                    leftDrive.setPower(0.05 * -Math.signum(error));
+                    rightDrive.setPower(0.05 * Math.signum(error));
+                } else {
+                    if (goldPos == -999 && opMode.getRuntime() > startTime + 3) {
+                        turnByGyroRelative(-30, 1);
+                        startTime = opMode.getRuntime();
+                    }
+                }
+                //lastPos = goldPos;
+                opMode.telemetry.addData("gold pos:", goldPos);
+                opMode.telemetry.addData("error:", error);
+                opMode.telemetry.update();
+            }
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+        }
+        recognation.stopTfod();
     }
+
+
+    public double getAngle(){ return gyro.getAngle(); }
+
+
 }
 
 

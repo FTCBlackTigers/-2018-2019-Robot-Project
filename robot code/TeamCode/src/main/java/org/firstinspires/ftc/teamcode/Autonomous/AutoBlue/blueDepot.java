@@ -31,17 +31,15 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
 /**
  * doing Landing, Team Marker and Parking
  * PTS = 50
- * In Case of no Pixy
+ * In Case of no Sampling
  * Starting from BlueDepot On The Lander
  * FIRST Autonomous
  */
@@ -59,12 +57,17 @@ public class blueDepot extends LinearOpMode {
     telemetry.update();
     waitForStart();
     robot.climbing.land();
-    robot.drive.driveByEncoder(80, 0.3, Drive.Direction.BACKWARD, 5000);
+    robot.drive.turnByGyroAbsolut(20, 1500);
+    double ang = robot.drive.getAngle();
+    robot.drive.Sampling();
+    robot.drive.driveByEncoder(65, 0.3, Drive.Direction.BACKWARD, 5000);
+    robot.drive.turnByGyroAbsolut(ang,1000);
+    robot.drive.driveByEncoder(20,0.3, Drive.Direction.BACKWARD,1500);
     robot.intake.release();
     sleep(500);
     robot.intake.stopMotor();
-    robot.climbing.moveAngleAuto(Climbing.Angle.DOWN);
-    robot.drive.turnByGyroRelative(-40,1000);
+    //robot.climbing.moveAngleAuto(Climbing.Angle.DOWN);
+    //robot.drive.turnByGyroRelative(-40,1000);
     //robot.drive.driveByEncoder(110,0.4, Drive.Direction.FORWARD,2000);
     //while (opModeIsActive()) {
       //robot.intake.collect();
