@@ -39,13 +39,13 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
 /**
- * doing Landing, Sampling Team Marker and Parking.
+ * doing Landing, aTeam Marker and Parking.
  * PTS=65
  * In case of broken robot
- * Starting from BlueCreater
+ * Starting from BlueCreaterEm
  */
-@Autonomous(name = "BlueCreater", group = "Tests")
-public class BlueCreater extends LinearOpMode {
+@Autonomous(name = "BlueCreaterEm", group = "Tests")
+public class BlueCreaterEm extends LinearOpMode {
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
 
@@ -54,7 +54,7 @@ public class BlueCreater extends LinearOpMode {
     robot.init(hardwareMap , this);
     waitForStart();
     robot.climbing.land();
-    //TODO: add pixy to the code with Shalev the god of java
+
     robot.drive.driveByEncoder(20, 0.3, Drive.Direction.BACKWARD, 2000);
     robot.climbing.moveliftAuto(Climbing.Height.MEDIUM);
     robot.drive.turnByGyroRelative(95, 2000);

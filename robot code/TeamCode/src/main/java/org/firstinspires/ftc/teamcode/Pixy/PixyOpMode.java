@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Demonstrates empty OpMode
  */
 @TeleOp(name = "Pixy simple test", group = "pixy")
+@Disabled
 public class PixyOpMode extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "PrototypingMoveServo", group = "Concept")
+@Disabled
 public class PrototypingMoveServo extends OpMode {
 
   private Servo servo;

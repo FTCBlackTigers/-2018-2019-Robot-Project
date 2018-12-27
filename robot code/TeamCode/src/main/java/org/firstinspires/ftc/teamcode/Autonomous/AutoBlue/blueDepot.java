@@ -61,7 +61,7 @@ public class blueDepot extends LinearOpMode {
     double ang = robot.drive.getAngle();
     robot.drive.Sampling();
     robot.drive.driveByEncoder(65, 0.3, Drive.Direction.BACKWARD, 5000);
-    robot.drive.turnByGyroAbsolut(ang,1000);
+    robot.drive.turnByGyroAbsolut(0,1000);
     robot.drive.driveByEncoder(20,0.3, Drive.Direction.BACKWARD,1500);
     robot.intake.release();
     sleep(500);

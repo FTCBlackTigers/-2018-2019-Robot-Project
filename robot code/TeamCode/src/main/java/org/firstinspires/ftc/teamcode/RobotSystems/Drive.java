@@ -7,10 +7,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Pixy.PixyBlock;
 import org.firstinspires.ftc.teamcode.Pixy.PixyCam;
-import org.firstinspires.ftc.teamcode.Prototyping.vRecognation;
 
 public class Drive {
     public enum Direction {
@@ -28,7 +26,7 @@ public class Drive {
     static final double P_TURN_COEFF = 0.075;
     private final int PIXY_MIDDLE_PIXEL = 200;
     private final int PIXY_PIXEL_THRESHOLD = 10;
-    private final double PHONE_CAMERA_MIDDLE_PIXEL = 850;
+    private final double PHONE_CAMERA_MIDDLE_PIXEL = 800;
     private final double PHONE_CAMERA_THRESHOLD = 50;
 
     private OpMode opMode;
@@ -257,6 +255,7 @@ public class Drive {
             double goldPos = recognation.getGoldPos();
             //double lastPos = goldPos;
             double startTime = opMode.getRuntime();
+            double turningCount = 0;
             double error = goldPos - PHONE_CAMERA_MIDDLE_PIXEL;
             while (((LinearOpMode) opMode).opModeIsActive() && Math.abs(error) >= PHONE_CAMERA_THRESHOLD) {
                 goldPos = recognation.getGoldPos();
@@ -265,9 +264,13 @@ public class Drive {
                     leftDrive.setPower(0.05 * -Math.signum(error));
                     rightDrive.setPower(0.05 * Math.signum(error));
                 } else {
-                    if (goldPos == -999 && opMode.getRuntime() > startTime + 3) {
+                    if (opMode.getRuntime() > startTime + 2) {
                         turnByGyroRelative(-30, 1);
+                        turningCount++;
                         startTime = opMode.getRuntime();
+                    }
+                    if (turningCount >= 2) {
+                        break;
                     }
                 }
                 //lastPos = goldPos;

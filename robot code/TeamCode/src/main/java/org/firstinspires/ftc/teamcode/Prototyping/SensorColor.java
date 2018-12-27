@@ -53,7 +53,7 @@ import java.io.OutputStreamWriter;
 
 
 @TeleOp(name = "Sensor: Color", group = "Sensor")
-
+@Disabled
 public class SensorColor extends LinearOpMode {
 
   ColorSensor colorSensor;

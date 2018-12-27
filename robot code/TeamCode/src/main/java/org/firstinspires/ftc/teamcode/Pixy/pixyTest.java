@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Pixy;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -14,6 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 
 @TeleOp(name="Test Pixy Cam", group = "Pixy Cam")
+@Disabled
 public class pixyTest extends LinearOpMode {
     I2cDevice pixyCam;
     I2cDeviceSynchImpl pixyCamReader;

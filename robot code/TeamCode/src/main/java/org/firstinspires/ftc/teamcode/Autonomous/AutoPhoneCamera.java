@@ -30,18 +30,10 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.Prototyping.vRecognation;
-import org.firstinspires.ftc.teamcode.Prototyping.UVC_Camera;
-import org.firstinspires.ftc.teamcode.Prototyping.vRecognation;
-import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
+import org.firstinspires.ftc.teamcode.RobotSystems.vRecognation;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
 @Autonomous(name = "AutoPhoneCamera", group = "Tests")

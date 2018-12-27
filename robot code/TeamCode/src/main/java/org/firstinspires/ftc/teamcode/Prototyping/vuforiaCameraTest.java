@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.Prototyping;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -91,6 +92,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 @Autonomous(name="vuforiaTest", group ="Concept")
+@Disabled
 public class vuforiaCameraTest extends LinearOpMode {
 
     /*

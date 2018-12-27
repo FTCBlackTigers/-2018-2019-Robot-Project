@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 @Autonomous(name="moveMotorByTicks", group="Pushbot")
+@Disabled
 public class MoveMotorByTicks extends LinearOpMode {
 
     HardwarePushbot         robot   = new HardwarePushbot();

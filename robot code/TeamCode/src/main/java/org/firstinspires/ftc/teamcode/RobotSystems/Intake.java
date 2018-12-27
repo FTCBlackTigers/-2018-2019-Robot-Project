@@ -21,7 +21,7 @@ public class Intake {
     }
 
     private final double COLLECTION_SPEED = 0.8;
-    private final double RELEASE_SPEED = 0.4;
+    private final double RELEASE_SPEED = 0.3;
     private final double TEAM_MARKER_SPEED = -0.1;
     private final double LEFT_SERVO_OPEN_POS = 0.8;
     private final double RIGHT_SERVO_OPEN_POS = 0;

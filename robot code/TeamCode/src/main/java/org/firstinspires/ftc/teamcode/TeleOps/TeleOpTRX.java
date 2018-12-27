@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.TeleOps;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -38,6 +39,7 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
  * Demonstrates empty OpMode
  */
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TRX", group = "TeleOp")
+@Disabled
 public class TeleOpTRX extends OpMode {
 
   private ElapsedTime runtime = new ElapsedTime();

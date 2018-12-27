@@ -45,7 +45,7 @@ import java.io.UnsupportedEncodingException;
  * Demonstrates empty OpMode
  */
 @TeleOp(name = "PixyBetterOpMode", group = "pixy")
-
+@Disabled
 public class PixyBetterOpMode extends OpMode {
 
     PixyCam pixyCam;
