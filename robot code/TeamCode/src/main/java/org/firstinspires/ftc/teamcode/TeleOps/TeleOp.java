@@ -77,7 +77,8 @@ public class TeleOp extends OpMode {
   @Override
   public void loop() {
     robot.teleop(gamepad1, gamepad2, false);
-    telemetry.addData("Status", "Run Time: " + runtime.toString());
+    telemetry.addData("robot Status", "Run Time: " + runtime.toString());
+    telemetry.addData("gyro angle: ", robot.drive.getAngle());
     telemetry.update();
 
   }

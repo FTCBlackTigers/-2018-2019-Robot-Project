@@ -21,7 +21,7 @@ public class Drive {
     static final double WHEEL_DIAMETER_CM = 10.16;
     static final double COUNTS_PER_CM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.141592654);
-    static final double AUTO_TURN_SPEED = 0.3;
+    static final double AUTO_TURN_SPEED = 0.2;
     static final double THRESHOLD = 5;
     static final double P_TURN_COEFF = 0.075;
     private final int PIXY_MIDDLE_PIXEL = 200;
@@ -260,29 +260,57 @@ public class Drive {
             while (((LinearOpMode) opMode).opModeIsActive() && Math.abs(error) >= PHONE_CAMERA_THRESHOLD) {
                 goldPos = recognation.getGoldPos();
                 error = goldPos - PHONE_CAMERA_MIDDLE_PIXEL;
+
                 if (goldPos != -999) {
-                    leftDrive.setPower(0.05 * -Math.signum(error));
-                    rightDrive.setPower(0.05 * Math.signum(error));
-                } else {
-                    if (opMode.getRuntime() > startTime + 2) {
-                        turnByGyroRelative(-30, 1);
-                        turningCount++;
-                        startTime = opMode.getRuntime();
-                    }
-                    if (turningCount >= 2) {
+                    // leftDrive.setPower(0.05 * -Math.signum(error));
+                    // rightDrive.setPower(0.05 * Math.signum(error));
+                    leftDrive.setPower(0.03 * -Math.signum(error));
+                    rightDrive.setPower(0.03 * Math.signum(error));
+                }
+
+                if (opMode.getRuntime() > startTime + 2) {
+                    if (turningCount > 2) {
                         break;
                     }
+                    turnByGyroRelative(-18, 2000);
+                    turningCount++;
+                    startTime = opMode.getRuntime();
                 }
+
                 //lastPos = goldPos;
                 opMode.telemetry.addData("gold pos:", goldPos);
                 opMode.telemetry.addData("error:", error);
                 opMode.telemetry.update();
             }
+            opMode.telemetry.addData("gold pos:", goldPos);
+            opMode.telemetry.addData("error:", error);
+            opMode.telemetry.update();
             leftDrive.setPower(0);
             rightDrive.setPower(0);
         }
         recognation.stopTfod();
     }
+
+
+    public void driveToSampling(){
+        double angle = getAngle();
+        opMode.telemetry.addData("Gyro angle", getAngle());
+        opMode.telemetry.update();
+        if (angle > 40 && angle < 60) { //case left (1)
+            driveByEncoder(58, 0.3, Drive.Direction.BACKWARD, 5000);
+            driveByEncoder(58, 0.3, Direction.FORWARD, 5000);
+            } else if(angle < 15  && angle > -7){ //case middle (2)
+                driveByEncoder(48, 0.3, Drive.Direction.BACKWARD, 5000);
+                driveByEncoder(48, 0.3, Drive.Direction.FORWARD, 5000);
+            } else if (angle < -12 && angle > -30 ){ //case right (3)
+                driveByEncoder(58, 0.3, Drive.Direction.BACKWARD, 5000);
+                driveByEncoder(55, 0.3, Drive.Direction.FORWARD, 5000);
+            }
+            else{
+            driveByEncoder(50, 0.3, Drive.Direction.BACKWARD, 5000);
+            driveByEncoder(50, 0.3, Drive.Direction.FORWARD, 5000);
+        }
+        }
 
 
     public double getAngle(){ return gyro.getAngle(); }
