@@ -82,15 +82,14 @@ public class Drive {
         rightDrive.setPower(powerRightDrive * 0.5);
     }
 
-    public void turnByGyroAbsolut(double degrees, double timeMs) {
+    public void turnByGyroAbsolut(double degrees, double time) {
         double rightSpeed, leftSpeed;
         double steer;
         double error = getError(degrees);
-        double time;
-        double stopTime = opMode.getRuntime() + timeMs;
+        double stopTime = opMode.getRuntime() + time;
         // keep looping while we are still active, and not on heading.
-        while ((Math.abs(error) > THRESHOLD) && (opMode.getRuntime() < stopTime)) {
-            while (Math.abs(error) > THRESHOLD) {
+        while (((LinearOpMode)opMode).opModeIsActive() && (Math.abs(error) > THRESHOLD) && (opMode.getRuntime() < stopTime)) {
+            while (((LinearOpMode)opMode).opModeIsActive() && Math.abs(error) > THRESHOLD) {
                 // Update telemetry & Allow time for other processes to run.
                 steer = getSteer(error, P_TURN_COEFF);
                 rightSpeed = AUTO_TURN_SPEED * steer;
@@ -110,11 +109,11 @@ public class Drive {
             leftDrive.setPower(0);
             rightDrive.setPower(0);
             time = opMode.getRuntime();
-            /*while (opMode.getRuntime() < t + 300){
+            while (opMode.getRuntime() < time + 0.3){
                 error = getError(degrees);
                 opMode.telemetry.addData("Error: ", error);
                 opMode.telemetry.update();
-            }*/
+            }
         }
         leftDrive.setPower(0);
         rightDrive.setPower(0);
@@ -266,13 +265,11 @@ public class Drive {
                     // rightDrive.setPower(0.05 * Math.signum(error));
                     leftDrive.setPower(0.03 * -Math.signum(error));
                     rightDrive.setPower(0.03 * Math.signum(error));
-                }
-
-                if (opMode.getRuntime() > startTime + 2) {
-                    if (turningCount > 2) {
+                }else if (opMode.getRuntime() > startTime + 1) {
+                    if (turningCount >= 2) {
                         break;
                     }
-                    turnByGyroRelative(-18, 2000);
+                    turnByGyroRelative(25, 2);
                     turningCount++;
                     startTime = opMode.getRuntime();
                 }
@@ -292,7 +289,7 @@ public class Drive {
     }
 
 
-    public void driveToSampling(){
+    public void driveToSamplingWithReturn(){
         double angle = getAngle();
         opMode.telemetry.addData("Gyro angle", getAngle());
         opMode.telemetry.update();
@@ -303,8 +300,8 @@ public class Drive {
                 driveByEncoder(48, 0.3, Drive.Direction.BACKWARD, 5000);
                 driveByEncoder(48, 0.3, Drive.Direction.FORWARD, 5000);
             } else if (angle < -12 && angle > -30 ){ //case right (3)
-                driveByEncoder(58, 0.3, Drive.Direction.BACKWARD, 5000);
-                driveByEncoder(55, 0.3, Drive.Direction.FORWARD, 5000);
+                driveByEncoder(62, 0.3, Drive.Direction.BACKWARD, 5000);
+                driveByEncoder(54, 0.3, Drive.Direction.FORWARD, 5000);
             }
             else{
             driveByEncoder(50, 0.3, Drive.Direction.BACKWARD, 5000);
@@ -312,6 +309,23 @@ public class Drive {
         }
         }
 
+    public void driveToSampling(){
+        double angle = getAngle();
+        opMode.telemetry.addData("Gyro angle", getAngle());
+        opMode.telemetry.update();
+        if (angle > 40 && angle < 60) { //case left (1)
+            driveByEncoder(58, 0.3, Drive.Direction.BACKWARD, 5000);
+            turnByGyroRelative(-60, 1.5);
+        } else if(angle < 15  && angle > -7){ //case middle (2)
+            driveByEncoder(48, 0.3, Drive.Direction.BACKWARD, 5000);
+        } else if (angle < -12 && angle > -30 ){ //case right (3)
+            driveByEncoder(62, 0.3, Drive.Direction.BACKWARD, 5000);
+            turnByGyroRelative(60, 1.5);
+        }
+        else{
+            driveByEncoder(50, 0.3, Drive.Direction.BACKWARD, 5000);
+        }
+    }
 
     public double getAngle(){ return gyro.getAngle(); }
 

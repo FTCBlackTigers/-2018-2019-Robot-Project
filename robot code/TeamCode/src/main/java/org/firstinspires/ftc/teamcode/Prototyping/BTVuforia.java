@@ -53,8 +53,7 @@ public class BTVuforia {
 
     public static BTVuforia singalton = new BTVuforia();
 
-    private static final String VUFORIA_KEY = "AW/F0cP/////AAABmUpR4+dbt0Negw2nqaCH9Cw2gV4ZxuUmpeJMm7XOTdQVumthQcOeoS9qktHy4EvXtMAFoh7n5KeMiLMDqtKvd1TrbYNUy3f9ST3TMkH2hFYKB6oJMJPB8oelL9Bst/2XJBz0ycMMcKmSsIwyOqwOuHamAlwfT+o7VusfYmY7FPvnXuhn8obCeB5x0hhjwjsBuOz2wnx1us6N5y6on0rdc1DOzC2gI767QLVXAvPyJvMfgtZRGcfzFk0evuSVxrIPCRQBjQYK2s5SsBLZ4sEO4HelibKK5kg0lgT9P1uHSNa8SWX+4wpJm76dFw1nSL7YElieByOTXxycmOdhWaae5qb1lvYYmDiBNFiwfHRDkBRD";
-    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = FRONT;
+    private static final String VUFORIA_KEY = "private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = FRONT";
 
     private static final float mmPerInch = 25.4f;
     private static final float mmFTCFieldWidth = (12*6) * mmPerInch;       // the width of the FTC field (from the center point to the outer panels)
@@ -66,7 +65,6 @@ public class BTVuforia {
     private static final float CAMERA_LONG_AXIS_ROT = 90;
     private static final float CAMERA_SHORT_AXIS_ROT = 0;
     private static final float CAMERA_DEPTH_AXIS_ROT = -90;
-
 
     private VuforiaLocalizer vuforia;
     private List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
@@ -80,7 +78,7 @@ public class BTVuforia {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         //VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = CAMERA_CHOICE;
+        parameters.cameraDirection = FRONT;
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Load the data sets that for the trackable objects. These particular data
