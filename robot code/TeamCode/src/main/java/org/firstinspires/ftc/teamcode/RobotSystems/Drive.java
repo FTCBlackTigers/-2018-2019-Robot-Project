@@ -109,7 +109,7 @@ public class Drive {
             leftDrive.setPower(0);
             rightDrive.setPower(0);
             time = opMode.getRuntime();
-            while (opMode.getRuntime() < time + 0.3){
+            while (((LinearOpMode)opMode).opModeIsActive() && opMode.getRuntime() < time + 0.3){
                 error = getError(degrees);
                 opMode.telemetry.addData("Error: ", error);
                 opMode.telemetry.update();
@@ -250,6 +250,7 @@ public class Drive {
 
 
     public void Sampling() {
+        turnByGyroAbsolut(-20, 1.5);
         if (opMode instanceof LinearOpMode) {
             double goldPos = recognation.getGoldPos();
             //double lastPos = goldPos;
@@ -261,11 +262,11 @@ public class Drive {
                 error = goldPos - PHONE_CAMERA_MIDDLE_PIXEL;
 
                 if (goldPos != -999) {
-                    // leftDrive.setPower(0.05 * -Math.signum(error));
-                    // rightDrive.setPower(0.05 * Math.signum(error));
-                    leftDrive.setPower(0.03 * -Math.signum(error));
-                    rightDrive.setPower(0.03 * Math.signum(error));
-                }else if (opMode.getRuntime() > startTime + 1) {
+                    leftDrive.setPower(0.05 * -Math.signum(error));
+                    rightDrive.setPower(0.05 * Math.signum(error));
+                    //leftDrive.setPower(0.03 * -Math.signum(error));
+                   // rightDrive.setPower(0.03 * Math.signum(error));
+                }else if (opMode.getRuntime() > startTime + 1.5) {
                     if (turningCount >= 2) {
                         break;
                     }
@@ -313,12 +314,12 @@ public class Drive {
         double angle = getAngle();
         opMode.telemetry.addData("Gyro angle", getAngle());
         opMode.telemetry.update();
-        if (angle > 40 && angle < 60) { //case left (1)
-            driveByEncoder(58, 0.3, Drive.Direction.BACKWARD, 5000);
-            turnByGyroRelative(-60, 1.5);
+        if (angle > 20 && angle < 60) { //case left (1)
+            driveByEncoder(68, 0.3, Drive.Direction.BACKWARD, 5000);
+            turnByGyroRelative(-55, 1.5);
         } else if(angle < 15  && angle > -7){ //case middle (2)
             driveByEncoder(48, 0.3, Drive.Direction.BACKWARD, 5000);
-        } else if (angle < -12 && angle > -30 ){ //case right (3)
+        } else if (angle < -12 && angle > -60 ){ //case right (3)
             driveByEncoder(62, 0.3, Drive.Direction.BACKWARD, 5000);
             turnByGyroRelative(60, 1.5);
         }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
+package org.firstinspires.ftc.teamcode.Autonomous.Creater;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -15,8 +15,7 @@ public class BlueCreaterSampling extends LinearOpMode{
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap, this);
         waitForStart();
-        //robot.climbing.land();
-        robot.drive.turnByGyroAbsolut(-10, 1.5);
+        robot.climbing.land();
         robot.drive.Sampling();
         telemetry.addData("gyro angle: ", robot.drive.getAngle());
         telemetry.update();

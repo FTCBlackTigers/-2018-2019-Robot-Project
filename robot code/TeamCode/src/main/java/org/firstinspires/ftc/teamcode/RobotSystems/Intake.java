@@ -5,15 +5,10 @@ import android.graphics.Color;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Intake {
     enum Minerals{
@@ -39,6 +34,8 @@ public class Intake {
     private boolean releaseModeIsPrevActive;
     private boolean releaseModeIsActive;
     private boolean collectModeIsActive;
+    private boolean injecktIsActive;
+    private boolean injecktIsPrevActive;
 
     public void init(HardwareMap hardwareMap, OpMode opMode){
         this.opMode = opMode;
@@ -65,17 +62,13 @@ public class Intake {
 
         releaseModeIsActive = driver.left_bumper || operator.left_bumper;
         collectModeIsActive = driver.right_bumper || operator.right_bumper;
-
+        injecktIsActive = driver.b;
         if(collectModeIsActive) {
             this.collect();
         }
         else if (releaseModeIsActive) {
             this.release();
         }
-
-        /*if (driver.dpad_up){
-            putTeamMarker();
-        }else stopMotor();*/
 
         if(collectModeIsPrevActive && !collectModeIsActive) {
             closeRightGate();
@@ -95,8 +88,18 @@ public class Intake {
 
         if(operator.b) {
             setSearchMineral(Minerals.SILVER);
-       }
+        }
 
+        if (injecktIsActive) {
+            this.injackt();
+
+        }
+
+        if(injecktIsPrevActive && !injecktIsActive) {
+            closeRightGate();
+            closeLeftGate();
+            this.stopMotor();
+        }
 
         opMode.telemetry.addLine("intake: \n" )
                 .addData("collectMotorPower: ", collectMotor.getPower()+"\n")
@@ -108,6 +111,7 @@ public class Intake {
 
         releaseModeIsPrevActive = releaseModeIsActive;
         collectModeIsPrevActive = collectModeIsActive;
+        injecktIsPrevActive = injecktIsActive;
     }
 
     private void openLeftGate() {
@@ -137,9 +141,8 @@ public class Intake {
         this.leftOutput();
         this.rightOutput();
     }
-
-    public void putTeamMarker(){
-        collectMotor.setPower(TEAM_MARKER_SPEED);
+    public void injackt() {
+        collectMotor.setPower(-COLLECTION_SPEED);
         openRightGate();
         openLeftGate();
     }

@@ -27,47 +27,49 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
+package org.firstinspires.ftc.teamcode.Autonomous.Creater;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.sun.tools.javac.comp.Todo;
 
+import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
 /**
- * doing Landing, Team Marker and Parking
- * PTS = 50
- * In Case of no Sampling
- * Starting from BlueDepot On The Lander
- * FIRST Autonomous
+ * doing Landing, aTeam Marker and Parking.
+ * PTS=65
+ * In case of broken robot
+ * Starting from BlueCreaterEm
  */
-@Autonomous(name = "blueDepot", group = "Tests")
-public class blueDepot extends LinearOpMode {
-
+@Autonomous(name = "BlueCreaterEm", group = "Tests")
+public class BlueCreaterEm extends LinearOpMode {
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
-
 
   @Override
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
-    telemetry.addLine("Yeve is mitragesh");
-    telemetry.update();
     waitForStart();
-    //robot.climbing.land();
-    robot.drive.turnByGyroAbsolut(-20, 1.5);
-    robot.drive.Sampling();
-    robot.drive.driveToSampling();
-    robot.drive.driveByEncoder(25, 0.3, Drive.Direction.BACKWARD, 5000);
+    robot.climbing.land();
+
+    robot.drive.driveByEncoder(20, 0.3, Drive.Direction.BACKWARD, 2000);
+    robot.climbing.moveliftAuto(Climbing.Height.MEDIUM);
+    robot.drive.turnByGyroRelative(95, 2000);
+    robot.drive.driveByEncoder(90, 0.3, Drive.Direction.BACKWARD, 2000);
+    robot.drive.turnByGyroRelative(40, 2000);
+    robot.drive.driveByEncoder(60, 0.3, Drive.Direction.BACKWARD, 2000);
     robot.intake.release();
-    sleep(1500);
+    sleep(500);
     robot.intake.stopMotor();
-    //robot.climbing.moveAngleAuto(Climbing.Angle.DOWN);
-    //robot.drive.turnByGyroRelative(-40,1000);
-    //robot.drive.driveByEncoder(110,0.4, Drive.Direction.FORWARD,2000);
-    //while (opModeIsActive()) {
-      //robot.intake.collect();
-    }
+    robot.drive.driveByEncoder(100,0.5, Drive.Direction.FORWARD,1000);
+    robot.drive.driveByEncoder(10,0.2, Drive.Direction.FORWARD,1000);
+
+
+
+
+
   }
+}

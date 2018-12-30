@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
+package org.firstinspires.ftc.teamcode.Autonomous.Depot;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -48,7 +48,6 @@ public class BlueDepotEm extends LinearOpMode {
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();
 
-
   @Override
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
@@ -56,7 +55,6 @@ public class BlueDepotEm extends LinearOpMode {
     robot.climbing.land();
     //in front of the Sampling
     //TODO: Use pixy to do sampling
-    //robot.drive.moveByPixy();
     //correct our angle
     robot.drive.driveByEncoder(55,0.5, Drive.Direction.BACKWARD,2000);
     //drive into the Depot

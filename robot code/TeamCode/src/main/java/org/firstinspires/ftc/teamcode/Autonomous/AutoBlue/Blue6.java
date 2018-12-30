@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.AutoBlue;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -43,6 +44,7 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
  * Starting from blueCrater
  */
 @Autonomous(name = "Blue6", group = "Tests")
+@Disabled
 public class Blue6 extends LinearOpMode {
 
   private Robot robot = new Robot();

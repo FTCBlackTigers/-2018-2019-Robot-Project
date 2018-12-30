@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -38,7 +39,7 @@ import org.firstinspires.ftc.teamcode.Prototyping.BTVuforia;
 
 
 @Autonomous(name=" Auto Drive By Encoder", group="")
-//@Disabled
+@Disabled
 public class RobotAutoDriveByEncoder extends LinearOpMode {
 
     /* Declare OpMode members. */
