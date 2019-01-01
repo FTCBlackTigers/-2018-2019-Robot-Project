@@ -4,11 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-@Autonomous(name = "BlueCreaterSampling", group = "Tests")
-public class BlueCreaterSampling extends LinearOpMode{
+@Autonomous(name = "CreaterSampling", group = "Tests")
+public class CreaterSampling extends LinearOpMode{
     private Robot robot = new Robot();
     private ElapsedTime runtime = new ElapsedTime();
     @Override
@@ -20,16 +21,18 @@ public class BlueCreaterSampling extends LinearOpMode{
         telemetry.addData("gyro angle: ", robot.drive.getAngle());
         telemetry.update();
         robot.drive.driveToSamplingWithReturn();
-        //robot.climbing.moveLift(Climbing.Height.MEDIUM);
-        robot.drive.turnByGyroAbsolut(65, 1500);
-        robot.drive.driveByEncoder(80, 0.3, Drive.Direction.BACKWARD, 2000 );
-        robot.drive.turnByGyroAbsolut(120, 1000);
-        robot.drive.driveByEncoder(55, 0.3, Drive.Direction.BACKWARD, 2000);
+        robot.climbing.moveLift(Climbing.Height.MEDIUM);
+        robot.drive.turnByGyroAbsolut(65, 1500);//roatate to the wall
+        robot.drive.driveByEncoder(85, 0.3, Drive.Direction.BACKWARD, 2000); //drive to the wall
+        robot.drive.turnByGyroAbsolut(150, 1000); //rotate to the crater
+        robot.drive.driveByEncoder(20, 0.3, Drive.Direction.FORWARD, 2000);//drive to the crater
+        robot.drive.driveByEncoder(10, 0.3, Drive.Direction.FORWARD, 2000);
         robot.drive.turnByGyroAbsolut(150, 1000);
-        robot.drive.driveByEncoder(40, 0.3, Drive.Direction.BACKWARD, 2000);
-        robot.intake.release();
-        sleep(2500);
-        robot.intake.stopMotor();
+        robot.drive.driveByEncoder(10, 0.3, Drive.Direction.BACKWARD, 2000);
+        sleep(10000);
+       // robot.intake.release();
+        //sleep(2500);
+      //  robot.intake.stopMotor();
         //robot.drive.driveByEncoder(120, 0.5, Drive.Direction.FORWARD, 2000);
     }
 

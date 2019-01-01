@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -37,6 +38,7 @@ import org.firstinspires.ftc.teamcode.RobotSystems.vRecognation;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
 @Autonomous(name = "AutoPhoneCamera", group = "Tests")
+@Disabled
 
 public class AutoPhoneCamera extends LinearOpMode {
   private Robot robot = new Robot();

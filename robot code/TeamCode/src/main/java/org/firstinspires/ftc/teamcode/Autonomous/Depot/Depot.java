@@ -43,8 +43,8 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
  * Starting from BlueDepot On The Lander
  * FIRST Autonomous
  */
-@Autonomous(name = "blueDepot", group = "Tests")
-public class blueDepot extends LinearOpMode {
+@Autonomous(name = "Depot", group = "Auto")
+public class Depot extends LinearOpMode {
 
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();

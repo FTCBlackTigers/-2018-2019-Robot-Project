@@ -18,10 +18,10 @@ public class Climbing {
         CLIMB(100),
         PUT(90);
         float pos;
-        final double ticksPerDegrees = 101.477;
+        final double ticksPerDegree = 151.04;
 
         public int getTicks() {
-            return ((int) (ticksPerDegrees * pos));
+            return ((int) (ticksPerDegree * pos));
         }
 
         Angle(float ang) {
@@ -161,11 +161,11 @@ public class Climbing {
 
         opMode.telemetry.addLine("climbing: \n").addData("lift motor power: ", liftMotor.getPower())
                 .addData(" Position: ", liftMotor.getCurrentPosition() + "\n")
-                .addData("Height motor power: ", angleMotor.getPower())
-                .addData("Servo position: ", hangServo.getPosition() + "\n")
+                .addData("Angle motor power: ", angleMotor.getPower())
                 .addData(" Position: ", angleMotor.getCurrentPosition() + "\n")
-                .addData("liftTouch : " , liftTouchIsActive)
-                .addData(" angleTouch : ", angleTouchIsActive);
+                .addData("Servo position: ", hangServo.getPosition() + "\n")
+                .addData("liftTouch: " , liftTouchIsActive)
+                .addData(" angleTouch: ", angleTouchIsActive);
 
         angleTouchIsPrevActive = angleTouchIsActive;
         liftTouchIsPrevActive = liftTouchIsActive;
@@ -204,7 +204,7 @@ public class Climbing {
         if(angleTouchIsActive && motorPower < 0) {
             return;
         }
-        angleMotor.setPower(motorPower*0.6);
+        angleMotor.setPower(motorPower * 1);
 
     }
 

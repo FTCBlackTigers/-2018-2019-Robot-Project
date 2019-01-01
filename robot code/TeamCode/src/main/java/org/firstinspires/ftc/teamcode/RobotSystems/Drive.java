@@ -295,13 +295,13 @@ public class Drive {
         opMode.telemetry.addData("Gyro angle", getAngle());
         opMode.telemetry.update();
         if (angle > 40 && angle < 60) { //case left (1)
-            driveByEncoder(58, 0.3, Drive.Direction.BACKWARD, 5000);
-            driveByEncoder(58, 0.3, Direction.FORWARD, 5000);
+            driveByEncoder(65, 0.3, Drive.Direction.BACKWARD, 5000);
+            driveByEncoder(65, 0.3, Direction.FORWARD, 5000);
             } else if(angle < 15  && angle > -7){ //case middle (2)
                 driveByEncoder(48, 0.3, Drive.Direction.BACKWARD, 5000);
                 driveByEncoder(48, 0.3, Drive.Direction.FORWARD, 5000);
             } else if (angle < -12 && angle > -30 ){ //case right (3)
-                driveByEncoder(62, 0.3, Drive.Direction.BACKWARD, 5000);
+                driveByEncoder(58, 0.3, Drive.Direction.BACKWARD, 5000);
                 driveByEncoder(54, 0.3, Drive.Direction.FORWARD, 5000);
             }
             else{

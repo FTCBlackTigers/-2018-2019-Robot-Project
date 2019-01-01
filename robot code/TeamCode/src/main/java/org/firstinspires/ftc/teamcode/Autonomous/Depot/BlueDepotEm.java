@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Depot;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -43,6 +44,7 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
  *  Starting in BlueDepot
  */
 @Autonomous(name = "BlueDepotEm", group = "Tests")
+@Disabled
 public class BlueDepotEm extends LinearOpMode {
 
   private Robot robot = new Robot();

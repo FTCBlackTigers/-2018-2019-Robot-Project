@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Creater;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.sun.tools.javac.comp.Todo;
@@ -45,6 +46,7 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
  * Starting from BlueCreaterEm
  */
 @Autonomous(name = "BlueCreaterEm", group = "Tests")
+@Disabled
 public class BlueCreaterEm extends LinearOpMode {
   private Robot robot = new Robot();
   private ElapsedTime runtime = new ElapsedTime();

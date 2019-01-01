@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Creater;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 @Autonomous(name = "CreaterParking", group = "autonmous")
+@Disabled
 public class createrParking extends LinearOpMode{
     private Robot robot = new Robot();
     private ElapsedTime runtime = new ElapsedTime();
