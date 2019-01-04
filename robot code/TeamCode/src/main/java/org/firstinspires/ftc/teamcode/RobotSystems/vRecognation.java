@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode.RobotSystems;
+import android.graphics.Camera;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -11,8 +13,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibrationIdentity;
+import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibrationManager;
 
 import java.util.List;
+import android.hardware.Camera.Parameters;
 
 import javax.net.ssl.HandshakeCompletedEvent;
 
@@ -102,6 +107,7 @@ public class vRecognation {
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
+
     }
 
     /**

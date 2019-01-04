@@ -14,6 +14,7 @@ public class Robot  {
         drive.init(hardwareMap, opMode);
         intake.init(hardwareMap, opMode);
         climbing.init(hardwareMap, opMode);
+
     }
 
     public void teleop(Gamepad driver, Gamepad operator, boolean isTRX){
