@@ -21,7 +21,7 @@ public class CreaterSampling extends LinearOpMode{
         telemetry.addData("gyro angle: ", robot.drive.getAngle());
         telemetry.update();
         robot.drive.driveToSamplingWithReturn();
-        robot.climbing.moveLift(Climbing.Height.MEDIUM);
+        robot.climbing.moveLift(Climbing.Height.DRIVE_POS);
         robot.drive.turnByGyroAbsolut(65, 1500);//roatate to the wall
         robot.drive.driveByEncoder(85, 0.3, Drive.Direction.BACKWARD, 2000); //drive to the wall
         robot.drive.turnByGyroAbsolut(150, 1000); //rotate to the crater

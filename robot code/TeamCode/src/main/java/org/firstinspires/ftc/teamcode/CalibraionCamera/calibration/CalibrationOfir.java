@@ -27,9 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.calibration;
-
-import android.hardware.Camera;
+package org.firstinspires.ftc.teamcode.CalibraionCamera.calibration;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -37,43 +35,31 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * Demonstrates empty OpMode
+ * @version 1.0
+ * this class isnt final,it is going to be used in the Sampling method
+ * @see org.firstinspires.ftc.teamcode.RobotSystems.Drive
+ * the Source code is here for understanding and saving code ONLY and not going to be used in the
+ * competition.
  */
-@TeleOp(name = "Camera Calibration", group = "Concept")
-public class Calibrate extends OpMode {
-  private Camera mCamera = android.hardware.Camera.open();
-  private String WhiteParameter = Camera.Parameters.WHITE_BALANCE_AUTO;
+
+@TeleOp(name = "Camera Calibration1", group = "Tests")
+@Disabled
+public class CalibrationOfir extends OpMode {
+
   private ElapsedTime runtime = new ElapsedTime();
+  private final int  OPTIMAL_BRIGHTNESS = 5;
+  private CameraBrightness cameraBrightness = new CameraBrightness();
 
   @Override
   public void init() {
     telemetry.addData("Status", "Initialized");
   }
-
-  /*
-     * Code to run when the op mode is first enabled goes here
-     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-     */
-  @Override
-  public void init_loop() {
-  }
-
-  /*
-   * This method will be called ONCE when start is pressed
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
-  @Override
-  public void start() {
-    runtime.reset();
-  }
-
-  /*
-   * This method will be called repeatedly in a loop
-   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-   */
   @Override
   public void loop() {
-    telemetry.addData("White Balance: ",mCamera.getParameters().getWhiteBalance());
+    if(cameraBrightness.getBrightness() != OPTIMAL_BRIGHTNESS){
+        cameraBrightness.setBrightness(OPTIMAL_BRIGHTNESS);
+    }
+    telemetry.addData("Brightness: ", cameraBrightness.getBrightness());
     telemetry.addData("Status", "Run Time: " + runtime.toString());
     telemetry.update();
   }

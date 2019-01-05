@@ -19,7 +19,7 @@ public class createrParking extends LinearOpMode{
         robot.init(hardwareMap, this);
         waitForStart();
         robot.climbing.land();
-        robot.climbing.moveLift(Climbing.Height.MIN);
+        robot.climbing.moveLift(Climbing.Height.DRIVE_POS);
         robot.drive.Sampling();
         robot.drive.driveToSampling();
         robot.drive.turnByGyroRelative(10,1);

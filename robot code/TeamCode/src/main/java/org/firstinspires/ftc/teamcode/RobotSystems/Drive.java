@@ -72,7 +72,8 @@ public class Drive {
                 addData("left motor power: ", leftDrive.getPower()).
                 addData("right motor power: ", rightDrive.getPower())
                 .addData("left motor pos: ", leftDrive.getCurrentPosition())
-                .addData("right motor pos: ", rightDrive.getCurrentPosition());
+                .addData("right motor pos: ", rightDrive.getCurrentPosition() + "\n");
+                //.addData("camera: ", recognation.cameraCalibration().getDistortionParameters());
 
     }
 

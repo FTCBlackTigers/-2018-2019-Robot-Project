@@ -12,13 +12,13 @@ import static java.lang.Thread.sleep;
 
 public class Climbing {
     public enum Angle {
-        DOWN(0),
-        STARTPOS(30),
-        COLLECT(185),
-        CLIMB(100),
-        PUT(90);
+        DRIVE_POS(50),
+        COLLECT(180),
+        GO_TO_CLIMB(90),
+        CLIMB(30),
+        PUT(70);
         float pos;
-        final double ticksPerDegree = 151.04;
+        final double ticksPerDegree =93.588;
 
         public int getTicks() {
             return ((int) (ticksPerDegree * pos));
@@ -30,11 +30,15 @@ public class Climbing {
     }
 
     public enum Height {
-        MIN(0),
-        MEDIUM(10),
-        MAX(30);
+
+        DRIVE_POS(0),
+        COLLECT(20),
+        GO_TO_CLIMB(30),
+        CLIMB(10),
+        PUT(33);
+
         float pos;
-        final double ticksPerCm = 277.105;
+        final double ticksPerCm = 281.942;
 
         public int getTicks() {
             return ((int) (ticksPerCm * pos));
@@ -120,23 +124,30 @@ public class Climbing {
         }
 
         if (operator.dpad_down) {
-            moveLift(Height.MIN);
+            moveLift(Height.DRIVE_POS);
+            moveAngle(Angle.DRIVE_POS);
         }
 
-        if (operator.dpad_right) {
-           moveLift(Height.MEDIUM);
+        if (operator.dpad_left) {
+            moveLift(Height.CLIMB);
+            moveAngle(Angle.CLIMB);
         }
+
 
         if (operator.dpad_up) {
-            moveLift(Height.MAX);
+            moveLift(Height.GO_TO_CLIMB);
+            moveAngle(Angle.GO_TO_CLIMB);
+            openServo();
         }
 
         if (operator.right_trigger > 0.7) {
-           moveAngle(Angle.CLIMB);
+           moveLift(Height.COLLECT);
+           moveAngle(Angle.COLLECT);
         }
 
         if (operator.left_trigger > 0.7) {
-           moveAngle(Angle.COLLECT);
+            moveLift(Height.PUT);
+            moveAngle(Angle.PUT);
         }
 
         if (Math.abs(liftJoystickValue) > 0.1) {
@@ -229,15 +240,15 @@ public class Climbing {
         waitForFinish(angleMotor);
         moveLift(Height.MEDIUM);
         waitForFinish(liftMotor);
-        moveAngle(Angle.CLIMB);
+        moveAngle(Angle.GO_TO_CLIMB);
         waitForFinish(angleMotor);*/
-        moveLift(Climbing.Height.MAX);
+        moveLift(Climbing.Height.GO_TO_CLIMB);
         waitForFinish(liftMotor);
-        moveAngle(Climbing.Angle.CLIMB);
+        moveAngle(Climbing.Angle.GO_TO_CLIMB);
         waitForFinish(angleMotor);
         openServo();
         ((LinearOpMode) opMode).sleep(300);
-        moveAngle(Angle.STARTPOS);
+        moveAngle(Angle.DRIVE_POS);
         waitForFinish(angleMotor);
 
         angleMotor.setPower(0);

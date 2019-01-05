@@ -27,51 +27,55 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Autonomous.Creater;
+package org.firstinspires.ftc.teamcode.CalibraionCamera.calibrationTest;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import android.hardware.Camera;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.sun.tools.javac.comp.Todo;
-
-import org.firstinspires.ftc.teamcode.RobotSystems.Climbing;
-import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
-import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
 /**
- * doing Landing, aTeam Marker and Parking.
- * PTS=65
- * In case of broken robot
- * Starting from BlueCreaterEm
+ * Demonstrates empty OpMode
  */
-@Autonomous(name = "BlueCreaterEm", group = "Tests")
+@TeleOp(name = "test1", group = "Concept")
 @Disabled
-public class BlueCreaterEm extends LinearOpMode {
-  private Robot robot = new Robot();
+public class Calibrate extends OpMode {
+  private Camera mCamera = android.hardware.Camera.open();
+  private String WhiteParameter = Camera.Parameters.WHITE_BALANCE_AUTO;
   private ElapsedTime runtime = new ElapsedTime();
 
   @Override
-  public void runOpMode() throws InterruptedException {
-    robot.init(hardwareMap , this);
-    waitForStart();
-    robot.climbing.land();
+  public void init() {
+    telemetry.addData("Status", "Initialized");
+  }
 
-    robot.drive.driveByEncoder(20, 0.3, Drive.Direction.BACKWARD, 2000);
-    robot.climbing.moveliftAuto(Climbing.Height.DRIVE_POS);
-    robot.drive.turnByGyroRelative(95, 2000);
-    robot.drive.driveByEncoder(90, 0.3, Drive.Direction.BACKWARD, 2000);
-    robot.drive.turnByGyroRelative(40, 2000);
-    robot.drive.driveByEncoder(60, 0.3, Drive.Direction.BACKWARD, 2000);
-    robot.intake.release();
-    sleep(500);
-    robot.intake.stopMotor();
-    robot.drive.driveByEncoder(100,0.5, Drive.Direction.FORWARD,1000);
-    robot.drive.driveByEncoder(10,0.2, Drive.Direction.FORWARD,1000);
+  /*
+     * Code to run when the op mode is first enabled goes here
+     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
+     */
+  @Override
+  public void init_loop() {
+  }
 
+  /*
+   * This method will be called ONCE when start is pressed
+   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
+   */
+  @Override
+  public void start() {
+    runtime.reset();
+  }
 
-
-
-
+  /*
+   * This method will be called repeatedly in a loop
+   * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
+   */
+  @Override
+  public void loop() {
+    telemetry.addData("White Balance: ",mCamera.getParameters().getWhiteBalance());
+    telemetry.addData("Status", "Run Time: " + runtime.toString());
+    telemetry.update();
   }
 }

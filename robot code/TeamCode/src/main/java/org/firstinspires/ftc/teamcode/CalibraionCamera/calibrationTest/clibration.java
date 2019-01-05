@@ -1,11 +1,8 @@
-package org.firstinspires.ftc.teamcode.calibration;
+package org.firstinspires.ftc.teamcode.CalibraionCamera.calibrationTest;
 
 import android.hardware.Camera;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import java.security.Policy;
 
 public class clibration {
     public OpMode opMode;
