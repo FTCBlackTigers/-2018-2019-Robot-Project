@@ -14,7 +14,7 @@ public class CreaterSampling extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() throws InterruptedException {
-        robot.init(hardwareMap, this);
+      /*  robot.init(hardwareMap, this);
         waitForStart();
         robot.climbing.land();
         robot.drive.Sampling();
@@ -33,7 +33,7 @@ public class CreaterSampling extends LinearOpMode{
        // robot.intake.release();
         //sleep(2500);
       //  robot.intake.stopMotor();
-        //robot.drive.driveByEncoder(120, 0.5, Drive.Direction.FORWARD, 2000);
+        //robot.drive.driveByEncoder(120, 0.5, Drive.Direction.FORWARD, 2000);*/
     }
 
 }

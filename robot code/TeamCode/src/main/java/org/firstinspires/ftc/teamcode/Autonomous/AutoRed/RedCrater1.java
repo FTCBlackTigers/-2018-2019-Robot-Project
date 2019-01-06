@@ -47,11 +47,11 @@ public class RedCrater1 extends LinearOpMode {
 
   @Override
   public void runOpMode() throws InterruptedException {
-    robot.init(hardwareMap , this);
+    /*robot.init(hardwareMap , this);
     waitForStart();
     robot.drive.driveByEncoder(80,0.5, Drive.Direction.FORWARD, 6000);
     robot.drive.turnByGyroRelative(-45,6000);
-    robot.drive.driveByEncoder(30,0.5, Drive.Direction.FORWARD, 6000);
+    robot.drive.driveByEncoder(30,0.5, Drive.Direction.FORWARD, 6000);*/
 
 
   }

@@ -37,8 +37,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.RobotSystems.Drive;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
-@Autonomous(name = "AutoTurnTest", group = "Tests")
-@Disabled
+@Autonomous(name = "Auto Sampling", group = "Tests")
 public class AutoTurnTest extends LinearOpMode {
 
   private Robot robot = new Robot();
@@ -49,7 +48,7 @@ public class AutoTurnTest extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     robot.init(hardwareMap , this);
     waitForStart();
-    robot.drive.turnByGyroAbsolut(180,6000);
+    //robot.drive.Sampling();
 
   }
 }

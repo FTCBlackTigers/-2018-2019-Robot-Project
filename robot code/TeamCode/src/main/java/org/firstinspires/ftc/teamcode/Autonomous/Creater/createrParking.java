@@ -16,7 +16,7 @@ public class createrParking extends LinearOpMode{
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot.init(hardwareMap, this);
+        /*robot.init(hardwareMap, this);
         waitForStart();
         robot.climbing.land();
         robot.climbing.moveLift(Climbing.Height.DRIVE_POS);
@@ -25,7 +25,7 @@ public class createrParking extends LinearOpMode{
         robot.drive.turnByGyroRelative(10,1);
         robot.drive.driveByEncoder(10, 0.4, Drive.Direction.BACKWARD, 1);
         robot.drive.turnByGyroRelative(10,1);
-        robot.drive.driveByEncoder(10, 0.4, Drive.Direction.BACKWARD, 1);
+        robot.drive.driveByEncoder(10, 0.4, Drive.Direction.BACKWARD, 1);*/
 
     }
 }

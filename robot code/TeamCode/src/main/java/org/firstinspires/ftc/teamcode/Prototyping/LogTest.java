@@ -27,28 +27,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.TeleOps;
+package org.firstinspires.ftc.teamcode.Prototyping;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
+import java.io.FileNotFoundException;
 
-/**
- * Demonstrates empty OpMode
- */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TRX", group = "TeleOp")
-@Disabled
-public class TeleOpTRX extends OpMode {
+@TeleOp(name = "LogTest", group = "Concept")
+public class LogTest extends OpMode {
 
   private ElapsedTime runtime = new ElapsedTime();
-  private Robot robot = new Robot();
+  private LogCreator logCreator = new LogCreator();
 
   @Override
   public void init() {
-    robot.init(hardwareMap,this);
     telemetry.addData("Status", "Initialized");
+    try {
+      logCreator.createFile();
+    } catch (FileNotFoundException x) {
+      telemetry.addLine("file not found");
+      telemetry.update();
+    }
+
   }
 
   /*
@@ -74,8 +77,13 @@ public class TeleOpTRX extends OpMode {
    */
   @Override
   public void loop() {
-    robot.teleop(gamepad1, gamepad2, true);
     telemetry.addData("Status", "Run Time: " + runtime.toString());
-    telemetry.update();
+    logCreator.writeToFile("Run Time: " + runtime.toString());
+  }
+
+  @Override
+  public void stop() {
+    super.stop();
+    logCreator.closeFile();
   }
 }

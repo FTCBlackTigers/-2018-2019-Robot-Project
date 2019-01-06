@@ -52,7 +52,7 @@ public class BlueDepotEm extends LinearOpMode {
 
   @Override
   public void runOpMode() throws InterruptedException {
-    robot.init(hardwareMap , this);
+    /*robot.init(hardwareMap , this);
     waitForStart();
     robot.climbing.land();
     //in front of the Sampling
@@ -61,7 +61,7 @@ public class BlueDepotEm extends LinearOpMode {
     robot.drive.driveByEncoder(55,0.5, Drive.Direction.BACKWARD,2000);
     //drive into the Depot
     robot.intake.release();
-    sleep(1500);
+    sleep(1500);*/
     //released the Team Marker
 
 

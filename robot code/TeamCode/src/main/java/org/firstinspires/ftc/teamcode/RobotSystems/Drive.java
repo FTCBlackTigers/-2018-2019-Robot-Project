@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.RobotSystems;
 
+import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,6 +11,13 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Pixy.PixyBlock;
 import org.firstinspires.ftc.teamcode.Pixy.PixyCam;
+import org.firstinspires.ftc.teamcode.Prototyping.LogCreator;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.Date;
 
 public class Drive {
     public enum Direction {
@@ -35,13 +44,22 @@ public class Drive {
     private DcMotor rightDrive;
     PixyCam pixyCam;
     private vRecognation recognation = null;
+    //public LogCreator logCreator = new LogCreator();
+
+
 
     public void init(HardwareMap hardwareMap, OpMode opMode) {
         this.opMode = opMode;
+        /*try {
+            logCreator.createFile();
+        } catch (FileNotFoundException x) {
+            opMode.telemetry.addLine("file not found");
+            opMode.telemetry.update();
+        }*/
         leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
         rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
         gyro.init(hardwareMap);
-        pixyCam = hardwareMap.get(PixyCam.class, "pixy");
+        //pixyCam = hardwareMap.get(PixyCam.class, "pixy");
         if (opMode instanceof  LinearOpMode) {
             recognation = new vRecognation(hardwareMap, opMode);
         }
@@ -254,7 +272,6 @@ public class Drive {
         turnByGyroAbsolut(-20, 1.5);
         if (opMode instanceof LinearOpMode) {
             double goldPos = recognation.getGoldPos();
-            //double lastPos = goldPos;
             double startTime = opMode.getRuntime();
             double turningCount = 0;
             double error = goldPos - PHONE_CAMERA_MIDDLE_PIXEL;
@@ -265,8 +282,6 @@ public class Drive {
                 if (goldPos != -999) {
                     leftDrive.setPower(0.05 * -Math.signum(error));
                     rightDrive.setPower(0.05 * Math.signum(error));
-                    //leftDrive.setPower(0.03 * -Math.signum(error));
-                   // rightDrive.setPower(0.03 * Math.signum(error));
                 }else if (opMode.getRuntime() > startTime + 1.5) {
                     if (turningCount >= 2) {
                         break;
@@ -276,14 +291,19 @@ public class Drive {
                     startTime = opMode.getRuntime();
                 }
 
-                //lastPos = goldPos;
                 opMode.telemetry.addData("gold pos:", goldPos);
                 opMode.telemetry.addData("error:", error);
                 opMode.telemetry.update();
+                /*logCreator.writeToFile("gold pos: " + goldPos + "\n");
+                logCreator.writeToFile("error: " + error + "\n");*/
+
+
             }
             opMode.telemetry.addData("gold pos:", goldPos);
             opMode.telemetry.addData("error:", error);
             opMode.telemetry.update();
+            /*logCreator.writeToFile("gold pos: " + goldPos + "\n");
+            logCreator.writeToFile("error: " + error + "\n");*/
             leftDrive.setPower(0);
             rightDrive.setPower(0);
         }
@@ -309,7 +329,7 @@ public class Drive {
             driveByEncoder(50, 0.3, Drive.Direction.BACKWARD, 5000);
             driveByEncoder(50, 0.3, Drive.Direction.FORWARD, 5000);
         }
-        }
+}
 
     public void driveToSampling(){
         double angle = getAngle();
@@ -330,7 +350,8 @@ public class Drive {
     }
 
     public double getAngle(){ return gyro.getAngle(); }
-
+    public DcMotor getLeftMotor(){return leftDrive;}
+    public DcMotor getrightMotor(){return rightDrive;}
 
 }
 

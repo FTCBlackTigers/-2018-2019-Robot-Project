@@ -53,7 +53,7 @@ public class Blue6 extends LinearOpMode {
 
   @Override
   public void runOpMode() throws InterruptedException {
-    //TODO:Check values with Shalev(the god)
+   /* //TODO:Check values with Shalev(the god)
     robot.init(hardwareMap , this);
     waitForStart();
     //TODO: Use pixy to do sampling
@@ -74,12 +74,12 @@ public class Blue6 extends LinearOpMode {
     //Correct our angle
     robot.drive.driveByEncoder(55, 0.5, Drive.Direction.FORWARD, 2300);
     //driving to the depot
-    robot.intake.release(); //released the Team Marker
+    //robot.intake.release(); //released the Team Marker
     wait(1500);
     robot.drive.turnByGyroAbsolut(180,1500); // Rotate to the crater
     robot.drive.driveByEncoder(210,0.7, Drive.Direction.FORWARD, 3500);
     // driving to the crater in order to park
-
+*/
 
   }
 }

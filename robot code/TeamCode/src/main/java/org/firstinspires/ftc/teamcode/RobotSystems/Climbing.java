@@ -268,4 +268,21 @@ public class Climbing {
         angleMotor.setPower(0);
     }
 
+    public DcMotor getLiftMotor() {
+        return liftMotor;
+    }
+
+    public DcMotor getAngleMotor() {
+        return angleMotor;
+    }
+    public boolean AngleTouchPressed(){
+        return !angleTouch.getState();
+    }
+    public boolean LiftTouchPressed(){
+        return !liftTouch.getState();
+    }
+
+    public Servo getHangServo() {
+        return hangServo;
+    }
 }

@@ -36,6 +36,8 @@ public class Intake {
     private boolean collectModeIsActive;
     private boolean injecktIsActive;
     private boolean injecktIsPrevActive;
+    private double RhsvValues2;
+    private double LhsvValues2;
 
     public void init(HardwareMap hardwareMap, OpMode opMode){
         this.opMode = opMode;
@@ -151,6 +153,7 @@ public class Intake {
         float[] hsvValues = new float[3];
         Color.RGBToHSV(leftColorSensor.red() * 255, leftColorSensor.green() * 255, leftColorSensor.blue()* 255, hsvValues);
         opMode.telemetry.addLine("leftColorSensor: ").addData("Value: ", hsvValues[2]);
+        LhsvValues2 = hsvValues[2];
 
         if(hsvValues[2] >= 1550) {
             return Minerals.SILVER;
@@ -165,6 +168,7 @@ public class Intake {
         float[] hsvValues = new float[3];
         Color.RGBToHSV(rightColorSensor.red() * 255, rightColorSensor.green() * 255, rightColorSensor.blue()* 255, hsvValues);
         opMode.telemetry.addLine("rightColorSensor: ").addData("Value: ", hsvValues[2]);
+        RhsvValues2 = hsvValues[2];
 
         if(hsvValues[2] >= 1550) {
             return Minerals.SILVER;
@@ -205,7 +209,12 @@ public class Intake {
     public void setSearchMineral(Minerals mineral){
         this.searchMineral = mineral;
     }
-
+    public double rightColor(){
+        return RhsvValues2;
+    }
+    public double leftColor(){
+        return LhsvValues2;
+    }
 }
 
 

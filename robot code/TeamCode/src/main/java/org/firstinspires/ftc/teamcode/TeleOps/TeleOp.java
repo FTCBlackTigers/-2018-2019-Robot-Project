@@ -29,11 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.TeleOps;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
@@ -46,6 +42,7 @@ public class TeleOp extends OpMode {
 
   private ElapsedTime runtime = new ElapsedTime();
   private Robot robot = new Robot();
+
 
   @Override
   public void init() {
@@ -76,9 +73,9 @@ public class TeleOp extends OpMode {
    */
   @Override
   public void loop() {
-    robot.teleop(gamepad1, gamepad2, false);
+    robot.teleop(gamepad1, gamepad2);
     telemetry.addData("robot Status", "Run Time: " + runtime.toString());
-    telemetry.addData("gyro angle: ", robot.drive.getAngle());
+    //telemetry.addData("gyro angle: ", robot.drive.getAngle());
     telemetry.update();
 
   }

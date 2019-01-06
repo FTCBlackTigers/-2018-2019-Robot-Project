@@ -53,7 +53,7 @@ public class BlueCreaterEm extends LinearOpMode {
 
   @Override
   public void runOpMode() throws InterruptedException {
-    robot.init(hardwareMap , this);
+   /* robot.init(hardwareMap , this);
     waitForStart();
     robot.climbing.land();
 
@@ -72,6 +72,6 @@ public class BlueCreaterEm extends LinearOpMode {
 
 
 
-
+*/
   }
 }
