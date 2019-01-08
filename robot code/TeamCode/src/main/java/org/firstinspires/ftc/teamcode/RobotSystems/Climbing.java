@@ -90,6 +90,9 @@ public class Climbing {
 
         liftTouch.setMode(DigitalChannel.Mode.INPUT);
         angleTouch.setMode(DigitalChannel.Mode.INPUT);
+
+        angleMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lockServo();
 
     }

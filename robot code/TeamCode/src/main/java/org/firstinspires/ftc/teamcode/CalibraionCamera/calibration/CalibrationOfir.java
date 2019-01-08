@@ -59,6 +59,7 @@ public class CalibrationOfir extends OpMode {
     if(cameraBrightness.getBrightness() != OPTIMAL_BRIGHTNESS){
         cameraBrightness.setBrightness(OPTIMAL_BRIGHTNESS);
     }
+
     telemetry.addData("Brightness: ", cameraBrightness.getBrightness());
     telemetry.addData("Status", "Run Time: " + runtime.toString());
     telemetry.update();

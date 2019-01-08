@@ -11,7 +11,9 @@ public class CameraBrightness {
         int brighness;
         brighness = mCam.getParameters().getExposureCompensation();
         return brighness;
+
     }
+
     public boolean setBrightness(int brightness){
         if(brightness < mCam.getParameters().getMaxExposureCompensation() && brightness > mCam.getParameters().getMinExposureCompensation()){
             mCam.getParameters().setExposureCompensation(brightness);

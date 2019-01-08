@@ -52,7 +52,7 @@ public class Depot extends LinearOpMode {
 
   @Override
   public void runOpMode() throws InterruptedException {
-    /*robot.init(hardwareMap , this);
+    robot.init(hardwareMap , this);
     waitForStart();
     robot.climbing.land();
     robot.drive.Sampling();
@@ -65,6 +65,6 @@ public class Depot extends LinearOpMode {
     //robot.drive.turnByGyroRelative(-40,1000);
     //robot.drive.driveByEncoder(110,0.4, Drive.Direction.FORWARD,2000);
     //while (opModeIsActive()) {
-      //robot.intake.collect();*/
+      //robot.intake.collect();
     }
   }

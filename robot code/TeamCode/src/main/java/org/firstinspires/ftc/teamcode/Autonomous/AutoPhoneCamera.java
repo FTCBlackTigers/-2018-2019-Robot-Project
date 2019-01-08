@@ -38,7 +38,7 @@ import org.firstinspires.ftc.teamcode.RobotSystems.vRecognation;
 import org.firstinspires.ftc.teamcode.RobotSystems.Robot;
 
 @Autonomous(name = "AutoPhoneCamera", group = "Tests")
-@Disabled
+
 
 public class AutoPhoneCamera extends LinearOpMode {
   private Robot robot = new Robot();

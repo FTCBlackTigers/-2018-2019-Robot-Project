@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.RobotSystems;
 
 import android.graphics.Color;
+import android.hardware.Camera;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -38,6 +39,8 @@ public class Intake {
     private boolean injecktIsPrevActive;
     private double RhsvValues2;
     private double LhsvValues2;
+
+    private Camera mCam = Camera.open();
 
     public void init(HardwareMap hardwareMap, OpMode opMode){
         this.opMode = opMode;

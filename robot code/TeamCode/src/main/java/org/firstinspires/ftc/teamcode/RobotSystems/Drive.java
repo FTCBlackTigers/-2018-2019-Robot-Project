@@ -44,18 +44,12 @@ public class Drive {
     private DcMotor rightDrive;
     PixyCam pixyCam;
     private vRecognation recognation = null;
-    //public LogCreator logCreator = new LogCreator();
 
 
 
     public void init(HardwareMap hardwareMap, OpMode opMode) {
         this.opMode = opMode;
-        /*try {
-            logCreator.createFile();
-        } catch (FileNotFoundException x) {
-            opMode.telemetry.addLine("file not found");
-            opMode.telemetry.update();
-        }*/
+
         leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
         rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
         gyro.init(hardwareMap);

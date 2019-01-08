@@ -6,29 +6,19 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.vuforia.CameraCalibration;
-
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibrationIdentity;
-import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibrationManager;
 
 import java.util.List;
-import android.hardware.Camera.Parameters;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
-import javax.net.ssl.HandshakeCompletedEvent;
+import java.util.List;
+
 
 
 public class vRecognation {
-    public enum MineralPos{
-        LEFT,
-        CENTER,
-        RIGHT;
-    }
 
     public double lastGoldPos = -1;
     public Recognition lastRecognaition;
@@ -90,7 +80,6 @@ public class vRecognation {
                         }
                     }
                 }
-
             }
         }
         return topAndBottomAvg;
@@ -103,14 +92,15 @@ public class vRecognation {
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection = CameraDirection.FRONT;
+        /*
+        NOTE: in order to use webcam,use:
+          parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+         */
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
-    }
-    public CameraCalibration cameraCalibration() {
-        return vuforia.getCameraCalibration();
     }
 
     /**
